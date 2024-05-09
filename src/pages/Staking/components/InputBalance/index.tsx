@@ -12,7 +12,7 @@ import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { getUsd } from 'libs/utils';
 import { ORAIX_DECIMAL } from 'pages/CoHarvest/constants';
-import { formatDisplayUsdt, numberWithCommas } from 'pages/Pools/helpers';
+import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
 import { ORAIX_TOKEN_INFO, STAKE_TAB } from 'pages/Staking/constants';
 
 export type InputBalanceType = {

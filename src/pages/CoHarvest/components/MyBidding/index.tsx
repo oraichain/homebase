@@ -10,7 +10,7 @@ import { ReactComponent as NoData } from 'assets/images/nodata-bid.svg';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { getUsd } from 'libs/utils';
 import { BidStatus } from 'pages/CoHarvest/constants';
-import { formatDisplayUsdt, numberWithCommas } from 'pages/Pools/helpers';
+import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
 import styles from './index.module.scss';
 
 const MyBidding = ({ list, isLoading }) => {

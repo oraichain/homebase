@@ -19,7 +19,7 @@ import { checkRegex, validateAddressCosmos } from 'libs/utils';
 import sumBy from 'lodash/sumBy';
 import { FC, useRef, useState } from 'react';
 import NumberFormat from 'react-number-format';
-import { generateMsgFrontierAddToken, getInfoLiquidityPool } from '../helpers';
+import { generateMsgFrontierAddToken, getInfoLiquidityPool } from '../../../helper/helpers';
 import { InitBalancesItems, RewardItems } from './ItemsComponent';
 import { ModalDelete, ModalListToken } from './ModalComponent';
 import styles from './NewTokenModal.module.scss';

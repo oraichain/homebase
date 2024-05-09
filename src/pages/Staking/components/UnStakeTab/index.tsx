@@ -15,7 +15,7 @@ import useConfigReducer from 'hooks/useConfigReducer';
 import useLoadTokens, { useLoadOraichainTokens } from 'hooks/useLoadTokens';
 import { getUsd } from 'libs/utils';
 import { TIMER } from 'pages/CoHarvest/constants';
-import { formatDisplayUsdt, numberWithCommas } from 'pages/Pools/helpers';
+import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
 import { ORAIX_TOKEN_INFO, STAKE_TAB, STAKING_PERIOD } from 'pages/Staking/constants';
 import { getDiffDay } from 'pages/Staking/helpers';
 import { useGetLockInfo, useGetMyStakeRewardInfo, useGetStakeInfo } from 'pages/Staking/hooks';

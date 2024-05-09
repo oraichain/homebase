@@ -1,11 +1,10 @@
 /* Colors */
-$bg: #121a2f;
+$bg: #141416;
 $bggray: #b5b5b5;
 $darkblue: #001212;
 $semiblue: #e2e7ff;
 
 $gray: #cccccc;
-$gray9: #141416;
 $purple-plumeria: #423a56;
 $brown: #a0a0a0;
 $light: #f0f0f0;
@@ -57,8 +56,9 @@ $border: 1px solid fade-out($slate, 0.8);
 
 /* Fonts */
 $font-size: 14px;
-$font-family: 'IBM Plex Sans';
-$font-family-swap: 'IBM Plex Sans', arial, sans-serif;
+$font-family: 'Barlow';
+$font-family-IBM: 'IBM Plex Sans';
+$font-family-swap: 'Barlow', 'IBM Plex Sans', arial, sans-serif;
 
 /* Sizes */
 $breakpoint: 992px;

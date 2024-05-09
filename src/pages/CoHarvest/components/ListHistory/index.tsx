@@ -9,7 +9,7 @@ import { ReactComponent as UsdcIcon } from 'assets/icons/usd_coin.svg';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { BID_ROUND_STATUS, LIMIT_PAGE } from 'pages/CoHarvest/constants';
 import { useGetListBiddingRoundInfo } from 'pages/CoHarvest/hooks/useGetBidRound';
-import { numberWithCommas } from 'pages/Pools/helpers';
+import { numberWithCommas } from 'helper/helpers';
 import { useState } from 'react';
 import styles from './index.module.scss';
 

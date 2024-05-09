@@ -26,7 +26,7 @@ import { useCopyClipboard } from 'hooks/useCopyClipboard';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import useWalletReducer from 'hooks/useWalletReducer';
 import { getTotalUsd, reduceString } from 'libs/utils';
-import { formatDisplayUsdt } from 'pages/Pools/helpers';
+import { formatDisplayUsdt } from 'helper/helpers';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import type { RootState } from 'store/configure';

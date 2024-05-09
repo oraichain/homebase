@@ -5,7 +5,7 @@ import useConfigReducer from 'hooks/useConfigReducer';
 import { getUsd, reduceString } from 'libs/utils';
 import { TIMER } from 'pages/CoHarvest/constants';
 import { dateFormat } from 'pages/CoHarvest/helpers';
-import { formatDisplayUsdt, numberWithCommas } from 'pages/Pools/helpers';
+import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
 import styles from './index.module.scss';
 
 const AllBidding = ({ list, isLoading }) => {

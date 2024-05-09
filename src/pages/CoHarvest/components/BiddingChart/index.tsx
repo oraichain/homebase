@@ -3,7 +3,7 @@ import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { getUsd } from 'libs/utils';
 import { useGetAllBidPoolInRound } from 'pages/CoHarvest/hooks/useGetBidRound';
-import { formatDisplayUsdt, numberWithCommas } from 'pages/Pools/helpers';
+import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
 import { memo, useState } from 'react';
 import ChartColumn from '../ChartColumn';
 import { TooltipIconBtn } from '../Tooltip';

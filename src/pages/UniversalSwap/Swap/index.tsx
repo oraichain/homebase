@@ -55,7 +55,7 @@ import Metamask from 'libs/metamask';
 import { getUsd, reduceString, toSubAmount } from 'libs/utils';
 import mixpanel from 'mixpanel-browser';
 import { calcMaxAmount } from 'pages/Balance/helpers';
-import { numberWithCommas } from 'pages/Pools/helpers';
+import { numberWithCommas } from 'helper/helpers';
 import {
   generateNewSymbol,
   getDisableSwap,

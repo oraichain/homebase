@@ -5,7 +5,7 @@ import styles from './index.module.scss';
 
 import { toAmount, toDisplay } from '@oraichain/oraidex-common';
 import { ORAIX_DECIMAL } from 'pages/CoHarvest/constants';
-import { numberWithCommas } from 'pages/Pools/helpers';
+import { numberWithCommas } from 'helper/helpers';
 
 export type InputBalanceType = {
   amount: string | number;
