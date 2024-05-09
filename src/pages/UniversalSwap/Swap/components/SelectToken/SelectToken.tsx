@@ -13,7 +13,7 @@ import { ReactComponent as WarningIcon } from 'assets/icons/warning_icon.svg';
 import { getUsd, toSumDisplay } from 'libs/utils';
 import { getSubAmountDetails } from 'rest/api';
 import { CoinGeckoPrices } from 'hooks/useCoingecko';
-import { formatDisplayUsdt } from 'pages/Pools/helpers';
+import { formatDisplayUsdt } from 'helper/helpers';
 import React, { useState, useEffect } from 'react';
 import { Themes } from 'context/theme-context';
 import classNames from 'classnames';

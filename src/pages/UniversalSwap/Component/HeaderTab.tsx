@@ -1,76 +1,50 @@
-import HideImg from 'assets/icons/hidden.svg';
-import ShowImg from 'assets/icons/show.svg';
+import { ReactComponent as KadoIcon } from 'assets/icons/ic_kado.svg';
+import lightBlock from 'assets/icons/lightBlock.svg';
 import cn from 'classnames/bind';
-import { useCoinGeckoPrices } from 'hooks/useCoingecko';
-import { reverseSymbolArr } from 'pages/Pools/helpers';
-import { useGetPriceChange } from 'pages/Pools/hooks';
-import { useSelector } from 'react-redux';
-import { selectChartTimeFrame, selectCurrentToken } from 'reducer/tradingSlice';
-import { calculateFinalPriceChange } from '../helpers';
+import { formatDisplayUsdt, formatNumberKMB } from 'helper/helpers';
 import styles from './HeaderTab.module.scss';
 
 const cx = cn.bind(styles);
 
-export const HeaderTab: React.FC<{
-  hideChart: boolean;
-  setHideChart: (isHideChart: boolean) => void;
-  toTokenDenom: string;
-}> = ({ setHideChart, hideChart }) => {
-  const currentPair = useSelector(selectCurrentToken);
-  const { data: prices } = useCoinGeckoPrices();
-
-  const [baseContractAddr, quoteContractAddr] = currentPair.info.split('-');
-  const isPairReverseSymbol = reverseSymbolArr.find(
-    (pair) => pair.filter((item) => item.denom === baseContractAddr || item.denom === quoteContractAddr).length === 2
-  );
-  const [baseDenom, quoteDenom] = currentPair.symbol.split('/');
-
-  const tf = useSelector(selectChartTimeFrame);
-  const { isLoading, priceChange } = useGetPriceChange({
-    base_denom: currentPair.info.split('-')[0],
-    quote_denom: currentPair.info.split('-')[1],
-    tf
-  });
-  const isIncrement = priceChange && Number(priceChange.price_change) > 0 && !isPairReverseSymbol;
-
-  const percentPriceChange = calculateFinalPriceChange(
-    !!isPairReverseSymbol,
-    priceChange.price,
-    priceChange.price_change
-  );
-
-  const isOchOraiPair = baseDenom === 'OCH' && quoteDenom === 'ORAI';
-  const currentPrice = isOchOraiPair ? priceChange.price * prices['oraichain-token'] : priceChange.price;
+export const HeaderTab: React.FC<{ openBuyModal: () => void }> = ({ openBuyModal }) => {
   return (
-    <div className={cx('headerTab')}>
-      <div>
-        {!hideChart && (
-          <>
-            {isLoading ? (
-              '-'
-            ) : (
-              <div className={cx('bottom')}>
-                <div className={cx('balance')}>
-                  {`1 ${baseDenom} ≈ ${
-                    isPairReverseSymbol ? (1 / currentPrice || 0).toFixed(6) : currentPrice.toFixed(6)
-                  } ${isOchOraiPair ? 'USD' : quoteDenom}`}
-                </div>
-                <div className={cx('percent', isIncrement ? 'increment' : 'decrement')}>
-                  {(isIncrement ? '+' : '') + percentPriceChange.toFixed(2)}%
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-      <div>
-        <div>
-          <img
-            className={cx('eyes')}
-            src={hideChart ? ShowImg : HideImg}
-            alt="eyes"
-            onClick={() => setHideChart(!hideChart)}
-          />
+    <div className={cx('header')}>
+      <span className={cx('headerTitle')}>Oraichain Homebase</span>
+      <div className={cx('info')}>
+        <div className={cx('contentWrapper')}>
+          <span className={cx('title')}>
+            <p>ORAI Price:</p>
+            <p className={cx('value')}>{formatDisplayUsdt(24.13)}</p>
+          </span>
+          <button
+            className={cx('btn')}
+            onClick={() => {
+              openBuyModal();
+            }}
+          >
+            <KadoIcon />
+            Buy Tokens
+          </button>
+        </div>
+
+        <div className={cx('contentWrapper')}>
+          <span className={cx('title')}>
+            <p>Market Cap:</p>
+            <p className={cx('value')}>{formatNumberKMB(214130203)}</p>
+          </span>
+        </div>
+        <div className={cx('contentWrapper')}>
+          <span className={cx('title')}>
+            <p>Volume (24H):</p>
+            <p className={cx('value')}>{formatDisplayUsdt(1234432113)}</p>
+          </span>
+        </div>
+        <div className={cx('contentWrapper')}>
+          <span className={cx('title')}>
+            <img src={lightBlock} alt="block_times" />
+            <p>Block time:</p>
+            <p className={cx('value')}>0.85s</p>
+          </span>
         </div>
       </div>
     </div>

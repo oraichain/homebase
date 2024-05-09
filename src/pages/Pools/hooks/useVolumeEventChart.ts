@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import axios from 'rest/request';
-import { getInclude } from '../helpers';
+import { getInclude } from '../../../helper/helpers';
 import { MINIMUM_YEAR_STATISTIC } from './useLiquidityEventChart';
 import { FILTER_DAY } from 'reducer/type';
 

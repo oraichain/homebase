@@ -52,7 +52,7 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
         }}
         className={classNames(
           styles.menu_item,
-          { [styles.active]: link.includes(to) || (link === '/' && to === '/universalswap') },
+          { [styles.active]: link.includes(to) || (link === '/' && to === '/homebase') },
           styles[theme]
         )}
       >
@@ -69,7 +69,7 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
       <div className={classNames(styles.sidebar, { [styles.open]: open })}>
         <div>
           <div className={classNames(styles.menu_items)}>
-            {renderLink('/universalswap', 'Swap', setLink, <UniversalSwapIcon />)}
+            {renderLink('/homebase', 'Swap', setLink, <UniversalSwapIcon />)}
             {renderLink('/bridge', 'Bridge', setLink, <BridgeIcon />)}
             {renderLink('/pools', 'Pools', setLink, <PoolIcon />)}
             {renderLink('/staking', 'Staking', setLink, <StakingIcon />)}

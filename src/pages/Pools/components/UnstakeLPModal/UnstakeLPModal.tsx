@@ -9,7 +9,7 @@ import { network } from 'config/networks';
 import { handleCheckAddress, handleErrorTransaction } from 'helper';
 import useConfigReducer from 'hooks/useConfigReducer';
 import CosmJs from 'libs/cosmjs';
-import { toFixedIfNecessary } from 'pages/Pools/helpers';
+import { toFixedIfNecessary } from 'helper/helpers';
 import { useGetPoolDetail, useGetRewardInfoDetail } from 'pages/Pools/hooks';
 import { useGetPairInfo } from 'pages/Pools/hooks/useGetPairInfo';
 import { FC, useEffect, useState } from 'react';

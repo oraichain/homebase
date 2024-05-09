@@ -1,16 +1,16 @@
 import { CW20_DECIMALS, CoinIcon, getSubAmountDetails, toAmount, toDisplay, tokenMap } from '@oraichain/oraidex-common';
 import { isMobile } from '@walletconnect/browser-utils';
+import { ReactComponent as KadoIcon } from 'assets/icons/ic_kado.svg';
 import StakeIcon from 'assets/icons/stake.svg';
 import WalletIcon from 'assets/icons/wallet-v3.svg';
 import cn from 'classnames/bind';
 import { Table, TableHeaderProps } from 'components/Table';
-import ToggleSwitch from 'components/ToggleSwitch';
 import { flattenTokens } from 'config/bridgeTokens';
 import { tokensIcon } from 'config/chainInfos';
 import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { getTotalUsd, toSumDisplay } from 'libs/utils';
-import { formatDisplayUsdt, numberWithCommas, toFixedIfNecessary } from 'pages/Pools/helpers';
+import { formatDisplayUsdt, toFixedIfNecessary } from 'helper/helpers';
 import { useGetMyStake } from 'pages/Pools/hooks';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -20,12 +20,13 @@ import styles from './AssetsTab.module.scss';
 
 const cx = cn.bind(styles);
 
-export const AssetsTab: FC<{ networkFilter: string }> = ({ networkFilter }) => {
+export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> = ({ networkFilter, openBuyModal }) => {
   const { data: prices } = useCoinGeckoPrices();
   const amounts = useSelector((state: RootState) => state.token.amounts);
   const [address] = useConfigReducer('address');
   const [theme] = useConfigReducer('theme');
   const [hideOtherSmallAmount, setHideOtherSmallAmount] = useState(true);
+
   const sizePadding = isMobile() ? '12px' : '24px';
   const { totalStaked } = useGetMyStake({
     stakerAddress: address
@@ -157,30 +158,23 @@ export const AssetsTab: FC<{ networkFilter: string }> = ({ networkFilter }) => {
   return (
     <div className={cx('assetsTab')}>
       <div className={cx('info')}>
-        {listAsset.map((e, i) => {
-          return (
-            <div key={i} className={cx('total-info')}>
-              <div className={cx('icon')}>
-                <img className={cx('wallet')} src={e.src} alt="wallet" />
-              </div>
-              <div className={cx('balance')}>
-                <div className={cx('label')}>{e.label}</div>
-                <div className={cx('value')}>{e.balance}</div>
-              </div>
-            </div>
-          );
-        })}
-        <div className={cx('switch')}>
-          <ToggleSwitch
-            small={true}
-            id="small-balances"
-            checked={hideOtherSmallAmount}
-            onChange={() => setHideOtherSmallAmount(!hideOtherSmallAmount)}
-          />
-          <label htmlFor="small-balances">Hide small balances!</label>
+        <div className={cx('title')}>
+          <span className={cx('index')}>02</span>
+          <span>Manage your assets</span>
+          <button
+            className={cx('btn')}
+            onClick={() => {
+              openBuyModal();
+            }}
+          >
+            <KadoIcon />
+            Buy Crypto with fiat
+          </button>
         </div>
+
+        <div className={cx('usd')}>{formatDisplayUsdt(totalUsd)}</div>
       </div>
-      <div>
+      <div className={cx('table')}>
         <Table
           headers={headers}
           data={data}

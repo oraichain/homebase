@@ -8,7 +8,7 @@ import { getTotalUsd } from 'libs/utils';
 import { RootState } from 'store/configure';
 import styles from './index.module.scss';
 import { isMobile } from '@walletconnect/browser-utils';
-import { formatDisplayUsdt } from 'pages/Pools/helpers';
+import { formatDisplayUsdt } from 'helper/helpers';
 
 const cx = cn.bind(styles);
 

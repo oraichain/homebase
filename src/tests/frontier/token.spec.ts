@@ -1,5 +1,5 @@
 import { AIRI_CONTRACT, MILKY_CONTRACT, ORAI } from '@oraichain/oraidex-common';
-import { generateMsgFrontierAddToken, getInfoLiquidityPool } from 'pages/Pools/helpers';
+import { generateMsgFrontierAddToken, getInfoLiquidityPool } from 'helper/helpers';
 
 describe('frontier-cw20-token', () => {
   const marketing = {

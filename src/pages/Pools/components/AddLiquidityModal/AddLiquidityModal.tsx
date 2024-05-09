@@ -13,7 +13,7 @@ import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
 import CosmJs from 'libs/cosmjs';
 import { getUsd, toSumDisplay } from 'libs/utils';
-import { estimateShare } from 'pages/Pools/helpers';
+import { estimateShare } from 'helper/helpers';
 import { useGetPairInfo } from 'pages/Pools/hooks/useGetPairInfo';
 import { useTokenAllowance } from 'pages/Pools/hooks/useTokenAllowance';
 import { useGetPoolDetail } from 'pages/Pools/hooks';

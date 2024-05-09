@@ -1,4 +1,4 @@
-import { formatDisplayUsdt } from 'pages/Pools/helpers';
+import { formatDisplayUsdt } from 'helper/helpers';
 import { MONTHS_ARR, TIMER } from '../constants';
 
 export const formatCountdownTime = (milliseconds: number) => {

@@ -21,7 +21,7 @@ import {
   useGetHistoryBid,
   useGetPotentialReturn
 } from 'pages/CoHarvest/hooks/useGetBidRound';
-import { formatDisplayUsdt, numberWithCommas } from 'pages/Pools/helpers';
+import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
 import { useSimulate } from 'pages/UniversalSwap/Swap/hooks';
 import { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';

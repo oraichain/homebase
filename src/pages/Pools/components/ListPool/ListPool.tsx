@@ -6,7 +6,7 @@ import { FallbackEmptyData } from 'components/FallbackEmptyData';
 import { Table, TableHeaderProps } from 'components/Table';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { PoolTableData } from 'pages/Pools';
-import { formatDisplayClaimable, formatDisplayUsdt, parseAssetOnlyDenom } from 'pages/Pools/helpers';
+import { formatDisplayClaimable, formatDisplayUsdt, parseAssetOnlyDenom } from 'helper/helpers';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PoolInfoResponse } from 'types/pool';

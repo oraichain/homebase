@@ -9,7 +9,7 @@ import useConfigReducer from 'hooks/useConfigReducer';
 import useLoadTokens, { useLoadOraichainTokens } from 'hooks/useLoadTokens';
 import CosmJs from 'libs/cosmjs';
 import { getUsd } from 'libs/utils';
-import { formatDisplayUsdt, numberWithCommas } from 'pages/Pools/helpers';
+import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
 import { MONTHLY_SECOND, ORAIX_TOKEN_INFO, USDC_TOKEN_INFO, YEARLY_SECOND } from 'pages/Staking/constants';
 import { calcAPY, calcYearlyReward } from 'pages/Staking/helpers';
 import {

@@ -88,7 +88,7 @@ const Menu: React.FC = () => {
         }}
         className={classNames(
           styles.menu_item,
-          { [styles.active]: !otherActive && (link.includes(to) || (link === '/' && to === '/universalswap')) },
+          { [styles.active]: !otherActive && (link.includes(to) || (link === '/' && to === '/homebase')) },
           styles[theme],
           styles.spin
         )}
@@ -116,7 +116,7 @@ const Menu: React.FC = () => {
 
   const menuListMobile = (
     <div className={classNames(styles.menu_list)}>
-      {renderLink('/universalswap', 'Swap', setLink, false, <UniversalSwapIcon />)}
+      {renderLink('/homebase', 'Swap', setLink, false, <UniversalSwapIcon />)}
       {renderLink('/bridge', 'Bridge', setLink, false, <BridgeIcon />)}
       {renderLink('/pools', 'Pools', setLink, false, <PoolIcon />)}
       {renderLink('/staking', 'Staking', setLink, false, <StakingIcon />)}

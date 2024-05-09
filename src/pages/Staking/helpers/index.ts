@@ -1,6 +1,6 @@
 import { CoinGeckoPrices } from 'hooks/useCoingecko';
 import { getUsd } from 'libs/utils';
-import { formatDisplayUsdt } from 'pages/Pools/helpers';
+import { formatDisplayUsdt } from 'helper/helpers';
 import { MONTHLY_SECOND, ORAIX_TOKEN_INFO, TIMER, USDC_TOKEN_INFO, YEARLY_SECOND } from '../constants';
 
 export const calcDiffTime = (start: string | Date | number, end: string | Date | number) => {

@@ -8,7 +8,7 @@ import {
 } from '@oraichain/oraidex-common';
 import { flattenTokens } from 'config/bridgeTokens';
 import { getPoolTokens } from 'config/pools';
-import { estimateShare, formatDisplayUsdt, getSymbolPools, toFixedIfNecessary } from 'pages/Pools/helpers';
+import { estimateShare, formatDisplayUsdt, getSymbolPools, toFixedIfNecessary } from 'helper/helpers';
 import { ProvideQuery, Type, generateContractMessages } from 'rest/api';
 import { constants } from './listing-simulate';
 

@@ -2,7 +2,7 @@ import useConfigReducer from 'hooks/useConfigReducer';
 import { ChartOptions, ColorType, DeepPartial, LineStyle, TickMarkType, Time, createChart } from 'lightweight-charts';
 import { TIMER } from 'pages/CoHarvest/constants';
 import { formatDateChart, formatNumberKMB } from 'pages/CoHarvest/helpers';
-import { formatDisplayUsdt, formatTimeDataChart } from 'pages/Pools/helpers';
+import { formatDisplayUsdt, formatTimeDataChart } from 'helper/helpers';
 import { useVolumeEventChart } from 'pages/Pools/hooks/useVolumeEventChart';
 import { useEffect, useRef } from 'react';
 import { FILTER_DAY } from 'reducer/type';

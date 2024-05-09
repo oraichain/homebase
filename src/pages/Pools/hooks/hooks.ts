@@ -17,7 +17,7 @@ import axios from 'rest/request';
 import { RootState } from 'store/configure';
 import { PoolInfoResponse } from 'types/pool';
 import { PoolTableData } from '..';
-import { parseAssetOnlyDenom } from 'pages/Pools/helpers';
+import { parseAssetOnlyDenom } from 'helper/helpers';
 import { RewardPoolType } from 'reducer/config';
 
 export const calculateLpPoolsV3 = (lpAddresses: string[], res: AggregateResult) => {

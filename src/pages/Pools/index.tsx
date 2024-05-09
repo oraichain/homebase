@@ -13,7 +13,7 @@ import { Filter } from './components/Filter';
 import { Header } from './components/Header';
 import { ListPools } from './components/ListPool';
 import { ListPoolsMobile } from './components/ListPoolMobile';
-import { getSymbolPools, parseAssetOnlyDenom, reverseSymbolArr } from './helpers';
+import { getSymbolPools, parseAssetOnlyDenom, reverseSymbolArr } from '../../helper/helpers';
 import {
   useFetchCacheRewardAssetForAllPools,
   useFetchLpPoolsV3,

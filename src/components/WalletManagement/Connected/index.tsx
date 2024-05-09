@@ -6,7 +6,7 @@ import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
 import useWalletReducer from 'hooks/useWalletReducer';
 import { getTotalUsd } from 'libs/utils';
-import { formatDisplayUsdt } from 'pages/Pools/helpers';
+import { formatDisplayUsdt } from 'helper/helpers';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/configure';
 import styles from './index.module.scss';

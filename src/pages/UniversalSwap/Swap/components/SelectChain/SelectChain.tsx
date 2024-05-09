@@ -13,7 +13,7 @@ import { getTotalUsd } from 'libs/utils';
 import { tokenMap } from 'config/bridgeTokens';
 import { CoinGeckoPrices } from 'hooks/useCoingecko';
 import { Themes } from 'context/theme-context';
-import { formatDisplayUsdt } from 'pages/Pools/helpers';
+import { formatDisplayUsdt } from 'helper/helpers';
 
 const cx = cn.bind(styles);
 interface InputSwapProps {

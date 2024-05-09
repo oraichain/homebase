@@ -2,7 +2,7 @@ import { toDisplay, USDC_CONTRACT } from '@oraichain/oraidex-common';
 import { ReactComponent as ChartUpIcon } from 'assets/icons/chartUpIcon.svg';
 import { ReactComponent as PercentIcon } from 'assets/icons/percentIcon.svg';
 import { useCoinGeckoPrices } from 'hooks/useCoingecko';
-import { numberWithCommas } from 'pages/Pools/helpers';
+import { numberWithCommas } from 'helper/helpers';
 import { ORAIX_TOKEN_INFO, USDC_TOKEN_INFO } from 'pages/Staking/constants';
 import { calcAPY } from 'pages/Staking/helpers';
 import { useGetAllStakerRewardInfo, useGetRewardPerSecInfo, useGetStakeInfo } from 'pages/Staking/hooks';

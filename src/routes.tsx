@@ -33,7 +33,7 @@ export default () => (
       <Route path="/" element={<UniversalSwap />} />
       <Route path="/bridge" element={<Balance />} />
       <Route path="/bitcoin-dashboard" element={<BitcoinDashboard />} />
-      <Route path="/universalswap" element={<UniversalSwap />} />
+      <Route path="/homebase" element={<UniversalSwap />} />
       <Route path="/pools" element={<Pools />} />
       <Route path="/staking" element={<StakingPage />} />
       <Route path="/co-harvest" element={<CoHarvest />} />

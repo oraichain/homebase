@@ -13,7 +13,7 @@ import { network } from 'config/networks';
 import { handleErrorTransaction } from 'helper';
 import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import { getUsd } from 'libs/utils';
-import { formatDisplayUsdt, numberWithCommas } from 'pages/Pools/helpers';
+import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
 import { ORAIX_TOKEN_INFO, USDC_TOKEN_INFO } from 'pages/Staking/constants';
 import { useGetLockInfo, useGetMyStakeRewardInfo } from 'pages/Staking/hooks';
 import { useState } from 'react';
