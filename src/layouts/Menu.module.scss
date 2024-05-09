@@ -4,21 +4,18 @@
 .menu {
   display: flex;
   justify-content: space-between;
-  padding: 20px 64px 20px 40px;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 999;
 
   height: $menu-height;
-
   .logo {
     display: flex;
   }
-
   @include theme() {
-    background-color: theme-get('neutral-surface-bg');
-    border-bottom: 1px solid theme-get('neutral-border-border-default');
+    background-color: theme-get('neutral-surface-background');
+    border-bottom: 1px solid theme-get('neutral-border-default');
   }
 }
 
@@ -167,15 +164,20 @@
 .menuLeft {
   display: flex;
   align-items: center;
-
+  justify-content: center;
+  width: 255px;
+  @include theme() {
+    background-color: theme-get('neutral-surface-background');
+    border-right: 1px solid theme-get('neutral-border-default');
+  }
   .logoWrapper {
     display: flex;
     align-items: center;
   }
   .divider {
-    @include theme() {
-      border: 1px solid theme-get('neutral-border-border-bold');
-    }
+    // @include theme() {
+    //   border: 1px solid theme-get('neutral-border-border-bold');
+    // }
 
     width: 1px;
     margin-left: 24px;
@@ -188,6 +190,7 @@
   align-items: center;
   gap: 16px;
   font-weight: 500;
+  padding-right: 20px;
 
   @include medium-desktop {
     gap: 10px;
@@ -209,7 +212,6 @@
   .menu_list_right {
     display: flex;
     align-items: center;
-
     .menu_item {
       display: flex;
       align-items: center;

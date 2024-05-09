@@ -8,6 +8,7 @@ type ButtonType =
   | 'primary'
   | 'secondary'
   | 'primary-sm'
+  | 'primary-surface'
   | 'secondary-sm'
   | 'disable-sm'
   | 'third'

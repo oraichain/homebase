@@ -16,6 +16,7 @@ import { MyWallet } from './MyWallet';
 import { MyWalletMobile } from './MyWalletMobile';
 import styles from './WalletManagement.module.scss';
 import { WalletProvider, walletProvider } from './walletConfig';
+import { ReactComponent as WalletIcon } from 'assets/icons/wallet-v3.svg';
 const cx = cn.bind(styles);
 
 export const WalletManagement: FC<{}> = () => {
@@ -118,10 +119,11 @@ export const WalletManagement: FC<{}> = () => {
     <div className={cx('connect-wallet-container', theme)}>
       {!isAnyWalletConnected && !mobileMode ? (
         <Button
-          type="primary"
+          type="primary-surface"
           onClick={() => {
             setIsShowChooseWallet(true);
           }}
+          icon={<WalletIcon />}
         >
           Connect Wallet
         </Button>

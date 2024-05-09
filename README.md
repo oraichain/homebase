@@ -1,10 +1,10 @@
 <h2 align="center">
-  Oraidex's Frontend
+  Homebase's Frontend
 </h2>
 
 ## Overview
 
-This repository provides frontend code for Oraidex of [Oraichain](https://orai.io).
+This repository provides frontend code for Homebase of [Oraichain](https://orai.io).
 
 ## Prerequisite
 

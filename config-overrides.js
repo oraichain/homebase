@@ -99,7 +99,7 @@ module.exports = {
       config.plugins.push(
         sentryWebpackPlugin({
           org: 'oraichain',
-          project: 'oraidex',
+          project: 'homebase',
           authToken: process.env.SENTRY_AUTH_TOKEN
         })
       );
