@@ -24,17 +24,17 @@
 }
 
 .primary {
-  background-color: $primary-bg-btn;
-  color: $text-btn-default;
+  background-color: $primary-surface-btn;
+  color: $white-color;
   border: 1px;
   padding: 14.5px 39px;
   border-radius: 99px;
 }
 
 .primary-sm {
-  background-color: $primary-bg-btn;
+  background-color: $primary-surface-btn;
   font-weight: 400;
-  color: $text-btn-default;
+  color: $white-color;
   border: 1px;
   padding: 4px 16px;
   border-radius: 99px;

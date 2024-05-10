@@ -73,6 +73,10 @@
 
     .input {
       text-align: right;
+
+      input:disabled {
+        opacity: 1;
+      }
     }
 
     .amount {
@@ -248,8 +252,8 @@
 
       .percent {
         border-radius: 99px;
-        background: #aee67f;
-        color: black;
+        background: $primary-surface-btn;
+        color: white;
         padding: 2px 10px;
 
         opacity: 0.6;

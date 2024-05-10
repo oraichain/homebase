@@ -9,6 +9,7 @@ import styles from './index.module.scss';
 import { formatDisplayUsdt } from 'helper/helpers';
 import BuyOraiModal from 'layouts/BuyOraiModal';
 import { ReactComponent as KadoIcon } from 'assets/icons/ic_kado.svg';
+import ConnectBanner from './Component/ConnectBanner';
 const cx = cn.bind(styles);
 
 const Swap: React.FC = () => {
@@ -24,6 +25,7 @@ const Swap: React.FC = () => {
         <HeaderTab openBuyModal={() => setOpenBuy(true)} />
         <div className={cx('swap-container')}>
           <div className={cx('swap-col', 'w60')}>
+            <ConnectBanner />
             <AssetsTab networkFilter={networkFilter.value} openBuyModal={() => setOpenBuy(true)} />
           </div>
           <div className={cx('swap-col', 'w40')}>
