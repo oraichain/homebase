@@ -21,8 +21,6 @@ import { isMobile } from '@walletconnect/browser-utils';
 import ArrowImg from 'assets/icons/arrow_new.svg';
 import { ReactComponent as SendIcon } from 'assets/icons/send.svg';
 import { ReactComponent as FeeIcon } from 'assets/icons/fee.svg';
-import { ReactComponent as SendDarkIcon } from 'assets/icons/send_dark.svg';
-import { ReactComponent as FeeDarkIcon } from 'assets/icons/fee_dark.svg';
 import { ReactComponent as BookIcon } from 'assets/icons/book_icon.svg';
 import { ReactComponent as IconOirSettings } from 'assets/icons/iconoir_settings.svg';
 import SwitchLightImg from 'assets/icons/switch-new-light.svg';
@@ -682,7 +680,7 @@ const SwapComponent: React.FC<{
               onChange={(val) => setAddressTransfer(val)}
               showPreviewOnBlur
               defaultValue={initAddressTransfer}
-              prefix={theme === 'light' ? <SendIcon /> : <SendDarkIcon />}
+              prefix={<SendIcon />}
               suffix={
                 <div
                   className={cx('paste')}
@@ -724,7 +722,7 @@ const SwapComponent: React.FC<{
           </div>
           <div className={cx('estFee')} onClick={() => setOpenDetail(true)}>
             <div className={cx('label')}>
-              {theme === 'light' ? <FeeIcon /> : <FeeDarkIcon />}
+              <FeeIcon />
               Estimated Fee:
             </div>
             <div className={cx('info')}>

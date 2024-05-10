@@ -424,7 +424,7 @@
     }
 
     @include theme {
-      color: theme-get('primary-text-text-link');
+      color: $primary-text-link;
     }
     font-size: 14px;
     font-weight: 600;
@@ -435,7 +435,7 @@
 
       path {
         @include theme {
-          stroke: theme-get('primary-text-text-link');
+          stroke: $primary-text-link;
         }
       }
     }
@@ -599,8 +599,8 @@
   gap: 5px;
 
   @include theme() {
-    background-color: theme-get('primary-1');
-    color: theme-get('neutral-text-text-btn-default');
+    background-color: $primary-surface-btn;
+    color: $white-color;
   }
 
   &.disable {
@@ -610,7 +610,7 @@
     }
   }
 
-  border-radius: 99px;
+  border-radius: 8px;
   padding: 16px;
   font-style: normal;
   font-weight: 600;
