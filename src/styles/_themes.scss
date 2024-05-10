@@ -167,7 +167,9 @@ $themes: (
     'neutral-text-btn-default': #152703,
     'neutral-surface-background': #141416,
     'neutral-border-default': #383b40,
-    'neutral-border-light': #242627
+    'neutral-border-light': #242627,
+    'neutral-surface-action': #2e2e33,
+    'neutral-text-inactive-title': #b4b7bb
   ),
   light: (
     'colors-neutral-text-text-token-name': #181a17,
@@ -284,6 +286,8 @@ $themes: (
     'bg-overlay-section': rgba(255, 255, 255, 0.5),
     'neutral-surface-background': #141416,
     'neutral-border-default': #383b40,
-    'neutral-border-light': #242627
+    'neutral-border-light': #242627,
+    'neutral-surface-action': #2e2e33,
+    'neutral-text-inactive-title': #b4b7bb
   )
 );

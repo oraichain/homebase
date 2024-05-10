@@ -1,13 +1,19 @@
-import { ReactComponent as BridgeIcon } from 'assets/icons/ic_bridge.svg';
-import { ReactComponent as CohavestIcon } from 'assets/icons/ic_cohavest.svg';
-import { ReactComponent as BtcDashboardIcon } from 'assets/icons/ic_btc_dashboard.svg';
-import { ReactComponent as PoolIcon } from 'assets/icons/ic_pools.svg';
-import { ReactComponent as StakingIcon } from 'assets/icons/ic_staking.svg';
-import { ReactComponent as UniversalSwapIcon } from 'assets/icons/ic_universalswap.svg';
-import { ReactComponent as OraidexBetaIcon } from 'assets/icons/ic_beta.svg';
-import { ReactComponent as LogoDownloadOwalletIcon } from 'assets/icons/logo_download.svg';
-import { ReactComponent as DownloadOwalletIcon } from 'assets/icons/logo_owallet_gateway.svg';
-import { ReactComponent as DownloadOwalletIconDark } from 'assets/icons/logo_owallet_gateway_dark.svg';
+import { ReactComponent as HomeBaseIcon } from 'assets/icons/homebase.svg';
+import { ReactComponent as GpuStakingIcon } from 'assets/icons/gpu_staking.svg';
+import { ReactComponent as JumpIcon } from 'assets/icons/jump.svg';
+import { ReactComponent as TimeIcon } from 'assets/icons/time.svg';
+import { ReactComponent as CoHavestIcon } from 'assets/icons/co_harvest.svg';
+import { ReactComponent as BuyCryptoIcon } from 'assets/icons/buy_crypto.svg';
+import { ReactComponent as GovernanceIcon } from 'assets/icons/governance.svg';
+import { ReactComponent as OraiStakingIcon } from 'assets/icons/orai_staking.svg';
+import { ReactComponent as OwalletIcon } from 'assets/icons/logo_owallet.svg';
+import { ReactComponent as AirightIcon } from 'assets/icons/logo_airight.svg';
+import { ReactComponent as DefiLensIcon } from 'assets/icons/logo_defi_lens.svg';
+import { ReactComponent as ExplorerIcon } from 'assets/icons/logo_explorer.svg';
+import { ReactComponent as OraidexIcon } from 'assets/icons/logo_oraidex.svg';
+import { ReactComponent as OrchaiIcon } from 'assets/icons/logo_orchai.svg';
+import { ReactComponent as LLMLayerIcon } from 'assets/icons/logo_llm_layer.svg';
+
 import classNames from 'classnames';
 import ModalDownloadOwallet from 'components/Modals/ModalDownloadOwallet/ModalDownloadOwallet';
 import useTheme from 'hooks/useTheme';
@@ -26,7 +32,14 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
     setLink(location.pathname);
   }, [location]);
 
-  const renderLink = (to: string, title: string, onClick: any, icon: ReactElement, externalLink = false) => {
+  const renderLink = (
+    to: string,
+    title: string,
+    onClick: any,
+    iconLeft: ReactElement,
+    iconRight?: ReactElement,
+    externalLink = false
+  ) => {
     if (externalLink)
       return (
         <a
@@ -39,7 +52,7 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
           }}
           rel="noreferrer"
         >
-          {icon}
+          {iconLeft}
           <span className={classNames(styles[theme], styles.menu_item_text)}>{title}</span>
         </a>
       );
@@ -56,36 +69,57 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
           styles[theme]
         )}
       >
-        {icon}
-        <span className={classNames(styles.menu_item_text, { [styles.active]: link === to }, styles[theme])}>
-          {title}
-        </span>
+        <div className={classNames(styles.menu_item_tab)}>
+          {iconLeft}
+          <span className={classNames(styles.menu_item_text, { [styles.active]: link === to }, styles[theme])}>
+            {title}
+          </span>
+        </div>
+        {iconRight}
       </Link>
     );
   };
-
   return (
     <>
       <div className={classNames(styles.sidebar, { [styles.open]: open })}>
-        <div>
+        <div className={classNames(styles.sidebar_menu)}>
           <div className={classNames(styles.menu_items)}>
-            {renderLink('/homebase', 'Swap', setLink, <UniversalSwapIcon />)}
-            {renderLink('/bridge', 'Bridge', setLink, <BridgeIcon />)}
-            {renderLink('/pools', 'Pools', setLink, <PoolIcon />)}
-            {renderLink('/staking', 'Staking', setLink, <StakingIcon />)}
-            {renderLink('/co-harvest', 'Co-Harvest', setLink, <CohavestIcon />)}
-            {renderLink('/bitcoin-dashboard', 'BTC Dashboard', setLink, <BtcDashboardIcon />)}
-            {renderLink('https://beta.oraidex.io', 'OraiDEX Beta', setLink, <OraidexBetaIcon />, true)}
+            {renderLink('/homebase', 'Homebase', setLink, <HomeBaseIcon />)}
+            {renderLink('/homebase', 'GPU Staking', setLink, <GpuStakingIcon />)}
+            {renderLink('/homebase', 'ORAI Staking', setLink, <OraiStakingIcon />, <JumpIcon />)}
+            {renderLink('/homebase', 'Governance', setLink, <GovernanceIcon />, <JumpIcon />)}
+            {renderLink('/homebase', 'Buy Crypto', setLink, <BuyCryptoIcon />)}
+            {renderLink('/homebase', 'Co-Harvest', setLink, <CoHavestIcon />, <TimeIcon />)}
           </div>
         </div>
-
-        <div className={styles.menu_footer} onClick={() => setIsOpenQrCodeOwallet(true)}>
+        <div className={classNames(styles.sidebar_divied)}></div>
+        <div className={classNames(styles.sidebar_menu)}>
+          <div>
+            <div>Featured DApps</div>
+            {/* <div>-</div> */}
+          </div>
+          <div className={classNames(styles.menu_items)}>
+            {renderLink('/homebase', 'OraiDEX', setLink, <OraidexIcon />, <JumpIcon />)}
+            {renderLink('/homebase', 'DeFi Lens', setLink, <DefiLensIcon />, <JumpIcon />)}
+            {renderLink('/homebase', 'LLM Layer', setLink, <LLMLayerIcon />, <JumpIcon />)}
+            {renderLink('/homebase', 'aiRight', setLink, <AirightIcon />, <JumpIcon />)}
+            {renderLink('/homebase', 'Orchai', setLink, <OrchaiIcon />, <JumpIcon />)}
+          </div>
+        </div>
+        <div className={classNames(styles.sidebar_divied)}></div>
+        <div className={classNames(styles.sidebar_menu)}>
+          <div className={classNames(styles.menu_items)}>
+            {renderLink('/homebase', 'Explorer', setLink, <ExplorerIcon />, <JumpIcon />)}
+            {renderLink('/homebase', 'Install OWallet', setLink, <OwalletIcon />)}
+          </div>
+        </div>
+        {/* <div className={styles.menu_footer} onClick={() => setIsOpenQrCodeOwallet(true)}>
           {theme === 'light' ? <DownloadOwalletIcon /> : <DownloadOwalletIconDark />}
           <div className={styles.download}>
             <span>Download</span>
             <LogoDownloadOwalletIcon />
           </div>
-        </div>
+        </div> */}
       </div>
       {isOpenQrCodeOwallet && <ModalDownloadOwallet close={() => setIsOpenQrCodeOwallet(false)} />}
     </>
