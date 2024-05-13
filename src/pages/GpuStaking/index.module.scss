@@ -1,0 +1,27 @@
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.gpu_staking {
+  margin: 0 auto;
+  height: 100%;
+
+  @include ultra_desktop_max() {
+    max-width: 100%;
+    padding: 0;
+    margin: 24px 0;
+  }
+
+  @include mobile() {
+    max-width: 100%;
+    padding: 0;
+    margin: 24px 0;
+  }
+
+  @include medium-desktop() {
+    max-width: 100%;
+  }
+
+  @include small-mobile {
+    margin-top: $menu-height;
+  }
+}

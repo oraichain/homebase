@@ -85,7 +85,7 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
         <div className={classNames(styles.sidebar_menu)}>
           <div className={classNames(styles.menu_items)}>
             {renderLink('/homebase', 'Homebase', setLink, <HomeBaseIcon />)}
-            {renderLink('/homebase', 'GPU Staking', setLink, <GpuStakingIcon />)}
+            {renderLink('/gpu-staking', 'GPU Staking', setLink, <GpuStakingIcon />)}
             {renderLink('/homebase', 'ORAI Staking', setLink, <OraiStakingIcon />, <JumpIcon />)}
             {renderLink('/homebase', 'Governance', setLink, <GovernanceIcon />, <JumpIcon />)}
             {renderLink('/homebase', 'Buy Crypto', setLink, <BuyCryptoIcon />)}
