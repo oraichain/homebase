@@ -9,9 +9,7 @@
   gap: 8px;
 
   border-radius: 12px;
-  @include theme {
-    background: theme-get('neutral-6');
-  }
+  background: #18181a;
 
   .title {
     @include theme {
@@ -29,14 +27,43 @@
     gap: 8px;
 
     .text {
-      @include theme {
-        color: theme-get('neutral-text-text-dropdown');
-      }
-      font-size: 16px;
-      font-weight: 500;
+      color: var(--Colors-Neutral-Text-heading, #f7f7f7);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 150%; /* 27px */
 
       @include small-mobile {
         font-size: 14px;
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
+        vertical-align: text-bottom;
+      }
+
+      a {
+        color: var(--Colors-Primary-Text-action, #b999f3);
+        font-family: 'IBM Plex Sans';
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 20px; /* 125% */
+
+        padding: 4px 8px;
+
+        @include mobile {
+          display: none;
+        }
+
+        svg {
+          path {
+            fill: #b999f3;
+          }
+
+          vertical-align: sub;
+          width: 20px;
+          height: 20px;
+        }
       }
     }
 
@@ -57,22 +84,21 @@
 
     .input {
       display: flex;
-      height: 56px;
+      height: 54px;
       padding: 12px 16px;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
       flex: 1;
 
+      color: var(--Colors-Neutral-Text-text-token-name, #f7f7f7);
       font-size: 20px;
       font-weight: 600;
       line-height: 150%;
-      border-radius: 99px;
+      border-radius: var(--Dimension-Corner-Radius-search-input, 8px);
+      border: 1px solid var(--Colors-Neutral-Border-default, #383b40);
 
-      @include theme {
-        color: theme-get('neutral-text-text-dropdown');
-        background: theme-get('neutral-surface-bg-section-4');
-      }
+      background: var(--Colors-Neutral-Surface-action, #2e2e33);
 
       input {
         flex: 1;
@@ -131,27 +157,26 @@
     align-items: flex-start;
     gap: 8px;
 
-    @include theme() {
-      color: theme-get('text-color');
-    }
-    text-align: center;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 150%;
-
     .button {
       display: flex;
-      height: 34px;
-      padding: 0px 12px 0px 20px;
+      height: 32px;
+      padding: 14px 24px;
       justify-content: center;
       align-items: center;
+      gap: 10px;
       flex: 1 0 0;
-      border-radius: 99px;
 
-      @include theme() {
-        color: theme-get('neutral-text-text-dropdown');
-        background-color: theme-get('neutral-surface-bg-section-3');
-      }
+      border-radius: var(--Dimension-Corner-Radius-button, 8px);
+      border: 1px solid var(--Colors-Neutral-Border-default, #383b40);
+      background: var(--Colors-Neutral-Surface-action, #2e2e33);
+
+      color: var(--Colors-Neutral-Icon-default-on-light-bg, #fff);
+      text-align: center;
+      font-family: 'IBM Plex Sans';
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 20px; /* 142.857% */
 
       @include small-mobile {
         padding: 0px 12px 0px 12px;

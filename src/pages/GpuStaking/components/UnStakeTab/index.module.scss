@@ -10,11 +10,8 @@
   gap: 24px;
   align-self: stretch;
 
-  border-radius: 24px;
-
-  @include theme {
-    background: theme-get('neutral-6');
-  }
+  border-radius: var(--Dimension-Corner-Radius-row, 8px);
+  background: var(--Colors-Neutral-Surface-card, #18181a);
 
   @include small-mobile {
     padding: 16px;
@@ -133,9 +130,7 @@
         border-radius: 12px;
         width: 100%;
 
-        @include theme {
-          background: theme-get('neutral-surface-bg-section-4');
-        }
+        background: #2e2e33;
 
         .title {
           display: flex;
@@ -190,6 +185,13 @@
 
           &.activeValue {
             opacity: 1;
+          }
+
+          .asset {
+            color: var(--Colors-Neutral-Text-body, #b4b7bb);
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 150%; /* 30px */
           }
         }
 

@@ -32,7 +32,7 @@ const StakeTab = () => {
   const loadTokenAmounts = useLoadTokens();
   const loadOraichainToken = useLoadOraichainTokens();
 
-  const balance = amounts['oraix'];
+  const balance = amounts['scorai'];
   const [amount, setAmount] = useState<number>();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -102,7 +102,14 @@ const StakeTab = () => {
 
   return (
     <div className={styles.stakeTab}>
-      <InputBalance loading={loading} onSubmit={handleBond} balance={balance} amount={amount} setAmount={setAmount} />
+      <InputBalance
+        loading={loading}
+        onSubmit={handleBond}
+        balance={balance}
+        amount={amount}
+        setAmount={setAmount}
+        label="Available to stake"
+      />
 
       {/* <div className={styles.result}>
         <div className={styles.header}>

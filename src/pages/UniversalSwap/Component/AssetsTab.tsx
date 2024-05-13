@@ -25,7 +25,7 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
   const amounts = useSelector((state: RootState) => state.token.amounts);
   const [address] = useConfigReducer('address');
   const [theme] = useConfigReducer('theme');
-  const [hideOtherSmallAmount, setHideOtherSmallAmount] = useState(true);
+  const [hideOtherSmallAmount, setHideOtherSmallAmount] = useState(false);
 
   const sizePadding = isMobile() ? '12px' : '24px';
   const { totalStaked } = useGetMyStake({

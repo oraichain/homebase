@@ -14,7 +14,7 @@
     align-self: stretch;
 
     margin-bottom: 16px;
-    border-radius: 99px;
+    border-radius: 8px;
 
     font-size: 16px;
     font-weight: 500;
@@ -23,7 +23,7 @@
     color: $neutron-text-body-light;
 
     @include theme {
-      background: theme-get('neutral-surface-bg-btn-disabled');
+      background: var(--Colors-Neutral-Surface-action, #2e2e33);
     }
 
     .tab {
@@ -35,13 +35,13 @@
       gap: 10px;
       flex: 1 0 0;
       align-self: stretch;
-      border-radius: 99px;
+      border-radius: 4px;
 
       &.active {
         background: $white-color;
 
         @include theme {
-          color: theme-get('neutral-text-btn-default');
+          color: #292f23;
         }
       }
     }

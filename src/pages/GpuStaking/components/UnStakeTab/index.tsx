@@ -3,6 +3,7 @@ import { Cw20StakingClient } from '@oraichain/oraidex-contracts-sdk';
 import { LockInfoResponse } from '@oraichain/oraidex-contracts-sdk/build/Cw20Staking.types';
 import { ReactComponent as OraiXIcon } from 'assets/icons/oraix.svg';
 import { ReactComponent as OraiXLightIcon } from 'assets/icons/oraix_light.svg';
+import { ReactComponent as ScOraiIcon } from 'assets/icons/orchai.svg';
 import { ReactComponent as ConfirmIcon } from 'assets/images/restake.svg';
 import { ReactComponent as ConfirmIconLight } from 'assets/images/restaking-light.svg';
 import { Button } from 'components/Button';
@@ -16,7 +17,7 @@ import useLoadTokens, { useLoadOraichainTokens } from 'hooks/useLoadTokens';
 import { getUsd } from 'libs/utils';
 import { TIMER } from 'pages/CoHarvest/constants';
 import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
-import { ORAIX_TOKEN_INFO, STAKE_TAB, STAKING_PERIOD } from 'pages/Staking/constants';
+import { ORAIX_TOKEN_INFO as SCORAI_TOKEN_INFO, STAKE_TAB, STAKING_PERIOD } from 'pages/Staking/constants';
 import { getDiffDay } from 'pages/Staking/helpers';
 import { useGetLockInfo, useGetMyStakeRewardInfo, useGetStakeInfo } from 'pages/Staking/hooks';
 import { useState } from 'react';
@@ -37,12 +38,12 @@ const UnStakeTab = () => {
   const [loadingWithdraw, setLoadingWithdraw] = useState<boolean>(false);
   const [loadingRestake, setLoadingRestake] = useState<boolean>(false);
 
-  const { refetchStakeInfo } = useGetStakeInfo(ORAIX_TOKEN_INFO.contractAddress);
+  const { refetchStakeInfo } = useGetStakeInfo(SCORAI_TOKEN_INFO.contractAddress);
   const { myStakeRewardInfo, refetchMyStakeRewardInfo } = useGetMyStakeRewardInfo(
-    ORAIX_TOKEN_INFO.contractAddress,
+    SCORAI_TOKEN_INFO.contractAddress,
     address
   );
-  const { lockInfo, refetchLockInfo } = useGetLockInfo(ORAIX_TOKEN_INFO.contractAddress, address);
+  const { lockInfo, refetchLockInfo } = useGetLockInfo(SCORAI_TOKEN_INFO.contractAddress, address);
 
   const stakedAmount = myStakeRewardInfo?.stakedAmount || '0';
 
@@ -64,7 +65,7 @@ const UnStakeTab = () => {
 
       const result = await cw20StakingClient.unbond({
         amount: toAmount(amount).toString(),
-        stakingToken: ORAIX_TOKEN_INFO.contractAddress
+        stakingToken: SCORAI_TOKEN_INFO.contractAddress
       });
 
       if (result) {
@@ -74,7 +75,7 @@ const UnStakeTab = () => {
         refetchStakeInfo();
         refetchMyStakeRewardInfo();
         refetchLockInfo();
-        loadOraichainToken(address, [ORAIX_TOKEN_INFO.contractAddress]);
+        loadOraichainToken(address, [SCORAI_TOKEN_INFO.contractAddress]);
         setOpen(false);
       }
     } catch (error) {
@@ -93,7 +94,7 @@ const UnStakeTab = () => {
 
       const result = await cw20StakingClient.unbond({
         amount: '0',
-        stakingToken: ORAIX_TOKEN_INFO.contractAddress
+        stakingToken: SCORAI_TOKEN_INFO.contractAddress
       });
 
       if (result) {
@@ -104,7 +105,7 @@ const UnStakeTab = () => {
         refetchStakeInfo();
         refetchMyStakeRewardInfo();
         refetchLockInfo();
-        loadOraichainToken(address, [ORAIX_TOKEN_INFO.contractAddress]);
+        loadOraichainToken(address, [SCORAI_TOKEN_INFO.contractAddress]);
       }
     } catch (error) {
       console.log('error in withdraw: ', error);
@@ -121,7 +122,7 @@ const UnStakeTab = () => {
       const cw20StakingClient = new Cw20StakingClient(window.client, address, network.staking_oraix);
 
       const result = await cw20StakingClient.restake({
-        stakingToken: ORAIX_TOKEN_INFO.contractAddress
+        stakingToken: SCORAI_TOKEN_INFO.contractAddress
       });
 
       if (result) {
@@ -132,7 +133,7 @@ const UnStakeTab = () => {
         refetchStakeInfo();
         refetchMyStakeRewardInfo();
         refetchLockInfo();
-        loadOraichainToken(address, [ORAIX_TOKEN_INFO.contractAddress]);
+        loadOraichainToken(address, [SCORAI_TOKEN_INFO.contractAddress]);
       }
     } catch (error) {
       console.log('error in restake: ', error);
@@ -147,7 +148,7 @@ const UnStakeTab = () => {
       <InputBalance
         onSubmit={() => setOpen(true)}
         balance={stakedAmount}
-        label="Staked amount"
+        label="Available to unstake"
         type={STAKE_TAB.UnStake}
         amount={amount}
         loading={loading}
@@ -157,8 +158,8 @@ const UnStakeTab = () => {
 
       <div className={styles.note}>
         To withdraw your stake, you will need to activate a{' '}
-        <span className={styles.noteHighlight}>30-day unbonding period</span>. You may withdraw at any time, but your
-        tokens will become available again only after this duration
+        <span className={styles.noteHighlight}>{STAKING_PERIOD}-day unbonding period</span>. You may withdraw at any
+        time, but your tokens will become available again only after this duration
       </div>
 
       <div className={styles.result}>
@@ -167,7 +168,7 @@ const UnStakeTab = () => {
             <span>Available to withdraw</span>
             <div className={styles.btnGroup}>
               <Button
-                type="secondary-sm"
+                type="third-sm"
                 onClick={() => handleRestake()}
                 disabled={loadingRestake || listUnstake?.length <= 0}
               >
@@ -187,7 +188,7 @@ const UnStakeTab = () => {
         {listUnstake?.length <= 0 ? null : (
           <div className={styles.list}>
             {listUnstake.map((unstakeItem, key) => {
-              const amountUsd = getUsd(unstakeItem.amount, ORAIX_TOKEN_INFO, prices);
+              const amountUsd = getUsd(unstakeItem.amount, SCORAI_TOKEN_INFO, prices);
               const timeLeft = getDiffDay(Date.now(), unstakeItem.unlock_time * TIMER.MILLISECOND);
               const percent = (timeLeft * 100) / STAKING_PERIOD;
 
@@ -204,10 +205,10 @@ const UnStakeTab = () => {
                           <div
                             className={styles.progress}
                             style={{
-                              background:
-                                theme === 'light'
-                                  ? `conic-gradient(#2F5711 ${percent}%, #EFEFEF ${percent}%)`
-                                  : `conic-gradient(#D7F5BF ${percent}%, #494949 ${percent}%)`
+                              background: `conic-gradient(#CBAEFF ${percent}%, #494949 ${percent}%)`
+                              // theme === 'light'
+                              //   ? `conic-gradient(#2F5711 ${percent}%, #EFEFEF ${percent}%)`
+                              //   : `conic-gradient(#D7F5BF ${percent}%, #494949 ${percent}%)`
                             }}
                           ></div>
                         </div>
@@ -216,8 +217,10 @@ const UnStakeTab = () => {
                   </div>
 
                   <div className={`${styles.value} ${!timeLeft ? styles.activeValue : ''}`}>
-                    {theme === 'light' ? <OraiXLightIcon /> : <OraiXIcon />}
+                    {/* {theme === 'light' ? <OraiXLightIcon /> : <OraiXIcon />} */}
+                    {/* <ScOraiIcon /> */}
                     <span>{numberWithCommas(toDisplay(unstakeItem.amount))}</span>
+                    <span className={styles.asset}>scORAI</span>
                   </div>
                 </div>
               );
@@ -236,8 +239,8 @@ const UnStakeTab = () => {
           <div className={styles.contentConfirm}>
             <div className={styles.desc}>
               Unstaking <span className={styles.noteHighlight}>would stop the reward</span> and lock the token for a
-              <span className={styles.noteHighlight}> 30-day unbonding period</span>. You can also choose to cancel the
-              unstaking process during cooldown.
+              <span className={styles.noteHighlight}> {STAKING_PERIOD}-day unbonding period</span>. You can also choose
+              to cancel the unstaking process during cooldown.
             </div>
             <div>Are you sure you want to unstake?</div>
           </div>
