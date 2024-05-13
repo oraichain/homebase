@@ -103,8 +103,8 @@ const SwapComponent: React.FC<{
   const originalFromToken = tokenMap[fromTokenDenomSwap];
   const originalToToken = tokenMap[toTokenDenomSwap];
 
-  const [selectChainFrom, setSelectChainFrom] = useState(originalFromToken.chainId);
-  const [selectChainTo, setSelectChainTo] = useState(originalToToken.chainId);
+  const [selectChainFrom, setSelectChainFrom] = useState(originalFromToken?.chainId || 'Oraichain');
+  const [selectChainTo, setSelectChainTo] = useState(originalToToken?.chainId || 'Oraichain');
 
   const [isSelectChainFrom, setIsSelectChainFrom] = useState(false);
   const [isSelectChainTo, setIsSelectChainTo] = useState(false);

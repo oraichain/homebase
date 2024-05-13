@@ -8,8 +8,10 @@ import { NetworkFilter, initNetworkFilter } from './helpers';
 import styles from './index.module.scss';
 import { formatDisplayUsdt } from 'helper/helpers';
 import BuyOraiModal from 'layouts/BuyOraiModal';
-import { ReactComponent as KadoIcon } from 'assets/icons/ic_kado.svg';
+import { ReactComponent as OBrigde } from 'assets/icons/OraiBridge_full_dark.svg';
 import ConnectBanner from './Component/ConnectBanner';
+import Feature from './Component/Feature';
+import StakeSummary from './Component/StakeSummary';
 const cx = cn.bind(styles);
 
 const Swap: React.FC = () => {
@@ -30,8 +32,14 @@ const Swap: React.FC = () => {
           </div>
           <div className={cx('swap-col', 'w40')}>
             <SwapComponent fromTokenDenom={fromTokenDenom} toTokenDenom={toTokenDenom} setSwapTokens={setSwapTokens} />
+            <div className={styles.powerBy}>
+              Powered by <OBrigde />
+            </div>
           </div>
         </div>
+        <div className={styles.looking}>You are looking for...</div>
+        <StakeSummary />
+        <Feature />
       </div>
 
       {openBuy && (

@@ -28,7 +28,7 @@
   color: $white-color;
   border: 1px;
   padding: 14.5px 39px;
-  border-radius: 99px;
+  border-radius: 8px;
 }
 
 .primary-sm {
@@ -37,13 +37,13 @@
   color: $white-color;
   border: 1px;
   padding: 4px 16px;
-  border-radius: 99px;
+  border-radius: 8px;
 }
 
 .secondary {
   border: 1px solid;
   padding: 14.5px 39px;
-  border-radius: 99px;
+  border-radius: 8px;
 
   @include theme() {
     background-color: theme-get('neutral-surface-bg-section-3');
@@ -64,7 +64,7 @@
 .secondary-sm {
   border: 1px solid;
   padding: 8px 16px;
-  border-radius: 99px;
+  border-radius: 8px;
   height: 36px;
 
   @include theme() {
@@ -102,21 +102,25 @@
 
 .third {
   padding: 14.5px 39px;
-  border-radius: 99px;
+  border-radius: 8px;
 
   @include theme() {
-    background-color: theme-get('neutral-surface-bg-section-3');
+    // background-color: theme-get('neutral-surface-bg-section-3');
+    border: 1px solid #383b40;
+    background: #2e2e33;
     color: theme-get('neutral-text-text-token-name');
   }
 }
 
 .third-sm {
   padding: 8px 16px;
-  border-radius: 99px;
+  border-radius: 8px;
   height: 36px;
 
   @include theme() {
-    background-color: theme-get('neutral-surface-bg-section-3');
+    // background-color: theme-get('neutral-surface-bg-section-3');
+    border: 1px solid #383b40;
+    background: #2e2e33;
     color: theme-get('neutral-text-text-token-name');
   }
 
@@ -132,7 +136,7 @@
   color: $white-color;
   border: 1px;
   padding: 14.5px 39px;
-  border-radius: 99px;
+  border-radius: 8px;
 }
 
 .error-sm {
@@ -141,5 +145,5 @@
   color: $white-color;
   border: 1px;
   padding: 4px 16px;
-  border-radius: 99px;
+  border-radius: 8px;
 }

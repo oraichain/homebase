@@ -66,6 +66,33 @@
   }
 }
 
+.powerBy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  color: var(--Colors-Neutral-Text-body, #b4b7bb);
+  text-align: center;
+
+  font-size: 14px;
+  font-weight: 400;
+
+  margin-top: 8px;
+}
+
+.looking {
+  color: var(--Colors-Neutral-Text-heading, #f7f7f7);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 28px; /* 87.5% */
+
+  width: 100%;
+  text-align: center;
+  padding: 16px 0;
+  margin: 32px 0;
+}
+
 @include mobile {
   .swap-container {
     padding: 0;
