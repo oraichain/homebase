@@ -17,6 +17,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store/configure';
 import { AssetInfoResponse } from 'types/swap';
 import styles from './AssetsTab.module.scss';
+import { SendModal } from '../Swap/components/SendModal';
 
 const cx = cn.bind(styles);
 
@@ -26,6 +27,8 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
   const [address] = useConfigReducer('address');
   const [theme] = useConfigReducer('theme');
   const [hideOtherSmallAmount, setHideOtherSmallAmount] = useState(true);
+  const [openModalSend, setOpenModalSend] = useState(false);
+  const [tokenInfo, setTokenInfo] = useState({});
 
   const sizePadding = isMobile() ? '12px' : '24px';
   const { totalStaked } = useGetMyStake({
@@ -80,8 +83,11 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
 
           const tokenIcon = tokensIcon.find((tIcon) => tIcon.coinGeckoId === token.coinGeckoId);
           result.push({
-            asset: token.name,
-            chain: token.org,
+            name: token.name,
+            coinGeckoId: token.coinGeckoId,
+            contractAddress: token?.contractAddress,
+            symbol: token.name,
+            chainName: token.org,
             icon: tokenIcon?.Icon,
             iconLight: tokenIcon?.IconLight,
             price: prices[token.coinGeckoId] || 0,
@@ -111,8 +117,8 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
             )}
           </div>
           <div className={styles.right}>
-            <div className={styles.assetName}>{data.asset}</div>
-            <div className={styles.assetChain}>{data.chain}</div>
+            <div className={styles.assetName}>{data.name}</div>
+            <div className={styles.assetChain}>{data.chainName}</div>
           </div>
         </div>
       ),
@@ -122,25 +128,25 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
     },
     price: {
       name: 'PRICE',
-      width: '23%',
+      width: '20%',
       accessor: (data) => <div className={styles.price}>${Number(data.price.toFixed(6))}</div>,
       align: 'left'
     },
     balance: {
       name: 'BALANCE',
-      width: '23%',
+      width: '20%',
       align: 'left',
       accessor: (data) => (
         <div className={cx('balance', `${!data.balance && 'balance-low'}`)}>
           {toFixedIfNecessary(data.balance.toString(), isMobile() ? 3 : 6)}
           {/* {numberWithCommas(toFixedIfNecessary(data.balance.toString(), isMobile() ? 3 : 6))}{' '} */}
-          <span className={cx('balance-assets')}>&nbsp;{data.asset}</span>
+          <span className={cx('balance-assets')}>&nbsp;{data.name}</span>
         </div>
       )
     },
     value: {
       name: 'VALUE',
-      width: '24%',
+      width: '20%',
       align: 'left',
       padding: '0px 8px 0px 0px',
       accessor: (data) => {
@@ -148,6 +154,28 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
           <div className={styles.valuesColumn}>
             <div>
               <div className={styles.value}>{formatDisplayUsdt(data.value)}</div>
+            </div>
+          </div>
+        );
+      }
+    },
+    action: {
+      name: 'ACTION',
+      width: '12%',
+      align: 'left',
+      padding: '0px 8px 0px 0px',
+      accessor: (data) => {
+        return (
+          <div className={styles.valuesColumn}>
+            <div
+              className={styles.action}
+              onClick={(event) => {
+                event.stopPropagation();
+                setTokenInfo(openModalSend ? {} : data);
+                setOpenModalSend(!openModalSend);
+              }}
+            >
+              Send
             </div>
           </div>
         );
@@ -183,6 +211,14 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
           }}
         />
       </div>
+
+      <SendModal
+        isOpen={openModalSend}
+        open={() => setOpenModalSend(true)}
+        close={() => setOpenModalSend(false)}
+        tokenInfo={tokenInfo}
+        address={address}
+      />
     </div>
   );
 };

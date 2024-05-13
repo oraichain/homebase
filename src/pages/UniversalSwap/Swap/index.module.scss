@@ -32,9 +32,8 @@
   border-radius: 12px;
 
   @include theme() {
-    border: 1px solid theme-get('neutral-6');
-    background: theme-get('neutral-white');
-    box-shadow: theme-get('shadow-swap-box');
+    border: 1px solid theme-get('neutral-border-default');
+    background: theme-get('colors-neutral-surface-bg');
   }
 
   @include mobile {
@@ -501,6 +500,11 @@
     cursor: pointer;
     text-align: right;
 
+    .value {
+      @include theme() {
+        color: theme-get('neutral-text-text-token-name');
+      }
+    }
     .icon {
       img {
         width: 20px;

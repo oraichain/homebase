@@ -166,7 +166,7 @@ export const StakeSummary: FC<{}> = () => {
             }}
           />
         </div>
-        <Button type="third" onClick={() => window.open('/', '_blank').focus()}>
+        <Button type="third" onClick={() => window.open('https://scan.orai.io/validators', '_blank').focus()}>
           Stake on OraiScan&nbsp;
           <OpenNewTabIcon />
         </Button>

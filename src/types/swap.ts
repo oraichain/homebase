@@ -1,8 +1,8 @@
 import { CoinIcon, TokenItemType } from '@oraichain/oraidex-common';
 
 export type AssetInfoResponse = {
-  asset: string;
-  chain?: string;
+  name: string;
+  chainName?: string;
   price: number;
   balance: number;
   denom?: string;

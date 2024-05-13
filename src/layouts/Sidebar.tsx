@@ -14,7 +14,7 @@ import { ReactComponent as LLMLayerIcon } from 'assets/icons/logo_llm_layer.svg'
 import { ReactComponent as OraidexIcon } from 'assets/icons/logo_oraidex.svg';
 import { ReactComponent as OrchaiIcon } from 'assets/icons/logo_orchai.svg';
 import { ReactComponent as OraiStakingIcon } from 'assets/icons/orai_staking.svg';
-import { ReactComponent as OwalletIcon } from 'assets/icons/owallet-icon.svg';
+import { ReactComponent as OwalletIcon } from 'assets/icons/logo_owallet.svg';
 import { ReactComponent as TimeIcon } from 'assets/icons/time.svg';
 import classNames from 'classnames';
 import ModalDownloadOwallet from 'components/Modals/ModalDownloadOwallet/ModalDownloadOwallet';
@@ -54,8 +54,11 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
           }}
           rel="noreferrer"
         >
-          {iconLeft}
-          <span className={classNames(styles[theme], styles.menu_item_text)}>{title}</span>
+          <div className={classNames(styles.menu_item_tab)}>
+            {iconLeft}
+            <span className={classNames(styles.menu_item_text, styles[theme])}>{title}</span>
+          </div>
+          {iconRight}
         </a>
       );
     return (
@@ -88,10 +91,17 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
           <div className={classNames(styles.menu_items)}>
             {renderLink('/homebase', 'Homebase', setLink, <HomeBaseIcon />)}
             {renderLink('/gpu-staking', 'GPU Staking', setLink, <GpuStakingIcon />)}
-            {renderLink('/homebase', 'ORAI Staking', setLink, <OraiStakingIcon />, <JumpIcon />)}
-            {renderLink('/homebase', 'Governance', setLink, <GovernanceIcon />, <JumpIcon />)}
-            {renderLink('/homebase', 'Buy Crypto', setLink, <BuyCryptoIcon />)}
-            {renderLink('/homebase', 'Co-Harvest', setLink, <CoHavestIcon />, <TimeIcon />)}
+            {renderLink(
+              'https://scan.orai.io/validators',
+              'ORAI Staking',
+              setLink,
+              <OraiStakingIcon />,
+              <JumpIcon />,
+              true
+            )}
+            {renderLink('/governance', 'Governance', setLink, <GovernanceIcon />, <JumpIcon />)}
+            {renderLink('/buy', 'Buy Crypto', setLink, <BuyCryptoIcon />)}
+            {renderLink('https://oraidex.io/co-harvest', 'Co-Harvest', setLink, <CoHavestIcon />, <TimeIcon />, true)}
           </div>
         </div>
         <div className={classNames(styles.sidebar_divied)}></div>
@@ -101,17 +111,17 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
             {/* <div>-</div> */}
           </div>
           <div className={classNames(styles.menu_items)}>
-            {renderLink('/homebase', 'OraiDEX', setLink, <OraidexIcon />, <JumpIcon />)}
-            {renderLink('/homebase', 'DeFi Lens', setLink, <DefiLensIcon />, <JumpIcon />)}
-            {renderLink('/homebase', 'LLM Layer', setLink, <LLMLayerIcon />, <JumpIcon />)}
-            {renderLink('/homebase', 'aiRight', setLink, <AirightIcon />, <JumpIcon />)}
-            {renderLink('/homebase', 'Orchai', setLink, <OrchaiIcon />, <JumpIcon />)}
+            {renderLink('https://oraidex.io', 'OraiDEX', setLink, <OraidexIcon />, <JumpIcon />, true)}
+            {renderLink('https://defilens.ai', 'DeFi Lens', setLink, <DefiLensIcon />, <JumpIcon />, true)}
+            {renderLink('https://layer.orai.io/llm', 'LLM Layer', setLink, <LLMLayerIcon />, <JumpIcon />, true)}
+            {renderLink('https://airight.io', 'aiRight', setLink, <AirightIcon />, <JumpIcon />, true)}
+            {renderLink('https://orchai.io', 'Orchai', setLink, <OrchaiIcon />, <JumpIcon />, true)}
           </div>
         </div>
         <div className={classNames(styles.sidebar_divied)}></div>
         <div className={classNames(styles.sidebar_menu)}>
           <div className={classNames(styles.menu_items)}>
-            {renderLink('/homebase', 'Explorer', setLink, <ExplorerIcon />, <JumpIcon />)}
+            {renderLink('/explorer', 'Explorer', setLink, <ExplorerIcon />, <JumpIcon />)}
             {/* {renderLink(
               '/homebase',
               'Install OWallet',
@@ -121,10 +131,11 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
               </div>
             )} */}
           </div>
-          <div className={styles.download} onClick={() => setIsOpenQrCodeOwallet(true)}>
+          {/* <div className={styles.download} onClick={() => setIsOpenQrCodeOwallet(true)}>
             <OwalletIcon />
             Install OWallet
-          </div>
+          </div> */}
+
           <div className={styles.social}>
             <a href="https://t.me/oraidex" target="_blank" rel="noopener noreferrer">
               <TeleIcon />

@@ -197,6 +197,19 @@
 .valuesColumn {
   display: flex;
 
+  .action {
+    @include theme() {
+      color: theme-get('colors-primary-text-action');
+    }
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   @include mobile() {
     font-size: 12px;
   }

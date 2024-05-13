@@ -1,0 +1,167 @@
+@import 'src/styles/themes';
+@import 'src/styles/mixins';
+
+.sendModal {
+  max-width: 568px;
+
+  @include small-mobile {
+    align-items: flex-end;
+    width: 100%;
+  }
+
+  .sendModalContainer {
+    margin: auto;
+    border-radius: 16px;
+    padding: 24px;
+    max-height: 100vh;
+    overflow-y: auto;
+    background: #18181a;
+
+    @include small-mobile {
+      padding: 24px 10px;
+
+      border-end-end-radius: 0px;
+      border-end-start-radius: 0px;
+    }
+
+    .sendModalContainerHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      line-height: normal;
+      margin-bottom: 24px;
+
+      .sendModalContainerHeaderBtn {
+        display: flex;
+        align-items: center;
+
+        .sendModalContainerHeaderBtnClose {
+          cursor: pointer;
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+
+    .sendModalContainerHeaderInfo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      .sendModalContainerHeaderInfoLabel {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .sendModalContainerHeaderInfoAddress {
+        font-size: 13px;
+        font-weight: 400;
+        color: #979995;
+      }
+    }
+
+    .sendModalContainerHeaderInput {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      .sendModalContainerHeaderInputSwap {
+        background-color: #232326;
+        padding: 16px 12px;
+        border-radius: 8px;
+      }
+
+      .sendModalContainerHeaderInputNetwork {
+        border-radius: 8px;
+        padding: 12px 16px;
+        background-color: #232521;
+        .sendModalContainerHeaderInputNetworkTitle {
+          font-size: 12px;
+          font-weight: 400;
+          color: #979995;
+        }
+        .sendModalContainerHeaderInputNetworkInfo {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 14px;
+          font-weight: 500;
+          span:last-child {
+            color: '#979995';
+          }
+        }
+      }
+
+      .sendModalContainerHeaderInputMemo,
+      .sendModalContainerHeaderInputRecipient {
+        border-radius: 8px;
+        background-color: #232521;
+      }
+    }
+
+    .sendModalContainerHeaderTitle {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 100%;
+      /* identical to box height, or 22px */
+
+      font-feature-settings: 'tnum' on, 'lnum' on, 'zero' on;
+
+      /* aiRight/White */
+
+      color: #ffffff;
+    }
+
+    .sendModalContainerHeaderBtnConfirm {
+      display: flex;
+      margin-top: 12px;
+
+      button {
+        gap: 10px;
+        width: 100%;
+      }
+    }
+
+    &.light {
+      background-color: #fff;
+      .sendModalContainerHeaderTitle {
+        color: #232521;
+      }
+
+      .sendModalContainerHeaderInfo {
+        .sendModalContainerHeaderInfoLabel {
+          color: #181a17;
+        }
+        .sendModalContainerHeaderInfoAddress {
+          color: #686a66;
+        }
+      }
+
+      .sendModalContainerHeaderInput {
+        .sendModalContainerHeaderInputSwap {
+          background-color: #f2f4f0;
+        }
+        .sendModalContainerHeaderInputRecipient {
+          background-color: #f7f7f7;
+        }
+      }
+
+      .sendModalContainerHeaderInputNetwork,
+      .sendModalContainerHeaderInputMemo {
+        background-color: #f7f7f7;
+      }
+    }
+  }
+}
+
+//responsive
+@media (max-width: 575px) {
+  .sendModal {
+    .sendModalContainer {
+      max-height: 85vh;
+
+      .sendModalContainerHeaderTitle {
+        font-size: 18px;
+      }
+    }
+  }
+}

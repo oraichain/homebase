@@ -26,6 +26,7 @@ const InputCommon: FC<{
 
   error?: string;
   hidePrefixOnActive?: boolean;
+  placeholder?: string;
 }> = ({
   title,
   onChange,
@@ -37,7 +38,8 @@ const InputCommon: FC<{
   isOnViewPort = true,
   error,
   defaultValue = '',
-  hidePrefixOnActive = true
+  hidePrefixOnActive = true,
+  placeholder = ''
 }) => {
   const [active, setActive] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -82,12 +84,11 @@ const InputCommon: FC<{
             <p>{title}</p>
           </span>
           <input
-            className={`${styles.input} ${active ? styles.activeInput : ''} ${
-              value === defaultValue ? styles.isDefault : ''
-            }`}
+            className={`${styles.input} ${styles.activeInput} ${value === defaultValue ? styles.isDefault : ''}`}
             ref={inputRef}
             type="text"
             value={value}
+            placeholder={placeholder}
             onChange={(e) => onChange(e?.target?.value)}
           />
         </div>
