@@ -70,15 +70,19 @@
   &_tab {
     display: flex;
     align-items: center;
-  }
 
-  &.dark {
     svg {
-      path {
-        stroke: #efefef;
-      }
+      vertical-align: middle;
     }
   }
+
+  // &.dark {
+  //   svg {
+  //     path {
+  //       stroke: #efefef;
+  //     }
+  //   }
+  // }
 
   &.active {
     // @include theme() {
@@ -100,30 +104,73 @@
   }
 }
 
-.menu_footer {
-  text-align: center;
-  border-radius: 12px;
-  padding: 12px;
-  font-size: 14px;
+.download {
+  display: flex;
+  padding: 12px 12px 12px 22px;
+  align-items: center;
+  gap: 12px;
+  align-self: stretch;
   cursor: pointer;
+  margin-top: 8px;
 
-  @include theme() {
-    background-color: theme-get('neutral-surface-bg-section-2');
+  border-radius: var(--Dimension-Corner-Radius-row, 8px);
+  background: var(--Colors-Neutral-Surface-card, #18181a);
+
+  background-image: url(../assets/images/owallet_bg_download.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+
+  svg {
+    width: 22px;
+    height: 22px;
   }
 
-  .download {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  color: var(--Colors-Neutral-Text-title, #f5f5f7);
+  font-family: 'IBM Plex Sans';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 26px; /* 162.5% */
+  letter-spacing: -0.08px;
+}
 
-    @include theme() {
-      color: theme-get('neutral-text-title');
+.social {
+  display: flex;
+  padding: var(--Dimension-Padding-modal-y-padding, 16px);
+  justify-content: center;
+  align-items: center;
+  gap: var(--Dimensions-24, 24px);
+  align-self: stretch;
 
-      svg {
-        path {
-          fill: theme-get('sea-stone-200');
-        }
-      }
-    }
+  svg {
+    cursor: pointer;
   }
 }
+
+// .menu_footer {
+//   text-align: center;
+//   border-radius: 12px;
+//   padding: 12px;
+//   font-size: 14px;
+//   cursor: pointer;
+
+//   @include theme() {
+//     background-color: theme-get('neutral-surface-bg-section-2');
+//   }
+
+//   .download {
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+
+//     @include theme() {
+//       color: theme-get('neutral-text-title');
+
+//       svg {
+//         path {
+//           fill: theme-get('sea-stone-200');
+//         }
+//       }
+//     }
+//   }
+// }

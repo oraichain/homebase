@@ -6,13 +6,17 @@ import { ReactComponent as CoHavestIcon } from 'assets/icons/co_harvest.svg';
 import { ReactComponent as BuyCryptoIcon } from 'assets/icons/buy_crypto.svg';
 import { ReactComponent as GovernanceIcon } from 'assets/icons/governance.svg';
 import { ReactComponent as OraiStakingIcon } from 'assets/icons/orai_staking.svg';
-import { ReactComponent as OwalletIcon } from 'assets/icons/logo_owallet.svg';
+// import { ReactComponent as OwalletIcon } from 'assets/icons/logo_owallet.svg';
+import { ReactComponent as OwalletIcon } from 'assets/icons/owallet-icon.svg';
 import { ReactComponent as AirightIcon } from 'assets/icons/logo_airight.svg';
 import { ReactComponent as DefiLensIcon } from 'assets/icons/logo_defi_lens.svg';
 import { ReactComponent as ExplorerIcon } from 'assets/icons/logo_explorer.svg';
 import { ReactComponent as OraidexIcon } from 'assets/icons/logo_oraidex.svg';
 import { ReactComponent as OrchaiIcon } from 'assets/icons/logo_orchai.svg';
 import { ReactComponent as LLMLayerIcon } from 'assets/icons/logo_llm_layer.svg';
+import { ReactComponent as TeleIcon } from 'assets/icons/ic_telegram.svg';
+import { ReactComponent as TwisterIcon } from 'assets/icons/ic_twitter.svg';
+import { ReactComponent as DiscordIcon } from 'assets/icons/ic_discord.svg';
 
 import classNames from 'classnames';
 import ModalDownloadOwallet from 'components/Modals/ModalDownloadOwallet/ModalDownloadOwallet';
@@ -110,7 +114,23 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
         <div className={classNames(styles.sidebar_menu)}>
           <div className={classNames(styles.menu_items)}>
             {renderLink('/homebase', 'Explorer', setLink, <ExplorerIcon />, <JumpIcon />)}
-            {renderLink('/homebase', 'Install OWallet', setLink, <OwalletIcon />)}
+            {/* {renderLink(
+              '/homebase',
+              'Install OWallet',
+              () => setIsOpenQrCodeOwallet(true),
+              <div>
+                <OwalletIcon />
+              </div>
+            )} */}
+          </div>
+          <div className={styles.download} onClick={() => setIsOpenQrCodeOwallet(true)}>
+            <OwalletIcon />
+            Install OWallet
+          </div>
+          <div className={styles.social}>
+            <TeleIcon />
+            <TwisterIcon />
+            <DiscordIcon />
           </div>
         </div>
         {/* <div className={styles.menu_footer} onClick={() => setIsOpenQrCodeOwallet(true)}>
