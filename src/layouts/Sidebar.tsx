@@ -1,23 +1,21 @@
-import { ReactComponent as HomeBaseIcon } from 'assets/icons/homebase.svg';
-import { ReactComponent as GpuStakingIcon } from 'assets/icons/gpu_staking.svg';
-import { ReactComponent as JumpIcon } from 'assets/icons/jump.svg';
-import { ReactComponent as TimeIcon } from 'assets/icons/time.svg';
-import { ReactComponent as CoHavestIcon } from 'assets/icons/co_harvest.svg';
 import { ReactComponent as BuyCryptoIcon } from 'assets/icons/buy_crypto.svg';
+import { ReactComponent as CoHavestIcon } from 'assets/icons/co_harvest.svg';
 import { ReactComponent as GovernanceIcon } from 'assets/icons/governance.svg';
-import { ReactComponent as OraiStakingIcon } from 'assets/icons/orai_staking.svg';
-// import { ReactComponent as OwalletIcon } from 'assets/icons/logo_owallet.svg';
-import { ReactComponent as OwalletIcon } from 'assets/icons/owallet-icon.svg';
+import { ReactComponent as GpuStakingIcon } from 'assets/icons/gpu_staking.svg';
+import { ReactComponent as HomeBaseIcon } from 'assets/icons/homebase.svg';
+import { ReactComponent as DiscordIcon } from 'assets/icons/ic_discord.svg';
+import { ReactComponent as TeleIcon } from 'assets/icons/ic_telegram.svg';
+import { ReactComponent as TwisterIcon } from 'assets/icons/ic_twitter.svg';
+import { ReactComponent as JumpIcon } from 'assets/icons/jump.svg';
 import { ReactComponent as AirightIcon } from 'assets/icons/logo_airight.svg';
 import { ReactComponent as DefiLensIcon } from 'assets/icons/logo_defi_lens.svg';
 import { ReactComponent as ExplorerIcon } from 'assets/icons/logo_explorer.svg';
+import { ReactComponent as LLMLayerIcon } from 'assets/icons/logo_llm_layer.svg';
 import { ReactComponent as OraidexIcon } from 'assets/icons/logo_oraidex.svg';
 import { ReactComponent as OrchaiIcon } from 'assets/icons/logo_orchai.svg';
-import { ReactComponent as LLMLayerIcon } from 'assets/icons/logo_llm_layer.svg';
-import { ReactComponent as TeleIcon } from 'assets/icons/ic_telegram.svg';
-import { ReactComponent as TwisterIcon } from 'assets/icons/ic_twitter.svg';
-import { ReactComponent as DiscordIcon } from 'assets/icons/ic_discord.svg';
-
+import { ReactComponent as OraiStakingIcon } from 'assets/icons/orai_staking.svg';
+import { ReactComponent as OwalletIcon } from 'assets/icons/owallet-icon.svg';
+import { ReactComponent as TimeIcon } from 'assets/icons/time.svg';
 import classNames from 'classnames';
 import ModalDownloadOwallet from 'components/Modals/ModalDownloadOwallet/ModalDownloadOwallet';
 import useTheme from 'hooks/useTheme';
@@ -128,9 +126,15 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
             Install OWallet
           </div>
           <div className={styles.social}>
-            <TeleIcon />
-            <TwisterIcon />
-            <DiscordIcon />
+            <a href="https://t.me/oraidex" target="_blank" rel="noopener noreferrer">
+              <TeleIcon />
+            </a>
+            <a href="https://twitter.com/oraidex" target="_blank" rel="noopener noreferrer">
+              <TwisterIcon />
+            </a>
+            <a href="http://" target="_blank" rel="noopener noreferrer">
+              <DiscordIcon />
+            </a>
           </div>
         </div>
         {/* <div className={styles.menu_footer} onClick={() => setIsOpenQrCodeOwallet(true)}>

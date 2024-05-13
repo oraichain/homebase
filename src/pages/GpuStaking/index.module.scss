@@ -4,24 +4,137 @@
 .gpu_staking {
   margin: 0 auto;
   height: 100%;
+  width: 100%;
+  max-width: 1524px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 
   @include ultra_desktop_max() {
-    max-width: 100%;
     padding: 0;
     margin: 24px 0;
   }
 
   @include mobile() {
-    max-width: 100%;
     padding: 0;
-    margin: 24px 0;
-  }
-
-  @include medium-desktop() {
-    max-width: 100%;
-  }
-
-  @include small-mobile {
     margin-top: $menu-height;
+  }
+
+  .header {
+    h1 {
+      color: var(--Colors-Neutral-Text-heading, #f7f7f7);
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 28px; /* 116.667% */
+      margin-bottom: 16px;
+    }
+
+    color: var(--Colors-Neutral-Text-placeholder, #83838a);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 150%; /* 27px */
+  }
+
+  .summary {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    width: 100%;
+
+    .item {
+      display: flex;
+      // width: 370px;
+      height: 216px;
+      border-radius: 8px;
+      padding: 14px 0px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex: 1 0 0;
+      align-self: stretch;
+      gap: 4px;
+
+      border: 1px solid var(--Colors-Neutral-Border-default, #383b40);
+      background: var(--Colors-Neutral-Surface-card, #18181a);
+
+      background-image: url(../../assets/images/bg_stake_gpu.png);
+      background-repeat: no-repeat;
+      // background-size: cover;
+      background-size: 105% 105%;
+      background-position: center center;
+      transition: all ease-in-out 0.2s;
+
+      &:hover {
+        background-size: 112% 112%;
+      }
+
+      &.claimable {
+        background-image: url(../../assets/images/bg_reward_gpu.png);
+      }
+
+      &.apy {
+        background-image: url(../../assets/images/bg_apy_gpu.png);
+
+        .value {
+          font-size: 24px;
+          font-weight: 600;
+          line-height: 32px; /* 140% */
+        }
+      }
+
+      h2 {
+        color: var(--Colors-Neutral-Text-title, #f7f7f7);
+        font-family: 'IBM Plex Sans';
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px; /* 150% */
+      }
+
+      .value {
+        color: var(--Colors-Neutral-Text-heading, #f7f7f7);
+        text-align: center;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 28px; /* 140% */
+      }
+
+      .usd {
+        color: var(--Colors-Neutral-Text-placeholder, #83838a);
+        font-family: 'IBM Plex Sans';
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px; /* 142.857% */
+      }
+
+      .btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: var(--Dimension-Spacing-col-between-lg, 16px);
+        align-self: stretch;
+
+        button {
+          display: flex;
+          height: 48px;
+          padding: 14px 24px;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+
+          color: var(--Colors-Neutral-Text-action-on-light-bg, #fff);
+          text-align: center;
+          font-family: 'IBM Plex Sans';
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 20px; /* 142.857% */
+
+          .coin {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
   }
 }

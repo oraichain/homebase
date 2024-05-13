@@ -1,13 +1,12 @@
-import React from 'react';
-import styles from './ConnectBanner.module.scss';
-import { ReactComponent as OpenNewTabIcon } from 'assets/icons/open_new_window.svg';
-import { ReactComponent as WalletIcon } from 'assets/icons/wallet-icon.svg';
 import blurIconImg from 'assets/icons/bg_blur_icon.svg';
+import { ReactComponent as OpenNewTabIcon } from 'assets/icons/jump.svg';
+import { ReactComponent as WalletIcon } from 'assets/icons/wallet-icon.svg';
+import classNames from 'classnames';
 import { WalletManagement } from 'components/WalletManagement';
 import useConfigReducer from 'hooks/useConfigReducer';
-import classNames from 'classnames';
 import useWalletReducer from 'hooks/useWalletReducer';
 import { reduceString } from 'libs/utils';
+import styles from './ConnectBanner.module.scss';
 
 const ConnectBanner = () => {
   const [walletByNetworks] = useWalletReducer('walletsByNetwork');

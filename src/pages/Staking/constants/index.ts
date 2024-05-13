@@ -27,4 +27,5 @@ export enum STAKE_TAB {
 }
 
 export const ORAIX_TOKEN_INFO = oraichainTokens.find((e) => e.coinGeckoId === 'oraidex');
+export const SCORAI_TOKEN_INFO = oraichainTokens.find((e) => e.coinGeckoId === 'scorai');
 export const USDC_TOKEN_INFO = oraichainTokens.find((e) => e.coinGeckoId === 'usd-coin');

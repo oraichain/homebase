@@ -1,6 +1,6 @@
 import { isMobile } from '@walletconnect/browser-utils';
 import { ReactComponent as Arrow } from 'assets/icons/arrow_right.svg';
-import { ReactComponent as OpenNewTabIcon } from 'assets/icons/open_new_window.svg';
+import { ReactComponent as OpenNewTabIcon } from 'assets/icons/jump.svg';
 import { ReactComponent as OraiIcon } from 'assets/icons/oraichain.svg';
 import { ReactComponent as OraiLightIcon } from 'assets/icons/oraichain_light.svg';
 import { ReactComponent as ScOraiIcon } from 'assets/icons/orchai.svg';
@@ -147,7 +147,7 @@ export const StakeSummary: FC<{}> = () => {
           />
         </div>
 
-        <Button type="primary" onClick={() => navigate('/')}>
+        <Button type="primary" onClick={() => navigate('/gpu-staking')}>
           Stake&nbsp;
           <Arrow />
         </Button>

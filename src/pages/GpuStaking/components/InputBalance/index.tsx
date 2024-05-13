@@ -6,6 +6,8 @@ import styles from './index.module.scss';
 import { toAmount, toDisplay } from '@oraichain/oraidex-common';
 import { ReactComponent as OraiXIcon } from 'assets/icons/oraix.svg';
 import { ReactComponent as OraiXLightIcon } from 'assets/icons/oraix_light.svg';
+import { ReactComponent as ScOraiIcon } from 'assets/icons/orchai.svg';
+import { ReactComponent as JumpIcon } from 'assets/icons/jump.svg';
 import { Button } from 'components/Button';
 import Loader from 'components/Loader';
 import { useCoinGeckoPrices } from 'hooks/useCoingecko';
@@ -50,8 +52,10 @@ const InputBalance = ({
     <div className={styles.inputBalance}>
       <div className={styles.title}>
         <span className={styles.text}>
-          ORAIX Amount
-          {/* You {type.toLowerCase()} */}
+          <ScOraiIcon /> Stake scORAI &nbsp;
+          <a href="http://" target="_blank" rel="noopener noreferrer">
+            Get scORAI from Orchai <JumpIcon />
+          </a>
         </span>
         <span className={styles.balance}>
           {label}: <span className={styles.token}>{numberWithCommas(toDisplay(balance))} ORAIX</span>
@@ -59,7 +63,7 @@ const InputBalance = ({
       </div>
       <div className={styles.inputWrapper}>
         <div className={styles.input}>
-          <div className={styles.symbol}>{theme === 'light' ? <OraiXLightIcon /> : <OraiXIcon />}</div>
+          <div className={styles.symbol}>{theme === 'light' ? <ScOraiIcon /> : <ScOraiIcon />}</div>
           <NumberFormat
             placeholder="0"
             thousandSeparator
