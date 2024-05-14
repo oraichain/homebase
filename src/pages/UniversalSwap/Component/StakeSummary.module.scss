@@ -9,6 +9,8 @@
   display: flex;
   gap: 40px;
   align-self: stretch;
+  // display: grid;
+  // grid-template-columns: repeat(2, 1fr);
 
   @include mobile {
     flex-direction: column;
@@ -17,94 +19,107 @@
   .detail {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 16px;
 
-    h1 {
-      color: var(--Colors-Neutral-Text-heading, #f7f7f7);
-      font-size: 20px;
-      font-weight: 700;
-      line-height: 28px; /* 140% */
-    }
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
 
-    .desc {
-      color: var(--Colors-Neutral-Text-placeholder, #83838a);
-      font-size: 18px;
-      font-weight: 400;
-      line-height: 150%; /* 27px */
-
-      a {
-        height: 48px;
-        padding: 14px 12px;
-        color: var(--Colors-Primary-Text-action, #b999f3);
-        text-align: center;
-        font-family: 'IBM Plex Sans';
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 20px; /* 125% */
-
-        &:hover {
-          opacity: 0.8;
-        }
-
-        svg {
-          width: 18px;
-          height: 18px;
-          vertical-align: text-top;
-
-          path {
-            stroke: #b999f3;
-          }
-        }
+      h1 {
+        color: var(--Colors-Neutral-Text-heading, #f7f7f7);
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 28px; /* 140% */
       }
-    }
 
-    .table {
-      border-radius: var(--Dimension-Corner-Radius-row, 8px);
-      border: 1px solid var(--Colors-Neutral-Border-default, #383b40);
-
-      padding-bottom: 24px;
-
-      th {
+      .desc {
         color: var(--Colors-Neutral-Text-placeholder, #83838a);
-        font-family: 'IBM Plex Sans';
-        font-size: 12px;
+        font-size: 18px;
         font-weight: 400;
-        line-height: 150%; /* 18px */
-        letter-spacing: 0.012px;
-      }
+        line-height: 150%; /* 27px */
 
-      .assets {
-        display: flex;
-        align-items: center;
-        gap: 12px;
+        a {
+          height: 48px;
+          padding: 14px 12px;
+          color: var(--Colors-Primary-Text-action, #b999f3);
+          text-align: center;
+          font-family: 'IBM Plex Sans';
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 20px; /* 125% */
 
-        .left {
-          display: flex;
-          width: 42px;
-          height: 42px;
-          padding: 3.5px;
-          justify-content: center;
-          align-items: center;
-          flex-shrink: 0;
-
-          border-radius: var(--Dimensions-Corner-Radius-pill, 9999px);
-          background: var(--Colors-Neutral-Surface-bg-section, #232521);
+          &:hover {
+            opacity: 0.8;
+          }
 
           svg {
-            width: 35px;
-            height: 35px;
+            width: 18px;
+            height: 18px;
+            vertical-align: text-top;
+
+            path {
+              stroke: #b999f3;
+            }
           }
         }
       }
+    }
 
-      .total {
-        .asset {
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .table {
+        border-radius: var(--Dimension-Corner-Radius-row, 8px);
+        border: 1px solid var(--Colors-Neutral-Border-default, #383b40);
+
+        padding-bottom: 24px;
+
+        th {
           color: var(--Colors-Neutral-Text-placeholder, #83838a);
           font-family: 'IBM Plex Sans';
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 400;
-          line-height: 150%; /* 19.5px */
-          letter-spacing: 0.013px;
+          line-height: 150%; /* 18px */
+          letter-spacing: 0.012px;
+        }
+
+        .assets {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+
+          .left {
+            display: flex;
+            width: 42px;
+            height: 42px;
+            padding: 3.5px;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+
+            border-radius: var(--Dimensions-Corner-Radius-pill, 9999px);
+            background: var(--Colors-Neutral-Surface-bg-section, #232521);
+
+            svg {
+              width: 35px;
+              height: 35px;
+            }
+          }
+        }
+
+        .total {
+          .asset {
+            color: var(--Colors-Neutral-Text-placeholder, #83838a);
+            font-family: 'IBM Plex Sans';
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 150%; /* 19.5px */
+            letter-spacing: 0.013px;
+          }
         }
       }
     }

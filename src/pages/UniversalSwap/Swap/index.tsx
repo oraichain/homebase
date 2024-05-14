@@ -393,29 +393,29 @@ const SwapComponent: React.FC<{
         loadTokenAmounts({ oraiAddress, metamaskAddress, tronAddress });
         setSwapLoading(false);
 
-        // save to duckdb
-        const swapType = getSwapType({
-          fromChainId: originalFromToken.chainId,
-          toChainId: originalToToken.chainId,
-          fromCoingeckoId: originalFromToken.coinGeckoId,
-          toCoingeckoId: originalToToken.coinGeckoId
-        });
-        await window.duckDb.addTransHistory({
-          initialTxHash: transactionHash,
-          fromCoingeckoId: originalFromToken.coinGeckoId,
-          toCoingeckoId: originalToToken.coinGeckoId,
-          fromChainId: originalFromToken.chainId,
-          toChainId: originalToToken.chainId,
-          fromAmount: fromAmountToken.toString(),
-          toAmount: toAmountToken.toString(),
-          fromAmountInUsdt: getUsd(fromAmountTokenBalance, originalFromToken, prices).toString(),
-          toAmountInUsdt: getUsd(toAmount(toAmountToken, originalToToken.decimals), originalToToken, prices).toString(),
-          status: 'success',
-          type: swapType,
-          timestamp: Date.now(),
-          userAddress: oraiAddress
-        });
-        refetchTransHistory();
+        // // save to duckdb
+        // const swapType = getSwapType({
+        //   fromChainId: originalFromToken.chainId,
+        //   toChainId: originalToToken.chainId,
+        //   fromCoingeckoId: originalFromToken.coinGeckoId,
+        //   toCoingeckoId: originalToToken.coinGeckoId
+        // });
+        // await window.duckDb.addTransHistory({
+        //   initialTxHash: transactionHash,
+        //   fromCoingeckoId: originalFromToken.coinGeckoId,
+        //   toCoingeckoId: originalToToken.coinGeckoId,
+        //   fromChainId: originalFromToken.chainId,
+        //   toChainId: originalToToken.chainId,
+        //   fromAmount: fromAmountToken.toString(),
+        //   toAmount: toAmountToken.toString(),
+        //   fromAmountInUsdt: getUsd(fromAmountTokenBalance, originalFromToken, prices).toString(),
+        //   toAmountInUsdt: getUsd(toAmount(toAmountToken, originalToToken.decimals), originalToToken, prices).toString(),
+        //   status: 'success',
+        //   type: swapType,
+        //   timestamp: Date.now(),
+        //   userAddress: oraiAddress
+        // });
+        // refetchTransHistory();
       }
     } catch (error) {
       console.trace({ error });

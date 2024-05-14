@@ -135,6 +135,9 @@
             align-self: stretch;
             border: 1px solid var(--Colors-Neutral-Border-progress-bar, #83838a);
             background: var(--Colors-Neutral-Surface-progess-bar, rgba(131, 131, 138, 0.5));
+
+            // text-overflow: ellipsis;
+            // overflow: hidden;
           }
         }
       }

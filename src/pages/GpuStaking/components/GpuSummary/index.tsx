@@ -1,11 +1,24 @@
 import { toDisplay } from '@oraichain/oraidex-common';
 import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
-import { SCORAI_TOKEN_INFO } from 'pages/GpuStaking/constants';
+import { REV_PER_SECOND, SCORAI_TOKEN_INFO, TIMER } from 'pages/GpuStaking/constants';
 import { useGetStakeInfo } from 'pages/GpuStaking/hooks';
 import styles from './index.module.scss';
 
+// Team	GPU Memory Usage
+// 	          Min	    Med	    Max
+// aiRight	  19,79%	-	      43,79%
+// DeFi Lens	17,16%	-	      32,25%
+// LLM	      10,89%	-	      16,13%
+// KawaiiQ	  0	      0	      0	        Chưa dùng gpu
+// Cupiee	    3,49%	  -	      7,72%
+// AI-based Trading Strategies and AI Agents	0	0	0	Dùng cpu
+
 const GpuSummary = () => {
   const { stakeInfo } = useGetStakeInfo(SCORAI_TOKEN_INFO.contractAddress);
+  const allGpuRev = listDetail.reduce((acc, cur) => {
+    acc = acc + cur.value;
+    return acc;
+  }, 0);
 
   return (
     <div className={styles.gpuSummary}>
@@ -21,7 +34,7 @@ const GpuSummary = () => {
           </div>
           <div className={styles.info}>
             <h2>GPU-Usage Revenue</h2>
-            <span className={styles.value}>{formatDisplayUsdt(51409892)}</span>
+            <span className={styles.value}>{formatDisplayUsdt(allGpuRev)}</span>
           </div>
         </div>
         <div className={styles.divider}></div>
@@ -36,6 +49,7 @@ const GpuSummary = () => {
                 <div className={styles.progress} title={`${e.progress}%`}>
                   <div className={styles.percent} style={{ width: `${e.progress}%` }}>
                     {e.progress >= 9 ? `${e.progress}%` : null}
+                    {/* {`${e.progress}%`} */}
                   </div>
                 </div>
               </div>
@@ -49,35 +63,39 @@ const GpuSummary = () => {
 
 export default GpuSummary;
 
+const calcGpuRev = (gpu) => {
+  return ((REV_PER_SECOND * gpu) / 100) * TIMER.SECOND_OF_WEEK;
+};
+
 const listDetail = [
   {
     label: 'aiRight Rev.',
-    progress: 28,
-    value: 44319.04
+    progress: 31.79,
+    value: calcGpuRev(31.79)
   },
   {
     label: 'DeFi Lens Rev.',
-    progress: 18,
-    value: 44319.04
+    progress: 24.71,
+    value: calcGpuRev(24.71)
   },
   {
     label: 'LLM Layer Rev.',
-    progress: 12,
-    value: 44319.04
+    progress: 13.51,
+    value: calcGpuRev(13.51)
   },
   {
     label: 'KawaiiQ Rev.',
-    progress: 9,
-    value: 44319.04
+    progress: 0,
+    value: calcGpuRev(0)
   },
   {
     label: 'Cupiee Rev.',
-    progress: 7,
-    value: 44319.04
+    progress: 5.61,
+    value: calcGpuRev(5.61)
   },
   {
     label: 'Trading Strategies and AI Agents Revenue',
-    progress: 1,
-    value: 943.04
+    progress: 0,
+    value: calcGpuRev(0)
   }
 ];

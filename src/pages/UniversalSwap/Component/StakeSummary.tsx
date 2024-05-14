@@ -148,47 +148,55 @@ export const StakeSummary: FC<{ data: any }> = ({ data: dataSummary }) => {
   return (
     <div className={styles.staking}>
       <div className={styles.detail}>
-        <h1>GPU Staking</h1>
-        <span className={styles.desc}>
-          Compound staking to earn GPU demand and block rewards
-          <a href="/" target="_blank" rel="noopener noreferrer">
-            Learn more <OpenNewTabIcon />
-          </a>
-        </span>
-
-        <div className={styles.table}>
-          <Table
-            headers={headersGPU}
-            data={dataGPU}
-            stylesColumn={{
-              padding: '16px 0'
-            }}
-          />
+        <div className={styles.header}>
+          <h1>GPU Staking</h1>
+          <span className={styles.desc}>
+            Compound staking to earn GPU demand and block rewards
+            <a href="/" target="_blank" rel="noopener noreferrer">
+              Learn more <OpenNewTabIcon />
+            </a>
+          </span>
         </div>
 
-        <Button type="primary" onClick={() => navigate('/gpu-staking')}>
-          Stake&nbsp;
-          <Arrow />
-        </Button>
+        <div className={styles.content}>
+          <div className={styles.table}>
+            <Table
+              headers={headersGPU}
+              data={dataGPU}
+              stylesColumn={{
+                padding: '16px 0'
+              }}
+            />
+          </div>
+
+          <Button type="primary" onClick={() => navigate('/gpu-staking')}>
+            Stake&nbsp;
+            <Arrow />
+          </Button>
+        </div>
       </div>
 
       <div className={styles.detail}>
-        <h1>ORAI Staking</h1>
-        <span className={styles.desc}>Delegate your ORAI to earn rewards</span>
-
-        <div className={styles.table}>
-          <Table
-            headers={headersOrai}
-            data={dataOrai}
-            stylesColumn={{
-              padding: '16px 0'
-            }}
-          />
+        <div className={styles.header}>
+          <h1>ORAI Staking</h1>
+          <span className={styles.desc}>Delegate your ORAI to earn rewards</span>
         </div>
-        <Button type="third" onClick={() => window.open('https://scan.orai.io/validators', '_blank').focus()}>
-          Stake on OraiScan&nbsp;
-          <OpenNewTabIcon />
-        </Button>
+
+        <div className={styles.content}>
+          <div className={styles.table}>
+            <Table
+              headers={headersOrai}
+              data={dataOrai}
+              stylesColumn={{
+                padding: '16px 0'
+              }}
+            />
+          </div>
+          <Button type="third" onClick={() => window.open('https://scan.orai.io/validators', '_blank').focus()}>
+            Stake on OraiScan&nbsp;
+            <OpenNewTabIcon />
+          </Button>
+        </div>
       </div>
     </div>
   );

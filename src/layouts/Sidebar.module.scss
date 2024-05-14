@@ -112,33 +112,39 @@
 .download {
   padding: 12px 6px 12px 6px;
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  height: 50px;
+  margin-top: 8px;
 
   border-radius: var(--Dimension-Corner-Radius-row, 8px);
   background: var(--Colors-Neutral-Surface-card, #18181a);
 
   background-image: url(../assets/images/owallet_bg_download.svg);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100%;
   background-position: center center;
 
-  // svg {
-  //   width: 36px;
-  //   height: 36px;
-  // }
+  svg {
+    width: 36px;
+    height: 36px;
 
-  // color: var(--Colors-Neutral-Text-title, #f5f5f7);
-  // font-family: 'IBM Plex Sans';
-  // font-size: 16px;
-  // font-weight: 500;
-  // line-height: 26px; /* 162.5% */
-  // letter-spacing: -0.08px;
+    margin: 5px 10px 0 0;
+  }
 
-  // &:hover {
-  //   opacity: 0.7;
-  // }
+  color: var(--Colors-Neutral-Text-title, #f5f5f7);
+  font-family: 'IBM Plex Sans';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 26px; /* 162.5% */
+  letter-spacing: -0.08px;
+  transition: all ease-in-out 0.2s;
+
+  &:hover {
+    opacity: 0.7;
+    background-size: 210%;
+  }
 }
 
 .social {

@@ -131,10 +131,10 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
               </div>
             )} */}
           </div>
-          {/* <div className={styles.download} onClick={() => setIsOpenQrCodeOwallet(true)}>
+          <div className={styles.download} onClick={() => setIsOpenQrCodeOwallet(true)}>
             <OwalletIcon />
             Install OWallet
-          </div> */}
+          </div>
 
           <div className={styles.social}>
             <a href="https://t.me/oraidex" target="_blank" rel="noopener noreferrer">
