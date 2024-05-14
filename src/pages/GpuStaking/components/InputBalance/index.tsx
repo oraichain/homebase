@@ -3,7 +3,7 @@ import { useState } from 'react';
 import NumberFormat from 'react-number-format';
 import styles from './index.module.scss';
 
-import { toAmount, toDisplay } from '@oraichain/oraidex-common';
+import { toAmount, toDisplay, CW20_DECIMALS } from '@oraichain/oraidex-common';
 import { ReactComponent as OraiXIcon } from 'assets/icons/oraix.svg';
 import { ReactComponent as OraiXLightIcon } from 'assets/icons/oraix_light.svg';
 import { ReactComponent as ScOraiIcon } from 'assets/icons/orchai.svg';
@@ -13,9 +13,8 @@ import Loader from 'components/Loader';
 import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { getUsd } from 'libs/utils';
-import { ORAIX_DECIMAL } from 'pages/CoHarvest/constants';
 import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
-import { ORAIX_TOKEN_INFO, STAKE_TAB } from 'pages/Staking/constants';
+import { SCORAI_TOKEN_INFO, STAKE_TAB } from 'pages/Staking/constants';
 
 export type InputBalanceType = {
   showLoading?: boolean;
@@ -41,7 +40,7 @@ const InputBalance = ({
   const [theme] = useConfigReducer('theme');
   const [coeff, setCoeff] = useState(0);
   const { data: prices } = useCoinGeckoPrices();
-  const amountUSD = getUsd(toAmount(amount), ORAIX_TOKEN_INFO, prices);
+  const amountUSD = getUsd(toAmount(amount), SCORAI_TOKEN_INFO, prices);
 
   const isInsufficient = amount && amount > toDisplay(balance);
   const disabled = loading || !amount || amount <= 0 || isInsufficient;
@@ -52,13 +51,16 @@ const InputBalance = ({
     <div className={styles.inputBalance}>
       <div className={styles.title}>
         <span className={styles.text}>
-          <ScOraiIcon /> Stake scORAI &nbsp;
-          <a href="http://" target="_blank" rel="noopener noreferrer">
-            Get scORAI from Orchai <JumpIcon />
-          </a>
+          <ScOraiIcon />
+          &nbsp; {type === STAKE_TAB.Stake && 'Stake'} scORAI &nbsp;
+          {!isMobileMode && type === STAKE_TAB.Stake && (
+            <a href="http://" target="_blank" rel="noopener noreferrer">
+              Get scORAI from Orchai <JumpIcon />
+            </a>
+          )}
         </span>
         <span className={styles.balance}>
-          {label}: <span className={styles.token}>{numberWithCommas(toDisplay(balance))} ORAIX</span>
+          {label}: <span className={styles.token}>{numberWithCommas(toDisplay(balance))} scORAI</span>
         </span>
       </div>
       <div className={styles.inputWrapper}>
@@ -108,7 +110,7 @@ const InputBalance = ({
                   return;
                 }
 
-                setAmount(toDisplay(balance, ORAIX_DECIMAL) * e);
+                setAmount(toDisplay(balance, CW20_DECIMALS) * e);
                 setCoeff(e);
               }}
             >

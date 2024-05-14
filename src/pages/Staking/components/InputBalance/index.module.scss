@@ -9,9 +9,7 @@
   gap: 8px;
 
   border-radius: 12px;
-  @include theme {
-    background: theme-get('neutral-6');
-  }
+  background: #18181a;
 
   .title {
     @include theme {

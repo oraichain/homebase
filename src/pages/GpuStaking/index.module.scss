@@ -37,10 +37,20 @@
   }
 
   .summary {
-    display: flex;
+    display: grid;
     align-items: flex-start;
     gap: 24px;
     width: 100%;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    @include mobile {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include small-mobile {
+      grid-template-columns: repeat(1, 1fr);
+    }
 
     .item {
       display: flex;
@@ -133,6 +143,78 @@
             width: 20px;
             height: 20px;
           }
+        }
+      }
+    }
+  }
+
+  .content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+
+    @include mobile {
+      grid-template-columns: auto;
+    }
+
+    .info {
+      display: grid;
+      align-items: flex-start;
+      gap: 16px;
+
+      @include mobile {
+        grid-template-columns: auto auto;
+      }
+
+      @include small-mobile {
+        grid-template-columns: auto;
+      }
+
+      .stake {
+        width: 100%;
+        flex-grow: 2;
+      }
+
+      .detail {
+        width: 100%;
+        display: flex;
+        padding: var(--Dimension-Padding-btn-y-padding-l, 14px) 0px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+
+        align-self: stretch;
+        border-radius: var(--Dimension-Corner-Radius-row, 8px);
+        border: 1px solid var(--Colors-Neutral-Border-default, #383b40);
+        background: var(--Colors-Neutral-Surface-card, #18181a);
+
+        h2 {
+          color: var(--Colors-Neutral-Text-title, #f7f7f7);
+          text-align: center;
+          font-family: 'IBM Plex Sans';
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 24px; /* 150% */
+        }
+
+        .value {
+          color: var(--Colors-Neutral-Text-heading, #f7f7f7);
+          text-align: center;
+          font-family: Barlow;
+          font-size: 20px;
+          font-weight: 600;
+          line-height: 28px; /* 140% */
+        }
+
+        .usd {
+          color: var(--Colors-Neutral-Text-placeholder, #83838a);
+          text-align: center;
+          font-family: 'IBM Plex Sans';
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 20px; /* 142.857% */
         }
       }
     }

@@ -337,7 +337,7 @@ export const MyWallet: React.FC<{
 
       <div className={styles.myWalletsWrapper}>
         <div className={styles.toggle}>
-          <div className={styles.toggleMode}>
+          {/* <div className={styles.toggleMode}>
             <div className={styles.toggleModeIcon}>
               <span className={styles.text}>Dark mode</span>
             </div>
@@ -349,7 +349,7 @@ export const MyWallet: React.FC<{
                 setTheme(theme === 'dark' ? 'light' : 'dark');
               }}
             />
-          </div>
+          </div> */}
           {/* <div className={styles.toggleMode}>
             <div className={styles.toggleModeIcon}>
               <span className={cx('text')}>Hide empty assets</span>

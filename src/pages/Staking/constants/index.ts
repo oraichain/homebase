@@ -15,7 +15,7 @@ export const MONTHLY_SECOND = 30 * 24 * 60 * 60;
 
 export const YEARLY_SECOND = 365 * 24 * 60 * 60;
 
-export const STAKING_PERIOD = 30;
+export const STAKING_PERIOD = 7;
 
 export const ORAIX_DECIMAL = 6;
 

@@ -10,10 +10,10 @@
   gap: 24px;
   align-self: stretch;
 
-  border-radius: 24px;
+  border-radius: 8px;
 
   @include theme {
-    background: theme-get('neutral-6');
+    background: var(--Colors-Neutral-Surface-card, #18181a);
   }
 
   @include small-mobile {

@@ -256,7 +256,7 @@ export const MyWalletMobile: React.FC<{
 
       <div className={styles.myWalletsWrapper}>
         <div className={styles.toggle}>
-          <div className={styles.toggleMode}>
+          {/* <div className={styles.toggleMode}>
             <div className={styles.toggleModeIcon}>
               <span className={styles.text}>Dark mode</span>
             </div>
@@ -268,7 +268,7 @@ export const MyWalletMobile: React.FC<{
                 setTheme(theme === 'dark' ? 'light' : 'dark');
               }}
             />
-          </div>
+          </div> */}
         </div>
         <div className={styles.listAddressByNetwork}>
           {renderCosmosAddresses()}

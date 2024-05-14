@@ -17,6 +17,7 @@ import BuyOraiModal from 'layouts/BuyOraiModal';
 import { ReactComponent as KadoIcon } from 'assets/icons/ic_kado.svg';
 import classNames from 'classnames';
 import { USDC_TOKEN_INFO } from 'pages/Staking/constants';
+import GpuSummary from './components/GpuSummary';
 
 export type PoolTableData = PoolInfoResponse & {
   reward: string[];
@@ -87,12 +88,14 @@ const GpuStaking: React.FC<{}> = () => {
               <span className={styles.usd}>$1,163.32</span>
             </div>
             <div className={styles.detail}>
-              <h2>Your Stake</h2>
+              <h2>Unbonding</h2>
               <span className={styles.value}>113.42 scORAI</span>
               <span className={styles.usd}>$1,163.32</span>
             </div>
           </div>
         </div>
+
+        <GpuSummary />
       </div>
 
       {openBuy && (
