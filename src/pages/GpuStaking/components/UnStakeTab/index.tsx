@@ -1,9 +1,6 @@
 import { toAmount, toDisplay } from '@oraichain/oraidex-common';
 import { Cw20StakingClient } from '@oraichain/oraidex-contracts-sdk';
 import { LockInfoResponse } from '@oraichain/oraidex-contracts-sdk/build/Cw20Staking.types';
-import { ReactComponent as OraiXIcon } from 'assets/icons/oraix.svg';
-import { ReactComponent as OraiXLightIcon } from 'assets/icons/oraix_light.svg';
-import { ReactComponent as ScOraiIcon } from 'assets/icons/orchai.svg';
 import { ReactComponent as ConfirmIcon } from 'assets/images/restake.svg';
 import { ReactComponent as ConfirmIconLight } from 'assets/images/restaking-light.svg';
 import { Button } from 'components/Button';
@@ -11,19 +8,18 @@ import Loader from 'components/Loader';
 import { TToastType, displayToast } from 'components/Toasts/Toast';
 import { network } from 'config/networks';
 import { handleErrorTransaction } from 'helper';
+import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
 import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
-import useLoadTokens, { useLoadOraichainTokens } from 'hooks/useLoadTokens';
+import { useLoadOraichainTokens } from 'hooks/useLoadTokens';
 import { getUsd } from 'libs/utils';
-import { TIMER } from 'pages/CoHarvest/constants';
-import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
-import { ORAIX_TOKEN_INFO as SCORAI_TOKEN_INFO, STAKE_TAB, STAKING_PERIOD } from 'pages/Staking/constants';
-import { getDiffDay } from 'pages/Staking/helpers';
-import { useGetLockInfo, useGetMyStakeRewardInfo, useGetStakeInfo } from 'pages/Staking/hooks';
 import { useState } from 'react';
+import ModalConfirm from '../../../../components/ConfirmModal';
+import { SCORAI_TOKEN_INFO, STAKE_TAB, STAKING_PERIOD, TIMER } from '../../constants';
+import { getDiffDay } from '../../helpers';
+import { useGetLockInfo, useGetMyStakeRewardInfo, useGetStakeInfo } from '../../hooks';
 import InputBalance from '../InputBalance';
 import styles from './index.module.scss';
-import ModalConfirm from '../../../../components/ConfirmModal';
 
 const UnStakeTab = () => {
   const { data: prices } = useCoinGeckoPrices();

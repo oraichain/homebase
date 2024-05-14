@@ -1,8 +1,8 @@
-import { STAKE_TAB } from 'pages/Staking/constants';
-import styles from './index.module.scss';
 import { useState } from 'react';
+import { STAKE_TAB } from '../../constants';
 import StakeTab from '../StakeTab';
 import UnStakeTab from '../UnStakeTab';
+import styles from './index.module.scss';
 
 const StakingForm = () => {
   const [tab, setTab] = useState<STAKE_TAB>(STAKE_TAB.Stake);

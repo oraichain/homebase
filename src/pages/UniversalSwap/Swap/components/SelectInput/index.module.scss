@@ -52,7 +52,7 @@
   border-radius: 8px;
 
   @include theme {
-    background: theme-get('neutral-surface-bg-toast');
+    background: $neutral-bg;
     color: theme-get('neutral-9');
   }
 
@@ -119,7 +119,7 @@
 
     @include theme {
       border-color: theme-get('neutral-surface-bg-section-5');
-      background: theme-get('neutral-surface-bg-2');
+      background: $neutral-bg;
     }
 
     /* Shadow/1 */

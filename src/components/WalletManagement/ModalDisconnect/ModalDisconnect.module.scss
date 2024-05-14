@@ -1,3 +1,6 @@
+@import 'src/styles/variables';
+@import 'src/styles/themes';
+
 .icon {
   margin-left: 5px;
   display: flex;
@@ -97,8 +100,6 @@
       }
     }
   }
-
-
 }
 
 .connect_error {
@@ -151,11 +152,11 @@
     justify-content: flex-start;
     align-items: center;
     padding: 12px;
-    background-color: #F7F7F7;
+    background-color: #f7f7f7;
     border-radius: 12px;
 
     .sub-label {
-      color: #686A66;
+      color: #686a66;
       font-size: 14px;
       padding-left: 8px;
       padding-right: 8px;
@@ -183,14 +184,14 @@
       border: 1px solid #232521;
       font-size: 16px;
       font-style: normal;
-      color: #232521;
+      color: $white-color;
       font-weight: 500;
       cursor: pointer;
       width: 45%;
     }
 
     .try_again_btn {
-      background: #aee67f;
+      background: $primary-surface-btn;
       border: none;
     }
   }

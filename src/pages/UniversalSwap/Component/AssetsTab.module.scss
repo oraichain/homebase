@@ -84,6 +84,15 @@
     display: block;
   }
 
+  th {
+    color: var(--Colors-Neutral-Text-placeholder, #83838a);
+    font-family: 'IBM Plex Sans';
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 150%; /* 18px */
+    letter-spacing: 0.012px;
+  }
+
   margin-bottom: 24px;
 }
 

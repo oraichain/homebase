@@ -14,14 +14,33 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'store/configure';
 import styles from './StakeSummary.module.scss';
+import { useGetRewardPerSecInfo, useGetStakeInfo } from 'pages/GpuStaking/hooks';
+import { SCORAI_TOKEN_INFO, USDC_TOKEN_INFO } from 'pages/GpuStaking/constants';
+import { USDC_CONTRACT, toDisplay } from '@oraichain/oraidex-common';
+import { calcAPY } from 'pages/GpuStaking/helpers';
 
-export const StakeSummary: FC<{}> = () => {
+export const StakeSummary: FC<{ data: any }> = ({ data: dataSummary }) => {
   const { data: prices } = useCoinGeckoPrices();
   const amounts = useSelector((state: RootState) => state.token.amounts);
   const [address] = useConfigReducer('address');
   const [theme] = useConfigReducer('theme');
 
   const navigate = useNavigate();
+
+  const { stakeInfo } = useGetStakeInfo(SCORAI_TOKEN_INFO.contractAddress);
+  const { rewardPerSec } = useGetRewardPerSecInfo(SCORAI_TOKEN_INFO.contractAddress);
+
+  const rewardPerSecInfo = rewardPerSec?.[0] || {
+    amount: '0',
+    info: {
+      token: {
+        contract_addr: USDC_CONTRACT
+      }
+    },
+    token: USDC_TOKEN_INFO
+  };
+
+  const apy = calcAPY(rewardPerSecInfo.amount, stakeInfo?.total_bond_amount || '0', prices);
 
   const sizePadding = isMobile() ? '12px' : '24px';
 
@@ -110,8 +129,8 @@ export const StakeSummary: FC<{}> = () => {
     {
       iconLight: ScOraiIcon,
       icon: ScOraiIcon,
-      apy: 32.47,
-      total: 425810.44,
+      apy: apy,
+      total: toDisplay(stakeInfo?.total_bond_amount || '0'),
       asset: 'scORAI'
     }
   ];
@@ -120,8 +139,8 @@ export const StakeSummary: FC<{}> = () => {
     {
       iconLight: OraiLightIcon,
       icon: OraiIcon,
-      apr: 32.47,
-      total: 425810.44,
+      apr: Number(dataSummary?.ratio_bonded) || 0,
+      total: dataSummary?.total_delegated || 0,
       asset: 'ORAI'
     }
   ];

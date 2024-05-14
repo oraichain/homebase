@@ -6,9 +6,7 @@
   width: 100%;
   border-radius: 8px;
 
-  @include theme() {
-    background-color: theme-get('colors-neutral-surface-bg-section');
-  }
+  background-color: #232326;
 
   &.error {
     border: 1px solid;
@@ -61,7 +59,7 @@
   }
 
   @include theme() {
-    background-color: theme-get('colors-neutral-surface-bg-section');
+    background-color: #232326;
     color: theme-get('colors-neutral-text-body-on-section');
   }
 

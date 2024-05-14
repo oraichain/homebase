@@ -53,6 +53,7 @@ export default function InputSwapV4({
       <div className={cx('input-swap-balance', type === 'from' && 'is-enable-coeff')}>
         <div className={cx('show-balance')}>
           <TokenBalance
+            prefix="Balance: "
             balance={{
               amount: balance,
               decimals: originalToken?.decimals,

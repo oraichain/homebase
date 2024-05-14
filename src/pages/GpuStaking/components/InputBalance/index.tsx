@@ -1,20 +1,17 @@
+import { CW20_DECIMALS, toAmount, toDisplay } from '@oraichain/oraidex-common';
 import { isMobile } from '@walletconnect/browser-utils';
-import { useState } from 'react';
-import NumberFormat from 'react-number-format';
-import styles from './index.module.scss';
-
-import { toAmount, toDisplay, CW20_DECIMALS } from '@oraichain/oraidex-common';
-import { ReactComponent as OraiXIcon } from 'assets/icons/oraix.svg';
-import { ReactComponent as OraiXLightIcon } from 'assets/icons/oraix_light.svg';
-import { ReactComponent as ScOraiIcon } from 'assets/icons/orchai.svg';
 import { ReactComponent as JumpIcon } from 'assets/icons/jump.svg';
+import { ReactComponent as ScOraiIcon } from 'assets/icons/orchai.svg';
 import { Button } from 'components/Button';
 import Loader from 'components/Loader';
+import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
 import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { getUsd } from 'libs/utils';
-import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
-import { SCORAI_TOKEN_INFO, STAKE_TAB } from 'pages/Staking/constants';
+import { useState } from 'react';
+import NumberFormat from 'react-number-format';
+import { SCORAI_TOKEN_INFO, STAKE_TAB } from '../../constants';
+import styles from './index.module.scss';
 
 export type InputBalanceType = {
   showLoading?: boolean;

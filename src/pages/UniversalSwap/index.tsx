@@ -1,30 +1,31 @@
+import { useQuery } from '@tanstack/react-query';
+import { ReactComponent as OBrigde } from 'assets/icons/OraiBridge_full_dark.svg';
+import axios from 'axios';
 import cn from 'classnames/bind';
+import BuyOraiModal from 'layouts/BuyOraiModal';
 import Content from 'layouts/Content';
 import React, { useState } from 'react';
 import { AssetsTab, HeaderTab } from './Component';
+import ConnectBanner from './Component/ConnectBanner';
+import Feature from './Component/Feature';
+import StakeSummary from './Component/StakeSummary';
 import SwapComponent from './Swap';
 import { initPairSwap } from './Swap/hooks/useFillToken';
 import { NetworkFilter, initNetworkFilter } from './helpers';
 import styles from './index.module.scss';
-import { formatDisplayUsdt } from 'helper/helpers';
-import BuyOraiModal from 'layouts/BuyOraiModal';
-import { ReactComponent as OBrigde } from 'assets/icons/OraiBridge_full_dark.svg';
-import ConnectBanner from './Component/ConnectBanner';
-import Feature from './Component/Feature';
-import StakeSummary from './Component/StakeSummary';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 const cx = cn.bind(styles);
 
 const getInfoOraichain = async () => {
   try {
-    const [market, status] = await Promise.all([
+    const [market, status, controlCenter] = await Promise.all([
       axios.get('https://api.scan.orai.io/v1/market?id=oraichain-token'),
-      axios.get('https://api.scan.orai.io/v1/status')
+      axios.get('https://api.scan.orai.io/v1/status'),
+      axios.get('https://control-center-api.orai.io/')
     ]);
     return {
       market: market?.data,
-      status: status?.data
+      status: status?.data,
+      controlCenter: controlCenter?.data
     };
   } catch (e) {
     console.error('getInfoOraichain', e);
@@ -36,6 +37,10 @@ const getInfoOraichain = async () => {
       },
       status: {
         block_time: 0
+      },
+      controlCenter: {
+        total_delegated: 0,
+        ratio_bonded: 0
       }
     };
   }
@@ -56,6 +61,7 @@ const Swap: React.FC = () => {
   const [isLoadedIframe, setIsLoadedIframe] = useState(false); // check iframe data loaded
   const [openBuy, setOpenBuy] = useState(false);
   const data = useGetInfoOraichain();
+  console.log('dataSummary', data);
 
   return (
     <Content nonBackground>
@@ -80,7 +86,7 @@ const Swap: React.FC = () => {
           </div>
         </div>
         <div className={styles.looking}>You are looking for...</div>
-        <StakeSummary />
+        <StakeSummary data={data?.controlCenter} />
         <Feature />
       </div>
 

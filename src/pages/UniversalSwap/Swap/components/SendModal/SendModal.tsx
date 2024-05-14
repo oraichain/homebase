@@ -102,7 +102,6 @@ export const SendModal: FC<{
               value={addressRecipient}
               placeholder={'Enter wallet address'}
               onChange={(val) => setAddressRecipient(val)}
-              showPreviewOnBlur
               defaultValue={addressRecipient}
               suffix={
                 <div
@@ -129,7 +128,6 @@ export const SendModal: FC<{
               placeholder="Memo (Required if send to KuCoin address)"
               value={memo}
               onChange={(val) => setMemo(val)}
-              showPreviewOnBlur
               defaultValue={memo}
             />
           </div>

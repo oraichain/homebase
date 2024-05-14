@@ -26,7 +26,7 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
   const amounts = useSelector((state: RootState) => state.token.amounts);
   const [address] = useConfigReducer('address');
   const [theme] = useConfigReducer('theme');
-  const [hideOtherSmallAmount, setHideOtherSmallAmount] = useState(true);
+  const [hideOtherSmallAmount, setHideOtherSmallAmount] = useState(false);
   const [openModalSend, setOpenModalSend] = useState(false);
   const [tokenInfo, setTokenInfo] = useState({});
 

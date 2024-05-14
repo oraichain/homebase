@@ -1,7 +1,12 @@
+import { toDisplay } from '@oraichain/oraidex-common';
 import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
+import { SCORAI_TOKEN_INFO } from 'pages/GpuStaking/constants';
+import { useGetStakeInfo } from 'pages/GpuStaking/hooks';
 import styles from './index.module.scss';
 
 const GpuSummary = () => {
+  const { stakeInfo } = useGetStakeInfo(SCORAI_TOKEN_INFO.contractAddress);
+
   return (
     <div className={styles.gpuSummary}>
       <h1>Summary</h1>
@@ -10,7 +15,9 @@ const GpuSummary = () => {
         <div className={styles.infoWrapper}>
           <div className={styles.info}>
             <h2>Total staked</h2>
-            <span className={styles.value}>{numberWithCommas(51409892)} scORAI</span>
+            <span className={styles.value}>
+              {numberWithCommas(toDisplay(stakeInfo?.total_bond_amount || '0'))} scORAI
+            </span>
           </div>
           <div className={styles.info}>
             <h2>GPU-Usage Revenue</h2>
@@ -23,10 +30,10 @@ const GpuSummary = () => {
             return (
               <div className={styles.item} key={`${key}-${e.label}`}>
                 <div className={styles.header}>
-                  <h3>{e.label}</h3>
+                  <h3 title={`${e.label}`}>{e.label}</h3>
                   <span>{formatDisplayUsdt(e.value)}</span>
                 </div>
-                <div className={styles.progress}>
+                <div className={styles.progress} title={`${e.progress}%`}>
                   <div className={styles.percent} style={{ width: `${e.progress}%` }}>
                     {e.progress >= 9 ? `${e.progress}%` : null}
                   </div>

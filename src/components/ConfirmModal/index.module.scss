@@ -36,11 +36,9 @@
     gap: 24px;
 
     border-radius: 12px;
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
-
-    @include theme {
-      background: #2e2e33;
-    }
+    border: 1px solid #494949;
+    background: #18181a;
+    box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.05);
 
     @include small-mobile {
       max-width: 576px;

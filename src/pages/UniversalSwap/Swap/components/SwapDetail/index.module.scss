@@ -31,7 +31,7 @@ $padding-default: 16px;
 
   @include theme {
     border-color: theme-get('neutral-border-border-bold');
-    background: theme-get('neutral-surface-bg-2');
+    background-color: #232326;
   }
 
   position: absolute;
@@ -112,7 +112,7 @@ $padding-default: 16px;
       width: 100%;
       padding: 4px 16px;
       @include theme() {
-        background: theme-get('neutral-6');
+        background-color: $neutral-bg;
       }
     }
 
@@ -121,7 +121,7 @@ $padding-default: 16px;
       width: 100%;
       padding: 4px 16px;
       @include theme() {
-        background: theme-get('neutral-6');
+        background-color: $neutral-bg;
       }
     }
 

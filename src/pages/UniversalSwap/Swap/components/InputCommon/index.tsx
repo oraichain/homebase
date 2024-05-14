@@ -41,7 +41,7 @@ const InputCommon: FC<{
   hidePrefixOnActive = true,
   placeholder = ''
 }) => {
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(!!placeholder);
   const [showError, setShowError] = useState(false);
   const mobileMode = isMobile();
 
@@ -49,7 +49,7 @@ const InputCommon: FC<{
   const ref = useRef();
 
   useOnClickOutside(ref, () => {
-    if ((!value || showPreviewOnBlur) && isOnViewPort) {
+    if ((!value || showPreviewOnBlur) && isOnViewPort && !placeholder) {
       setActive(false);
     }
 
@@ -84,7 +84,9 @@ const InputCommon: FC<{
             <p>{title}</p>
           </span>
           <input
-            className={`${styles.input} ${styles.activeInput} ${value === defaultValue ? styles.isDefault : ''}`}
+            className={`${styles.input} ${active ? styles.activeInput : ''} ${
+              value === defaultValue ? styles.isDefault : ''
+            }`}
             ref={inputRef}
             type="text"
             value={value}

@@ -1,6 +1,4 @@
 import { ORAI, USDC_CONTRACT, toAmount } from '@oraichain/oraidex-common';
-import { ReactComponent as BlinkIcon } from 'assets/icons/blinkIcon.svg';
-import { ReactComponent as UsdcIcon } from 'assets/icons/usd_coin.svg';
 import { TToastType, displayToast } from 'components/Toasts/Toast';
 import { network } from 'config/networks';
 import { handleCheckAddress, handleErrorTransaction } from 'helper';
@@ -9,19 +7,13 @@ import useConfigReducer from 'hooks/useConfigReducer';
 import useLoadTokens, { useLoadOraichainTokens } from 'hooks/useLoadTokens';
 import CosmJs from 'libs/cosmjs';
 import { getUsd } from 'libs/utils';
-import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
-import { MONTHLY_SECOND, ORAIX_TOKEN_INFO, USDC_TOKEN_INFO, YEARLY_SECOND } from 'pages/Staking/constants';
-import { calcAPY, calcYearlyReward } from 'pages/Staking/helpers';
-import {
-  useGetAllStakerRewardInfo,
-  useGetMyStakeRewardInfo,
-  useGetRewardPerSecInfo,
-  useGetStakeInfo
-} from 'pages/Staking/hooks';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Type, generateMiningMsgs } from 'rest/api';
 import { RootState } from 'store/configure';
+import { MONTHLY_SECOND, SCORAI_TOKEN_INFO, USDC_TOKEN_INFO, YEARLY_SECOND } from '../../constants';
+import { calcAPY, calcYearlyReward } from '../../helpers';
+import { useGetMyStakeRewardInfo, useGetRewardPerSecInfo, useGetStakeInfo } from '../../hooks';
 import InputBalance from '../InputBalance';
 import styles from './index.module.scss';
 
@@ -36,10 +28,10 @@ const StakeTab = () => {
   const [amount, setAmount] = useState<number>();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { rewardPerSec } = useGetRewardPerSecInfo(ORAIX_TOKEN_INFO.contractAddress);
-  const { stakeInfo, refetchStakeInfo } = useGetStakeInfo(ORAIX_TOKEN_INFO.contractAddress);
-  const { refetchMyStakeRewardInfo } = useGetMyStakeRewardInfo(ORAIX_TOKEN_INFO.contractAddress, address);
-  // const { refetchAllStakerRewardInfo } = useGetAllStakerRewardInfo(ORAIX_TOKEN_INFO.contractAddress);
+  const { rewardPerSec } = useGetRewardPerSecInfo(SCORAI_TOKEN_INFO.contractAddress);
+  const { stakeInfo, refetchStakeInfo } = useGetStakeInfo(SCORAI_TOKEN_INFO.contractAddress);
+  const { refetchMyStakeRewardInfo } = useGetMyStakeRewardInfo(SCORAI_TOKEN_INFO.contractAddress, address);
+  // const { refetchAllStakerRewardInfo } = useGetAllStakerRewardInfo(SCORAI_TOKEN_INFO.contractAddress);
 
   const rewardPerSecInfo = rewardPerSec?.[0] || {
     amount: '0',
@@ -71,7 +63,7 @@ const StakeTab = () => {
         type: Type.BOND_STAKING_CW20,
         sender: oraiAddress,
         amount: toAmount(amount).toString(),
-        lpAddress: ORAIX_TOKEN_INFO.contractAddress
+        lpAddress: SCORAI_TOKEN_INFO.contractAddress
       });
 
       // execute msg
@@ -90,7 +82,7 @@ const StakeTab = () => {
         refetchMyStakeRewardInfo();
         refetchStakeInfo();
         // refetchAllStakerRewardInfo();
-        loadOraichainToken(address, [ORAIX_TOKEN_INFO.contractAddress]);
+        loadOraichainToken(address, [SCORAI_TOKEN_INFO.contractAddress]);
       }
     } catch (error) {
       console.log('error in bond: ', error);
