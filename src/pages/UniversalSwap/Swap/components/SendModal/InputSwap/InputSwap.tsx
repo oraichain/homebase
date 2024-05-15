@@ -86,7 +86,7 @@ export default function InputSwapV4({
             <div className={cx('section')}>
               <div className={cx('name')}>{token?.name}</div>
             </div>
-            <img src={ArrowImg} alt="arrow" />
+            {/* <img src={ArrowImg} alt="arrow" /> */}
           </div>
         </div>
         <div className={cx('box-input')}>

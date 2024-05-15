@@ -152,9 +152,9 @@ export const StakeSummary: FC<{ data: any }> = ({ data: dataSummary }) => {
           <h1>GPU Staking</h1>
           <span className={styles.desc}>
             Compound staking to earn GPU demand and block rewards
-            <a href="/" target="_blank" rel="noopener noreferrer">
+            {/* <a href="/" target="_blank" rel="noopener noreferrer">
               Learn more <OpenNewTabIcon />
-            </a>
+            </a> */}
           </span>
         </div>
 

@@ -52,9 +52,9 @@ const Feature = () => {
         </div>
       </div>
 
-      <Link to="/" className={styles.ecosystem}>
+      {/* <Link to="/" className={styles.ecosystem}>
         Explore Ecosystem <Arrow />
-      </Link>
+      </Link> */}
     </div>
   );
 };

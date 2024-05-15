@@ -32,8 +32,11 @@
     max-height: 620px;
 
     @include theme {
-      background: theme-get('bg-iframe-modal');
+      // background: theme-get('bg-iframe-modal');
     }
+
+    border: 1px solid #383b40;
+    background: #18181a;
 
     .closeBtn {
       position: absolute;

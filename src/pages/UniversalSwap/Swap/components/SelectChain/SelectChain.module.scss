@@ -32,9 +32,10 @@
 .selectChain {
   border-radius: 12px;
   @include theme() {
-    background-color: theme-get('colors-neutral-surface-bg');
+    // background-color: theme-get('colors-neutral-surface-bg');
     color: theme-get('colors-neutral-text-text-token-name');
     border: 1px solid theme-get('colors-neutral-border-border-bold');
+    background: #18181a;
   }
   overflow: auto;
   padding: 16px;

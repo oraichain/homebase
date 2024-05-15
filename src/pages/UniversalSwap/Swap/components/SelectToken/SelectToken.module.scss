@@ -50,9 +50,11 @@
 
   gap: 24px;
   @include theme() {
-    background-color: theme-get('colors-neutral-surface-bg');
-    color: theme-get('colors-neutral-text-text-token-name');
+    // background-color: theme-get('colors-neutral-surface-bg');
+    // color: theme-get('colors-neutral-text-text-token-name');
     border: 1px solid theme-get('colors-neutral-border-border-bold');
+
+    background: #18181a;
   }
   @include theme() {
     color: theme-get('colors-neutral-text-title');

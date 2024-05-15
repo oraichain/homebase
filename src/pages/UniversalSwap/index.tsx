@@ -61,7 +61,6 @@ const Swap: React.FC = () => {
   const [isLoadedIframe, setIsLoadedIframe] = useState(false); // check iframe data loaded
   const [openBuy, setOpenBuy] = useState(false);
   const data = useGetInfoOraichain();
-  console.log('dataSummary', data);
 
   return (
     <Content nonBackground>

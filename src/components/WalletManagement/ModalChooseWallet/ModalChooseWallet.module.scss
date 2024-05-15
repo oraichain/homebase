@@ -12,6 +12,9 @@
     border-radius: 12px;
     padding: 24px;
 
+    border: 1px solid #383b40;
+    background: #18181a;
+
     .header {
       display: flex;
       justify-content: space-between;
@@ -44,7 +47,9 @@
 .dark {
   .chooseWalletModalWrapper {
     color: #f7f7f7;
-    background: #121511;
+
+    border: 1px solid #383b40;
+    background: #18181a;
 
     .wallets_wrapper {
       .wallet_item {

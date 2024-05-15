@@ -18,6 +18,7 @@ import { RootState } from 'store/configure';
 import { AssetInfoResponse } from 'types/swap';
 import styles from './AssetsTab.module.scss';
 import { SendModal } from '../Swap/components/SendModal';
+import classNames from 'classnames';
 
 const cx = cn.bind(styles);
 
@@ -165,10 +166,14 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
       align: 'left',
       padding: '0px 8px 0px 0px',
       accessor: (data) => {
+        if (data.chainName !== 'Oraichain') return;
+
         return (
           <div className={styles.valuesColumn}>
-            <div
-              className={styles.action}
+            <button
+              disabled={data.chainName !== 'Oraichain'}
+              title={data.chainName !== 'Oraichain' ? 'Feature only support for token on Oraichain' : undefined}
+              className={classNames(styles.action, { [styles.disabled]: data.chainName !== 'Oraichain' })}
               onClick={(event) => {
                 event.stopPropagation();
                 setTokenInfo(openModalSend ? {} : data);
@@ -176,7 +181,7 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
               }}
             >
               Send
-            </div>
+            </button>
           </div>
         );
       }

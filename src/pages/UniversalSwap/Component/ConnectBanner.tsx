@@ -48,7 +48,7 @@ const ConnectBanner = () => {
       </div>
       <div className={styles.bottom}>
         <span className={styles.learn}>New to Web3? You can learn from here.</span>
-        <a href="/" target="_blank" rel="noopener noreferrer">
+        <a href="https://orai.io/glossary" target="_blank" rel="noopener noreferrer">
           Glossary <OpenNewTabIcon />
         </a>
       </div>

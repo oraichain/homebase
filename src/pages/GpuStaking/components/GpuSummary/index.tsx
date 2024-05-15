@@ -1,6 +1,6 @@
 import { toDisplay } from '@oraichain/oraidex-common';
 import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
-import { REV_PER_SECOND, SCORAI_TOKEN_INFO, TIMER } from 'pages/GpuStaking/constants';
+import { REV_PER_HOUR, SCORAI_TOKEN_INFO, TIMER } from 'pages/GpuStaking/constants';
 import { useGetStakeInfo } from 'pages/GpuStaking/hooks';
 import styles from './index.module.scss';
 
@@ -64,7 +64,7 @@ const GpuSummary = () => {
 export default GpuSummary;
 
 const calcGpuRev = (gpu) => {
-  return ((REV_PER_SECOND * gpu) / 100) * TIMER.SECOND_OF_WEEK;
+  return ((REV_PER_HOUR * gpu) / 100) * TIMER.HOUR_OF_WEEK;
 };
 
 const listDetail = [

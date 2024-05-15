@@ -112,7 +112,7 @@ const GpuStaking: React.FC<{}> = () => {
             <span className={styles.usd}>{formatDisplayUsdt(getUsd(balance, SCORAI_TOKEN_INFO, prices))}</span>
 
             <div className={styles.btn}>
-              <Button type="third-sm" onClick={() => navigate('/')}>
+              <Button type="third-sm" onClick={() => navigate('/?from=usdt&to=scorai')}>
                 <SwapIcon />
                 Swap
               </Button>
