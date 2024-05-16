@@ -60,53 +60,53 @@ const App = () => {
   }, [walletByNetworks, ethOwallet]);
 
   //Public API that will echo messages sent to it back to the client
-  const { sendJsonMessage, lastJsonMessage } = useWebSocket(
-    `wss://${new URL(network.rpc).host}/websocket`, // only get rpc.orai.io
-    {
-      onOpen: () => {
-        console.log('opened websocket, subscribing...');
-        // subscribe to IBC Wasm case
-        sendJsonMessage(
-          buildWebsocketSendMessage(
-            `wasm._contract_address = '${IBC_WASM_CONTRACT}' AND wasm.action = 'receive_native' AND wasm.receiver = '${address}'`
-          ),
-          true
-        );
-        // sendJsonMessage(buildWebsocketSendMessage(`coin_received.receiver = '${address}'`), true);
-        // subscribe to MsgSend and MsgTransfer event case
-        // sendJsonMessage(buildWebsocketSendMessage(`coin_spent.spender = '${address}'`, 2), true);
-        // subscribe to cw20 contract transfer & send case
-        // sendJsonMessage(buildWebsocketSendMessage(`wasm.to = '${address}'`, 3), true);
-        // sendJsonMessage(buildWebsocketSendMessage(`wasm.from = '${address}'`, 4), true);
-      },
-      onClose: () => {
-        console.log('unsubscribe all clients');
-        sendJsonMessage(buildUnsubscribeMessage());
-      },
-      onReconnectStop(numAttempts) {
-        // if cannot reconnect then we unsubscribe all
-        if (numAttempts === WEBSOCKET_RECONNECT_ATTEMPTS) {
-          console.log('reconnection reaches above limit. Unsubscribe to all!');
-          sendJsonMessage(buildUnsubscribeMessage());
-        }
-      },
-      shouldReconnect: (closeEvent) => true,
-      reconnectAttempts: WEBSOCKET_RECONNECT_ATTEMPTS,
-      reconnectInterval: WEBSOCKET_RECONNECT_INTERVAL
-    }
-  );
+  // const { sendJsonMessage, lastJsonMessage } = useWebSocket(
+  //   `wss://${new URL(network.rpc).host}/websocket`, // only get rpc.orai.io
+  //   {
+  //     onOpen: () => {
+  //       console.log('opened websocket, subscribing...');
+  //       // subscribe to IBC Wasm case
+  //       sendJsonMessage(
+  //         buildWebsocketSendMessage(
+  //           `wasm._contract_address = '${IBC_WASM_CONTRACT}' AND wasm.action = 'receive_native' AND wasm.receiver = '${address}'`
+  //         ),
+  //         true
+  //       );
+  //       // sendJsonMessage(buildWebsocketSendMessage(`coin_received.receiver = '${address}'`), true);
+  //       // subscribe to MsgSend and MsgTransfer event case
+  //       // sendJsonMessage(buildWebsocketSendMessage(`coin_spent.spender = '${address}'`, 2), true);
+  //       // subscribe to cw20 contract transfer & send case
+  //       // sendJsonMessage(buildWebsocketSendMessage(`wasm.to = '${address}'`, 3), true);
+  //       // sendJsonMessage(buildWebsocketSendMessage(`wasm.from = '${address}'`, 4), true);
+  //     },
+  //     onClose: () => {
+  //       console.log('unsubscribe all clients');
+  //       sendJsonMessage(buildUnsubscribeMessage());
+  //     },
+  //     onReconnectStop(numAttempts) {
+  //       // if cannot reconnect then we unsubscribe all
+  //       if (numAttempts === WEBSOCKET_RECONNECT_ATTEMPTS) {
+  //         console.log('reconnection reaches above limit. Unsubscribe to all!');
+  //         sendJsonMessage(buildUnsubscribeMessage());
+  //       }
+  //     },
+  //     shouldReconnect: (closeEvent) => true,
+  //     reconnectAttempts: WEBSOCKET_RECONNECT_ATTEMPTS,
+  //     reconnectInterval: WEBSOCKET_RECONNECT_INTERVAL
+  //   }
+  // );
 
   // this is used for debugging only
-  useEffect(() => {
-    const tokenDisplay = processWsResponseMsg(lastJsonMessage);
-    if (tokenDisplay) {
-      displayToast(TToastType.TX_INFO, {
-        message: `You have received ${tokenDisplay}`
-      });
-      // no metamaskAddress, only reload cosmos
-      loadTokenAmounts({ oraiAddress: address });
-    }
-  }, [lastJsonMessage]);
+  // useEffect(() => {
+  //   const tokenDisplay = processWsResponseMsg(lastJsonMessage);
+  //   if (tokenDisplay) {
+  //     displayToast(TToastType.TX_INFO, {
+  //       message: `You have received ${tokenDisplay}`
+  //     });
+  //     // no metamaskAddress, only reload cosmos
+  //     loadTokenAmounts({ oraiAddress: address });
+  //   }
+  // }, [lastJsonMessage]);
 
   // clear persist storage when update version
   useEffect(() => {

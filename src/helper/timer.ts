@@ -7,7 +7,8 @@ export const TIMER = {
   HOUR: 24,
 
   MILLISECOND_OF_DAY: 1000 * 60 * 60 * 24,
-  HOUR_OF_MONTH: 24 * 30
+  HOUR_OF_MONTH: 24 * 30,
+  MILLISECOND_PER_HOUR: 1000 * 60 * 60
 };
 
 export const MONTHS_ARR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
