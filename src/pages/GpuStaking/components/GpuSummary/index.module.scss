@@ -137,6 +137,8 @@
             border: 1px solid var(--Colors-Neutral-Border-progress-bar, #83838a);
             background: var(--Colors-Neutral-Surface-progess-bar, rgba(131, 131, 138, 0.5));
 
+            transition: all ease-in-out 0.5s;
+
             // text-overflow: ellipsis;
             // overflow: hidden;
           }
