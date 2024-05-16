@@ -5,26 +5,8 @@
   "targets": {
     "oraichain-mainnet": {
       "hosting": {
-        "oraiswap": [
-          "oraiswap"
-        ],
-        "oraiswap-staging": [
-          "oraiswap-staging"
-        ],
-        "oraiswap-testnet": [
-          "oraiswap-testnet"
-        ],
-        "oraiswap-ibc": [
-          "oraiswap-ibc"
-        ],
-        "oraiswap-staging-v1": [
-          "oraiswap-staging-v1"
-        ],
-        "oraiswap-legacy": [
-          "oraiswap-legacy"
-        ],
-        "oraiswap-pre-mainnet": [
-          "oraiswap-pre-mainnet"
+        "homebase-oraichain": [
+          "homebase-oraichain"
         ]
       }
     }
