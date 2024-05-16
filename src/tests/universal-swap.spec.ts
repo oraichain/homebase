@@ -1,15 +1,15 @@
 import {
-  CoinGeckoId,
-  NetworkChainId,
-  GAS_ESTIMATION_SWAP_DEFAULT,
-  GAS_ESTIMATION_BRIDGE_DEFAULT,
   AIRI_BSC_CONTRACT,
+  CoinGeckoId,
+  GAS_ESTIMATION_BRIDGE_DEFAULT,
+  GAS_ESTIMATION_SWAP_DEFAULT,
+  NetworkChainId,
   flattenTokens
 } from '@oraichain/oraidex-common';
-import { calcMaxAmount } from 'pages/Balance/helpers';
 import {
   SwapDirection,
   SwapType,
+  calcMaxAmount,
   checkEvmAddress,
   filterNonPoolEvmTokens,
   getSwapType

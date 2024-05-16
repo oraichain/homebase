@@ -3,9 +3,10 @@ import { InstantiateMarketingInfo } from '@oraichain/common-contracts-sdk/build/
 import { validateNumber, INJECTIVE_CONTRACT, ORAI, USDC_CONTRACT, ORAIX_CONTRACT } from '@oraichain/oraidex-common';
 import { Asset, AssetInfo } from '@oraichain/oraidex-contracts-sdk';
 import { MinterResponse } from '@oraichain/oraidex-contracts-sdk/build/OraiswapToken.types';
-import { formatDate } from 'pages/CoHarvest/helpers';
-import { TIMER } from 'pages/CoHarvest/constants';
+import { formatDate } from './timer';
+import { TIMER } from './timer';
 import { FILTER_DAY } from 'reducer/type';
+import axios from 'rest/request';
 
 // TODO: hardcode reverse symbol for ORAI/INJ,USDC/ORAIX, need to update later
 export const reverseSymbolArr = [
@@ -232,4 +233,15 @@ export const formatNumberKMB = (num: number) => {
     return '$' + (num / 1e3).toFixed(2) + 'K';
   }
   return formatDisplayUsdt(num, 2);
+};
+
+export const getUtxos = async (address: string, baseUrl: string) => {
+  if (!address) throw Error('Address is not empty');
+  if (!baseUrl) throw Error('BaseUrl is not empty');
+  const { data } = await axios({
+    baseURL: baseUrl,
+    method: 'get',
+    url: `/address/${address}/utxo`
+  });
+  return data;
 };

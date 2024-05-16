@@ -1,7 +1,8 @@
 import { CoinGeckoPrices } from 'hooks/useCoingecko';
 import { getUsd } from 'libs/utils';
 import { formatDisplayUsdt } from 'helper/helpers';
-import { MONTHLY_SECOND, SCORAI_TOKEN_INFO, TIMER, USDC_TOKEN_INFO, YEARLY_SECOND } from '../constants';
+import { MONTHLY_SECOND, SCORAI_TOKEN_INFO, USDC_TOKEN_INFO, YEARLY_SECOND } from '../constants';
+import { TIMER } from 'helper/timer';
 
 export const calcDiffTime = (start: string | Date | number, end: string | Date | number) => {
   return new Date(end).getTime() - new Date(start).getTime();

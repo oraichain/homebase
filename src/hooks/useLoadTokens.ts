@@ -1,21 +1,21 @@
 import { fromBinary, toBinary } from '@cosmjs/cosmwasm-stargate';
 import { StargateClient } from '@cosmjs/stargate';
 import { MulticallQueryClient } from '@oraichain/common-contracts-sdk';
-import { OraiswapTokenTypes } from '@oraichain/oraidex-contracts-sdk';
-import { btcTokens, cosmosTokens, evmTokens, oraichainTokens, tokenMap } from 'config/bridgeTokens';
-import { genAddressCosmos, getAddress, handleCheckWallet, getWalletByNetworkCosmosFromStorage } from 'helper';
-import flatten from 'lodash/flatten';
-import { updateAmounts } from 'reducer/token';
 import { ContractCallResults, Multicall } from '@oraichain/ethereum-multicall';
-import { generateError } from '../libs/utils';
 import { COSMOS_CHAIN_ID_COMMON } from '@oraichain/oraidex-common';
+import { OraiswapTokenTypes } from '@oraichain/oraidex-contracts-sdk';
 import { Dispatch } from '@reduxjs/toolkit';
+import { btcTokens, cosmosTokens, evmTokens, oraichainTokens, tokenMap } from 'config/bridgeTokens';
+import { genAddressCosmos, getAddress, getWalletByNetworkCosmosFromStorage, handleCheckWallet } from 'helper';
+import flatten from 'lodash/flatten';
 import { useDispatch } from 'react-redux';
+import { updateAmounts } from 'reducer/token';
+import { generateError } from '../libs/utils';
 
 import {
   CustomChainInfo,
-  EVM_BALANCE_RETRY_COUNT,
   ERC20__factory,
+  EVM_BALANCE_RETRY_COUNT,
   getEvmAddress,
   tronToEthAddress
 } from '@oraichain/oraidex-common';
@@ -23,10 +23,9 @@ import { isEvmNetworkNativeSwapSupported } from '@oraichain/oraidex-universal-sw
 import { chainInfos, evmChains } from 'config/chainInfos';
 import { network } from 'config/networks';
 import { ethers } from 'ethers';
-import axios from 'rest/request';
-import { reduce } from 'lodash';
-import { getUtxos } from 'pages/Balance/helpers';
 import { bitcoinChainId } from 'helper/constants';
+import { getUtxos } from 'helper/helpers';
+import { reduce } from 'lodash';
 
 export type LoadTokenParams = {
   refresh?: boolean;

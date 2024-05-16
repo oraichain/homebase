@@ -11,7 +11,6 @@ import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { getTotalUsd, toSumDisplay } from 'libs/utils';
 import { formatDisplayUsdt, toFixedIfNecessary } from 'helper/helpers';
-import { useGetMyStake } from 'pages/Pools/hooks';
 import { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/configure';
@@ -33,38 +32,12 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
   const [tokenInfo, setTokenInfo] = useState({});
 
   const sizePadding = isMobile() ? '12px' : '24px';
-  const { totalStaked } = useGetMyStake({
-    stakerAddress: address
-  });
   let totalUsd: number = getTotalUsd(amounts, prices);
   if (networkFilter) {
     const subAmounts = Object.fromEntries(
       Object.entries(amounts).filter(([denom]) => tokenMap?.[denom]?.chainId === networkFilter)
     );
     totalUsd = getTotalUsd(subAmounts, prices);
-  }
-
-  let listAsset: {
-    src?: CoinIcon;
-    label?: string;
-    balance?: number | string;
-  }[] = [
-    {
-      src: WalletIcon,
-      label: 'Total balance',
-      balance: formatDisplayUsdt(totalUsd)
-    }
-  ];
-
-  if (!networkFilter || networkFilter === 'Oraichain') {
-    listAsset = [
-      ...listAsset,
-      {
-        src: StakeIcon,
-        label: 'Total staked',
-        balance: formatDisplayUsdt(toDisplay(BigInt(Math.trunc(totalStaked)), CW20_DECIMALS))
-      }
-    ];
   }
 
   const data = flattenTokens

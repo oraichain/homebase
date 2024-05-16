@@ -1,8 +1,9 @@
 import { toDisplay } from '@oraichain/oraidex-common';
 import { formatDisplayUsdt, numberWithCommas } from 'helper/helpers';
-import { REV_PER_HOUR, SCORAI_TOKEN_INFO, TIMER } from 'pages/GpuStaking/constants';
+import { REV_PER_HOUR, SCORAI_TOKEN_INFO } from 'pages/GpuStaking/constants';
 import { useGetStakeInfo } from 'pages/GpuStaking/hooks';
 import styles from './index.module.scss';
+import { TIMER } from 'helper/timer';
 
 const GpuSummary = () => {
   const { stakeInfo } = useGetStakeInfo(SCORAI_TOKEN_INFO.contractAddress);
@@ -25,13 +26,13 @@ const GpuSummary = () => {
       <div className={styles.content}>
         <div className={styles.infoWrapper}>
           <div className={styles.info}>
-            <h2>Total staked</h2>
+            <h2>Total Staked</h2>
             <span className={styles.value}>
               {numberWithCommas(toDisplay(stakeInfo?.total_bond_amount || '0'))} scORAI
             </span>
           </div>
           <div className={styles.info}>
-            <h2>GPU-Usage Revenue (Last 30 days)</h2>
+            <h2>Est. GPU-Usage Revenue (30 days)</h2>
             <span className={styles.value}>
               {formatDisplayUsdt(allGpuRev.min)} - {formatDisplayUsdt(allGpuRev.max)}
             </span>
@@ -39,7 +40,7 @@ const GpuSummary = () => {
         </div>
         <div className={styles.divider}></div>
 
-        <h1>Last 60 mins Revenue</h1>
+        <h1>Last Hour Usage</h1>
         <div className={styles.details}>
           {listDetail.map((e, key) => {
             const progress = (e.valueMax + e.valueMin) / 2;

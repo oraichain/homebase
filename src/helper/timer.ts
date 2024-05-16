@@ -1,5 +1,16 @@
-import { formatDisplayUsdt } from 'helper/helpers';
-import { MONTHS_ARR, TIMER } from '../constants';
+export const TIMER = {
+  HAFT_MILLISECOND: 500,
+
+  MILLISECOND: 1000,
+  SECOND: 60,
+  MINUTE: 60,
+  HOUR: 24,
+
+  MILLISECOND_OF_DAY: 1000 * 60 * 60 * 24,
+  HOUR_OF_MONTH: 24 * 30
+};
+
+export const MONTHS_ARR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export const formatCountdownTime = (milliseconds: number) => {
   const formatMilliseconds = milliseconds < 0 ? 0 : milliseconds;
@@ -85,6 +96,12 @@ export const timeFormatter = new Intl.DateTimeFormat('en-US', {
   hourCycle: 'h24'
 });
 
+export const timeWithPeriodFormatter = new Intl.DateTimeFormat('en-US', {
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit'
+});
+
 export const dateTimeFormatter = new Intl.DateTimeFormat('en-US', {
   year: '2-digit',
   month: '2-digit',
@@ -131,6 +148,11 @@ export function formatTime(date: Date | number) {
   return `${obj.hour}:${obj.minute}`; // ${obj.dayPeriod} //:${obj.second}
 }
 
+export function formatTimeWithPeriod(date: Date | number) {
+  const obj = timeWithPeriodFormatter.formatToJson(date);
+  return `${obj.hour}:${obj.minute} ${obj.dayPeriod}`; //:${obj.second}
+}
+
 export const getUTCTime = (date: Date | number) => {
   const currentDate = new Date(date);
   const utcHours = String(currentDate.getUTCHours()).padStart(2, '0');
@@ -140,21 +162,6 @@ export const getUTCTime = (date: Date | number) => {
   const utcSeconds = String(currentDate.getUTCSeconds()).padStart(2, '0');
 
   return `${utcHours}:${utcMinutes}:${utcSeconds}`;
-};
-
-export const formatNumberKMB = (num: number) => {
-  if (num >= 1e9) {
-    return '$' + (num / 1e9).toFixed(2) + 'B';
-  }
-
-  if (num >= 1e6) {
-    return '$' + (num / 1e6).toFixed(2) + 'M';
-  }
-
-  if (num >= 1e3) {
-    return '$' + (num / 1e3).toFixed(2) + 'K';
-  }
-  return formatDisplayUsdt(num, 2);
 };
 
 export const checkTimeIsMillisecond = (timestamp: number) => {

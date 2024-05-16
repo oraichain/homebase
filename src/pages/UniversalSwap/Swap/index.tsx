@@ -11,18 +11,17 @@ import {
   getTokenOnOraichain,
   network,
   toAmount,
-  toDisplay,
-  parseTokenInfoRawDenom
+  toDisplay
 } from '@oraichain/oraidex-common';
 import { OraiswapRouterQueryClient } from '@oraichain/oraidex-contracts-sdk';
 import { UniversalSwapHandler, UniversalSwapHelper } from '@oraichain/oraidex-universal-swap';
 import { useQuery } from '@tanstack/react-query';
 import { isMobile } from '@walletconnect/browser-utils';
 import ArrowImg from 'assets/icons/arrow_new.svg';
-import { ReactComponent as SendIcon } from 'assets/icons/send.svg';
-import { ReactComponent as FeeIcon } from 'assets/icons/fee.svg';
 import { ReactComponent as BookIcon } from 'assets/icons/book_icon.svg';
+import { ReactComponent as FeeIcon } from 'assets/icons/fee.svg';
 import { ReactComponent as IconOirSettings } from 'assets/icons/iconoir_settings.svg';
+import { ReactComponent as SendIcon } from 'assets/icons/send.svg';
 import SwitchLightImg from 'assets/icons/switch-new-light.svg';
 import SwitchDarkImg from 'assets/icons/switch-new.svg';
 import { ReactComponent as RefreshImg } from 'assets/images/refresh.svg';
@@ -34,7 +33,6 @@ import { flattenTokens, tokenMap } from 'config/bridgeTokens';
 import { chainInfosWithIcon } from 'config/chainInfos';
 import { ethers } from 'ethers';
 import {
-  floatToPercent,
   getAddressTransfer,
   getSpecialCoingecko,
   getTransactionUrl,
@@ -42,6 +40,7 @@ import {
   handleErrorTransaction,
   networks
 } from 'helper';
+import { numberWithCommas } from 'helper/helpers';
 import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { useCopyClipboard } from 'hooks/useCopyClipboard';
@@ -50,11 +49,10 @@ import useOnClickOutside from 'hooks/useOnClickOutside';
 import useTokenFee, { useGetFeeConfig, useRelayerFeeToken } from 'hooks/useTokenFee';
 import useWalletReducer from 'hooks/useWalletReducer';
 import Metamask from 'libs/metamask';
-import { getUsd, reduceString, toSubAmount } from 'libs/utils';
+import { reduceString, toSubAmount } from 'libs/utils';
 import mixpanel from 'mixpanel-browser';
-import { calcMaxAmount } from 'pages/Balance/helpers';
-import { numberWithCommas } from 'helper/helpers';
 import {
+  calcMaxAmount,
   generateNewSymbol,
   getDisableSwap,
   getFromToToken,
@@ -69,20 +67,20 @@ import { selectCurrentToken, setCurrentToken } from 'reducer/tradingSlice';
 import { AddressManagementStep } from 'reducer/type';
 import { fetchTokenInfos } from 'rest/api';
 import { RootState } from 'store/configure';
-import { SlippageModal, TooltipIcon } from '../Modals';
-import { SwapDirection, checkEvmAddress, filterNonPoolEvmTokens, getSwapType } from '../helpers';
+import { SlippageModal } from '../Modals';
+import { checkEvmAddress } from '../helpers';
 import AddressBook from './components/AddressBook';
 import InputCommon from './components/InputCommon';
 import InputSwap from './components/InputSwap/InputSwap';
 import SelectChain from './components/SelectChain/SelectChain';
 import SelectToken from './components/SelectToken/SelectToken';
+import SwapDetail from './components/SwapDetail';
 import { useGetTransHistory, useSimulate } from './hooks';
 import { useFillToken } from './hooks/useFillToken';
+import useFilteredTokens from './hooks/useFilteredTokens';
 import { useGetPriceByUSD } from './hooks/useGetPriceByUSD';
 import { useSwapFee } from './hooks/useSwapFee';
 import styles from './index.module.scss';
-import SwapDetail from './components/SwapDetail';
-import useFilteredTokens from './hooks/useFilteredTokens';
 
 const cx = cn.bind(styles);
 

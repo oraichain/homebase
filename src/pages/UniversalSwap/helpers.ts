@@ -3,6 +3,7 @@ import { Ratio } from '@oraichain/common-contracts-sdk/build/CwIcs20Latest.types
 import {
   CoinGeckoId,
   CoinIcon,
+  GAS_ESTIMATION_BRIDGE_DEFAULT,
   IBC_WASM_CONTRACT,
   NetworkChainId,
   ORAI_BRIDGE_EVM_DENOM_PREFIX,
@@ -11,17 +12,14 @@ import {
   TokenItemType,
   getTokenOnOraichain,
   getTokenOnSpecificChainId,
-  oraichainTokens
+  BigDecimal
 } from '@oraichain/oraidex-common';
-import {
-  UniversalSwapHelper
-  // swapFromTokens,
-  // swapToTokens
-} from '@oraichain/oraidex-universal-swap';
+import { UniversalSwapHelper } from '@oraichain/oraidex-universal-swap';
 import { isMobile } from '@walletconnect/browser-utils';
 import { swapFromTokens, swapToTokens, tokenMap } from 'config/bridgeTokens';
 import { oraichainTokensWithIcon } from 'config/chainInfos';
 import { PAIRS_CHART } from 'config/pools';
+import { feeEstimate } from 'helper';
 import { generateError } from 'libs/utils';
 import { PairToken } from 'reducer/type';
 
@@ -341,4 +339,37 @@ export const getDisableSwap = ({
   if (!simulateData || simulateData.displayAmount <= 0) disableMsg = 'Enter an amount';
   if (fromAmountTokenBalance > fromTokenBalance) disableMsg = `Insufficient funds`;
   return { disabledSwapBtn, disableMsg };
+};
+
+export const calcMaxAmount = ({
+  maxAmount,
+  token,
+  coeff,
+  gas = GAS_ESTIMATION_BRIDGE_DEFAULT
+}: {
+  maxAmount: number;
+  token: TokenItemType;
+  coeff: number;
+  gas?: number;
+}) => {
+  if (!token) return maxAmount;
+
+  let finalAmount = maxAmount;
+
+  const feeCurrencyOfToken = token.feeCurrencies?.find((e) => e.coinMinimalDenom === token.denom);
+
+  if (feeCurrencyOfToken) {
+    const useFeeEstimate = feeEstimate(token, gas);
+
+    if (coeff === 1) {
+      finalAmount = useFeeEstimate > finalAmount ? 0 : new BigDecimal(finalAmount).sub(useFeeEstimate).toNumber();
+    } else {
+      finalAmount =
+        useFeeEstimate > new BigDecimal(maxAmount).sub(new BigDecimal(finalAmount).mul(coeff)).toNumber()
+          ? 0
+          : finalAmount;
+    }
+  }
+
+  return finalAmount;
 };

@@ -15,11 +15,12 @@ import { useLoadOraichainTokens } from 'hooks/useLoadTokens';
 import { getUsd } from 'libs/utils';
 import { useState } from 'react';
 import ModalConfirm from '../../../../components/ConfirmModal';
-import { SCORAI_TOKEN_INFO, STAKE_TAB, STAKING_PERIOD, TIMER } from '../../constants';
+import { SCORAI_TOKEN_INFO, STAKE_TAB, STAKING_PERIOD } from '../../constants';
 import { getDiffDay } from '../../helpers';
 import { useGetLockInfo, useGetMyStakeRewardInfo, useGetStakeInfo } from '../../hooks';
 import InputBalance from '../InputBalance';
 import styles from './index.module.scss';
+import { TIMER } from 'helper/timer';
 
 const UnStakeTab = () => {
   const { data: prices } = useCoinGeckoPrices();
