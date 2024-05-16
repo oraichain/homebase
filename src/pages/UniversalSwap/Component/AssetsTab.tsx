@@ -19,6 +19,7 @@ import { AssetInfoResponse } from 'types/swap';
 import styles from './AssetsTab.module.scss';
 import { SendModal } from '../Swap/components/SendModal';
 import classNames from 'classnames';
+import ToggleSwitch from 'components/ToggleSwitch';
 
 const cx = cn.bind(styles);
 
@@ -27,7 +28,7 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
   const amounts = useSelector((state: RootState) => state.token.amounts);
   const [address] = useConfigReducer('address');
   const [theme] = useConfigReducer('theme');
-  const [hideOtherSmallAmount, setHideOtherSmallAmount] = useState(false);
+  const [hideOtherSmallAmount, setHideOtherSmallAmount] = useState(true);
   const [openModalSend, setOpenModalSend] = useState(false);
   const [tokenInfo, setTokenInfo] = useState({});
 
@@ -194,18 +195,30 @@ export const AssetsTab: FC<{ networkFilter: string; openBuyModal: () => void }> 
         <div className={cx('title')}>
           <span className={cx('index')}>02</span>
           <span>Manage your assets</span>
-          <button
-            className={cx('btn')}
-            onClick={() => {
-              openBuyModal();
-            }}
-          >
-            <KadoIcon />
-            Buy Crypto with fiat
-          </button>
         </div>
 
         <div className={cx('usd')}>{formatDisplayUsdt(totalUsd)}</div>
+      </div>
+
+      <div className={cx('handle-wrapper')}>
+        <button
+          className={cx('btn')}
+          onClick={() => {
+            openBuyModal();
+          }}
+        >
+          <KadoIcon />
+          Buy Crypto with fiat
+        </button>
+        <div className={cx('switch')}>
+          <ToggleSwitch
+            small={true}
+            id="small-balances"
+            checked={hideOtherSmallAmount}
+            onChange={() => setHideOtherSmallAmount(!hideOtherSmallAmount)}
+          />
+          <label htmlFor="small-balances">Hide small balances!</label>
+        </div>
       </div>
       <div className={cx('table')}>
         <Table

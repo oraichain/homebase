@@ -43,29 +43,6 @@
         font-weight: 400;
         line-height: 150%; /* 27px */
       }
-
-      .btn {
-        display: flex;
-        height: 32px;
-        padding: 4px 12px;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        border-radius: 8px;
-        border: 1px solid #383b40;
-        background: #2e2e33;
-
-        color: #fff;
-        font-family: 'IBM Plex Sans';
-        text-align: center;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 20px; /* 142.857% */
-
-        @include small-mobile {
-          // display: none;
-        }
-      }
     }
 
     .usd {
@@ -73,6 +50,43 @@
       font-size: 20px;
       font-weight: 600;
       line-height: 150%; /* 30px */
+    }
+  }
+
+  .handle-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 12px;
+
+    @include small-mobile {
+      justify-content: flex-end;
+      // flex-direction: column-reverse;
+    }
+
+    .btn {
+      display: flex;
+      height: 32px;
+      padding: 4px 0px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border-radius: 8px;
+      // border: 1px solid #383b40;
+      // background: #2e2e33;
+
+      color: #fff;
+      font-family: 'IBM Plex Sans';
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px; /* 142.857% */
+
+      @include small-mobile {
+        // display: none;
+      }
     }
   }
 }
