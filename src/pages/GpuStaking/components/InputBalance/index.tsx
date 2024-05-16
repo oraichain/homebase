@@ -51,7 +51,7 @@ const InputBalance = ({
           <ScOraiIcon />
           &nbsp; {type === STAKE_TAB.Stake && 'Stake'} scORAI &nbsp;
           {!isMobileMode && type === STAKE_TAB.Stake && (
-            <a href="http://" target="_blank" rel="noopener noreferrer">
+            <a href="https://app.orchai.io/stake/scorai-oraichain" target="_blank" rel="noopener noreferrer">
               Get scORAI from Orchai <JumpIcon />
             </a>
           )}

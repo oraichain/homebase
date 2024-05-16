@@ -9,10 +9,10 @@ export const TIMER = {
   HOUR: 24,
 
   MILLISECOND_OF_DAY: 1000 * 60 * 60 * 24,
-  HOUR_OF_WEEK: 7 * 24
+  HOUR_OF_MONTH: 24 * 30
 };
 
-export const REV_PER_HOUR = 1;
+export const REV_PER_HOUR = 3;
 
 export const MONTHLY_SECOND = 30 * 24 * 60 * 60;
 

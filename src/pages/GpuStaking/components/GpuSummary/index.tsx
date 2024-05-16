@@ -4,21 +4,19 @@ import { REV_PER_HOUR, SCORAI_TOKEN_INFO, TIMER } from 'pages/GpuStaking/constan
 import { useGetStakeInfo } from 'pages/GpuStaking/hooks';
 import styles from './index.module.scss';
 
-// Team	GPU Memory Usage
-// 	          Min	    Med	    Max
-// aiRight	  19,79%	-	      43,79%
-// DeFi Lens	17,16%	-	      32,25%
-// LLM	      10,89%	-	      16,13%
-// KawaiiQ	  0	      0	      0	        Chưa dùng gpu
-// Cupiee	    3,49%	  -	      7,72%
-// AI-based Trading Strategies and AI Agents	0	0	0	Dùng cpu
-
 const GpuSummary = () => {
   const { stakeInfo } = useGetStakeInfo(SCORAI_TOKEN_INFO.contractAddress);
-  const allGpuRev = listDetail.reduce((acc, cur) => {
-    acc = acc + cur.value;
-    return acc;
-  }, 0);
+  const allGpuRev = listDetail.reduce(
+    (acc, cur) => {
+      acc.max = acc.max + calcGpuRev(cur.valueMax);
+      acc.min = acc.min + calcGpuRev(cur.valueMin);
+      return acc;
+    },
+    {
+      max: 0,
+      min: 0
+    }
+  );
 
   return (
     <div className={styles.gpuSummary}>
@@ -33,22 +31,29 @@ const GpuSummary = () => {
             </span>
           </div>
           <div className={styles.info}>
-            <h2>GPU-Usage Revenue</h2>
-            <span className={styles.value}>{formatDisplayUsdt(allGpuRev)}</span>
+            <h2>GPU-Usage Revenue (Last 30 days)</h2>
+            <span className={styles.value}>
+              {formatDisplayUsdt(allGpuRev.min)} - {formatDisplayUsdt(allGpuRev.max)}
+            </span>
           </div>
         </div>
         <div className={styles.divider}></div>
+
+        <h1>Last 60 mins Revenue</h1>
         <div className={styles.details}>
           {listDetail.map((e, key) => {
+            const progress = (e.valueMax + e.valueMin) / 2;
+            const value = calcGpuRevByHour(progress);
+
             return (
               <div className={styles.item} key={`${key}-${e.label}`}>
                 <div className={styles.header}>
                   <h3 title={`${e.label}`}>{e.label}</h3>
-                  <span>{formatDisplayUsdt(e.value)}</span>
+                  <span>{formatDisplayUsdt(value)}</span>
                 </div>
-                <div className={styles.progress} title={`${e.progress}%`}>
-                  <div className={styles.percent} style={{ width: `${e.progress}%` }}>
-                    {e.progress >= 9 ? `${e.progress}%` : null}
+                <div className={styles.progress} title={`${progress}%`}>
+                  <div className={styles.percent} style={{ width: `${progress}%` }}>
+                    {progress >= 9 ? `${progress.toFixed(2)}%` : null}
                     {/* {`${e.progress}%`} */}
                   </div>
                 </div>
@@ -63,39 +68,44 @@ const GpuSummary = () => {
 
 export default GpuSummary;
 
-const calcGpuRev = (gpu) => {
-  return ((REV_PER_HOUR * gpu) / 100) * TIMER.HOUR_OF_WEEK;
+const calcGpuRev = (gpu: number) => {
+  return ((REV_PER_HOUR * gpu) / 100) * TIMER.HOUR_OF_MONTH;
 };
 
+const calcGpuRevByHour = (gpu: number, hour = 1) => {
+  return ((REV_PER_HOUR * gpu) / 100) * hour;
+};
+
+// TODO: query api and refetch interval 5 mins
 const listDetail = [
   {
     label: 'aiRight Rev.',
-    progress: 31.79,
-    value: calcGpuRev(31.79)
+    valueMax: 43.79,
+    valueMin: 19.79
   },
   {
     label: 'DeFi Lens Rev.',
-    progress: 24.71,
-    value: calcGpuRev(24.71)
+    valueMax: 32.25,
+    valueMin: 17.16
   },
   {
     label: 'LLM Layer Rev.',
-    progress: 13.51,
-    value: calcGpuRev(13.51)
+    valueMax: 16.13,
+    valueMin: 10.89
   },
   {
     label: 'KawaiiQ Rev.',
-    progress: 0,
-    value: calcGpuRev(0)
+    valueMax: 0,
+    valueMin: 0
   },
   {
     label: 'Cupiee Rev.',
-    progress: 5.61,
-    value: calcGpuRev(5.61)
+    valueMax: 7.72,
+    valueMin: 3.49
   },
   {
     label: 'Trading Strategies and AI Agents Revenue',
-    progress: 0,
-    value: calcGpuRev(0)
+    valueMax: 0,
+    valueMin: 0
   }
 ];
