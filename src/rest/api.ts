@@ -1,20 +1,14 @@
 import { ExecuteInstruction, JsonObject, fromBinary, toBinary } from '@cosmjs/cosmwasm-stargate';
-import { Coin, coin } from '@cosmjs/stargate';
+import { Coin } from '@cosmjs/stargate';
 import { CwIcs20LatestQueryClient, MulticallQueryClient, Uint128 } from '@oraichain/common-contracts-sdk';
 import { ConfigResponse, RelayerFeeResponse } from '@oraichain/common-contracts-sdk/build/CwIcs20Latest.types';
 import {
-  IBCInfo,
   IBC_WASM_CONTRACT,
-  KWT_DENOM,
-  MILKY_DENOM,
   ORAI,
   STABLE_DENOM,
   TokenItemType,
-  calculateTimeoutTimestamp,
   getSubAmountDetails,
   handleSentFunds,
-  ibcInfos,
-  ibcInfosOld,
   isFactoryV1,
   parseTokenInfo,
   toAmount,
@@ -24,6 +18,7 @@ import {
 } from '@oraichain/oraidex-common';
 import {
   AssetInfo,
+  CoharvestBidPoolQueryClient,
   OraiswapFactoryQueryClient,
   OraiswapOracleQueryClient,
   OraiswapPairQueryClient,
@@ -33,18 +28,13 @@ import {
   OraiswapStakingTypes,
   OraiswapTokenQueryClient,
   OraiswapTokenTypes,
-  PairInfo,
-  CoharvestBidPoolQueryClient,
-  CoharvestBidPoolTypes
+  PairInfo
 } from '@oraichain/oraidex-contracts-sdk';
 import { TaxRateResponse } from '@oraichain/oraidex-contracts-sdk/build/OraiswapOracle.types';
 import { generateSwapOperationMsgs, simulateSwap } from '@oraichain/oraidex-universal-swap';
-import { oraichainTokens, tokenMap, tokens } from 'config/bridgeTokens';
+import { oraichainTokens, tokenMap } from 'config/bridgeTokens';
 import { network } from 'config/networks';
-import { Long } from 'cosmjs-types/helpers';
-import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx';
 import isEqual from 'lodash/isEqual';
-import { RemainingOraibTokenItem } from 'pages/Balance/StuckOraib/useGetOraiBridgeBalances';
 import { BondLP, MiningLP, UnbondLP, WithdrawLP } from 'types/pool';
 import { PairInfoExtend, TokenInfo } from 'types/token';
 
@@ -649,35 +639,6 @@ export type Claim = {
   proofs: string[];
 };
 
-// Generate multiple IBC messages in a single transaction to transfer from Oraibridge to Oraichain.
-function generateMoveOraib2OraiMessages(
-  remainingOraib: RemainingOraibTokenItem[],
-  fromAddress: string,
-  toAddress: string
-) {
-  const [, toTokens] = tokens;
-  let transferMsgs: MsgTransfer[] = [];
-  for (const fromToken of remainingOraib) {
-    const toToken = toTokens.find((t) => t.chainId === 'Oraichain' && t.name === fromToken.name);
-    let ibcInfo: IBCInfo = ibcInfos[fromToken.chainId][toToken.chainId];
-    // hardcode for MILKY & KWT because they use the old IBC channel
-    if (fromToken.denom === MILKY_DENOM || fromToken.denom === KWT_DENOM)
-      ibcInfo = ibcInfosOld[fromToken.chainId][toToken.chainId];
-
-    const tokenAmount = coin(fromToken.amount, fromToken.denom);
-    transferMsgs.push({
-      sourcePort: ibcInfo.source,
-      sourceChannel: ibcInfo.channel,
-      token: tokenAmount,
-      sender: fromAddress,
-      receiver: toAddress,
-      memo: '',
-      timeoutTimestamp: Long.fromString(calculateTimeoutTimestamp(ibcInfo.timeout))
-    });
-  }
-  return transferMsgs;
-}
-
 async function getPairAmountInfo(
   fromToken: TokenItemType,
   toToken: TokenItemType,
@@ -710,23 +671,22 @@ async function getPairAmountInfo(
 
 export {
   fetchCachedPairInfo,
+  fetchLpBalance,
   fetchPairInfo,
   fetchPoolInfoAmount,
   fetchRelayerFee,
   fetchRewardPerSecInfo,
+  fetchRoundBid,
   fetchStakingPoolInfo,
   fetchTaxRate,
   fetchTokenAllowance,
   fetchTokenInfo,
   fetchTokenInfos,
-  fetchLpBalance,
   generateContractMessages,
   generateConvertCw20Erc20Message,
   generateConvertErc20Cw20Message,
   generateConvertMsgs,
   generateMiningMsgs,
-  generateMoveOraib2OraiMessages,
   getPairAmountInfo,
-  getSubAmountDetails,
-  fetchRoundBid
+  getSubAmountDetails
 };
