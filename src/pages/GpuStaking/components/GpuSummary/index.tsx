@@ -136,7 +136,7 @@ const listDetail = [
     originValue: 0
   },
   {
-    id: '',
+    id: 'DFL',
     label: 'DeFi Lens Rev.',
     valueMax: 32.25,
     valueMin: 17.16,
@@ -152,7 +152,7 @@ const listDetail = [
     originValue: 0
   },
   {
-    id: '',
+    id: 'KWQ',
     label: 'KawaiiQ Rev.',
     valueMax: 0,
     valueMin: 0,
@@ -160,7 +160,7 @@ const listDetail = [
     originValue: 0
   },
   {
-    id: '',
+    id: 'CUP',
     label: 'Cupiee Rev.',
     valueMax: 7.72,
     valueMin: 3.49,
@@ -168,7 +168,7 @@ const listDetail = [
     originValue: 0
   },
   {
-    id: '',
+    id: 'ATS',
     label: 'Trading Strategies and AI Agents Revenue',
     valueMax: 0,
     valueMin: 0,
