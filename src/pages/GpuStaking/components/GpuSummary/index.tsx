@@ -5,9 +5,9 @@ import { useGetStakeInfo } from 'pages/GpuStaking/hooks';
 import styles from './index.module.scss';
 import { TIMER } from 'helper/timer';
 import useGetGpuInfo from 'pages/GpuStaking/hooks/useGetGpuInfo';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-const GpuSummary = () => {
+const GpuSummary: FC<{ epochRev: number }> = ({ epochRev }) => {
   const [list, setList] = useState(listDetail);
   const [allGpuRev, setAllGpuRev] = useState({
     mid: 0,
@@ -78,16 +78,25 @@ const GpuSummary = () => {
             </span>
           </div>
           <div className={styles.info}>
-            <h2>Est. GPU-Usage Revenue (30 days)</h2>
+            <h2>Last epoch rev.</h2>
             <span className={styles.value}>
               {/* {formatDisplayUsdt(allGpuRev.min)} - {formatDisplayUsdt(allGpuRev.max)} */}
-              {formatDisplayUsdt(calcGpuRev(allGpuRev.mid))}
+              {/* {formatDisplayUsdt(calcGpuRev(allGpuRev.mid))} */}
+              {formatDisplayUsdt(epochRev || 0)}
+            </span>
+          </div>
+          <div className={styles.info}>
+            <h2>Register GPU Credit</h2>
+            <span className={styles.value}>
+              <a href="https://forms.gle/MkAj3Cu8ZeG7pT6eA" target="_blank" rel="noopener noreferrer">
+                Click here
+              </a>
             </span>
           </div>
         </div>
         <div className={styles.divider}></div>
 
-        <h1>Last Hour Usage</h1>
+        <h1>Active usage</h1>
         <div className={styles.details}>
           {list.map((e, key) => {
             const progress = e.value;
@@ -102,6 +111,7 @@ const GpuSummary = () => {
                 <div className={styles.progress} title={`${progress}%`}>
                   <div className={styles.percent} style={{ width: `${progress}%` }}>
                     {progress >= 9 ? `${progress.toFixed(2)}%` : null}
+                    {/* {progress > 0 ? `${progress.toFixed(2)}%` : null} */}
                     {/* {`${e.progress}%`} */}
                     {/* RANDOM_RANGE_PERCENT */}
                   </div>

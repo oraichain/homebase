@@ -23,7 +23,7 @@ import { RootState } from 'store/configure';
 import GpuSummary from './components/GpuSummary';
 import StakingForm from './components/StakingForm';
 import { SCORAI_TOKEN_INFO, USDC_TOKEN_INFO } from './constants';
-import { calcAPY } from './helpers';
+import { calcAPY, calcMonthlyReward } from './helpers';
 import { useGetLockInfo, useGetMyStakeRewardInfo, useGetRewardPerSecInfo, useGetStakeInfo } from './hooks';
 import styles from './index.module.scss';
 
@@ -68,6 +68,8 @@ const GpuStaking: React.FC<{}> = () => {
   };
 
   const apy = calcAPY(rewardPerSecInfo.amount, stakeInfo?.total_bond_amount || '0', prices);
+
+  const epochRev = calcMonthlyReward(rewardPerSecInfo.amount, prices);
 
   const handleClaim = async () => {
     setLoading(true);
@@ -163,7 +165,7 @@ const GpuStaking: React.FC<{}> = () => {
           {/* </div> */}
         </div>
 
-        <GpuSummary />
+        <GpuSummary epochRev={epochRev} />
       </div>
 
       {openBuy && (

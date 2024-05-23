@@ -1,19 +1,14 @@
-import { CoinIcon, TokenItemType, CustomChainInfo } from '@oraichain/oraidex-common';
-import { TokenInfo } from 'types/token';
-import styles from './SelectChain.module.scss';
-import SearchInput from 'components/SearchInput';
-import cn from 'classnames/bind';
-import { chainIcons } from 'config/chainInfos';
-import { ReactComponent as OraiIcon } from 'assets/icons/oraichain.svg';
 import { ReactComponent as IconoirCancel } from 'assets/icons/iconoir_cancel.svg';
-import { networks } from 'helper';
 import NetworkImg from 'assets/icons/network.svg';
-import CheckImg from 'assets/icons/check.svg';
-import { getTotalUsd } from 'libs/utils';
+import cn from 'classnames/bind';
 import { tokenMap } from 'config/bridgeTokens';
-import { CoinGeckoPrices } from 'hooks/useCoingecko';
+import { chainIcons } from 'config/chainInfos';
 import { Themes } from 'context/theme-context';
+import { networks } from 'helper';
 import { formatDisplayUsdt } from 'helper/helpers';
+import { CoinGeckoPrices } from 'hooks/useCoingecko';
+import { getTotalUsd } from 'libs/utils';
+import styles from './SelectChain.module.scss';
 
 const cx = cn.bind(styles);
 interface InputSwapProps {
@@ -24,6 +19,7 @@ interface InputSwapProps {
   amounts: AmountDetails;
   theme: Themes;
   prices: CoinGeckoPrices<string>;
+  filterChainId?: string[];
 }
 
 export default function SelectChain({
@@ -32,7 +28,8 @@ export default function SelectChain({
   setSelectChain,
   amounts,
   prices,
-  theme
+  theme,
+  filterChainId = []
 }: InputSwapProps) {
   // const isAllowChainId = (chainId) => ['kawaii_6886-1', 'bitcoin', 'noble-1', 'Neutaro-1'].includes(chainId);
   const isAllowChainId = (chainId) => ['kawaii_6886-1', 'bitcoin'].includes(chainId);
@@ -69,19 +66,27 @@ export default function SelectChain({
 
         <div className={styles.selectChainList}>
           <div className={styles.selectChainItems}>
-            {networks
-              .filter((net) => !isAllowChainId(net.chainId))
+            {[...networks]
+              .filter(
+                (net) => !isAllowChainId(net.chainId) && (!filterChainId.length || filterChainId.includes(net.chainId))
+              )
+              .map((n) => {
+                const subAmounts = Object.fromEntries(
+                  Object.entries(amounts).filter(([denom]) => tokenMap[denom] && tokenMap[denom].chainId === n.chainId)
+                );
+                const totalUsd = getTotalUsd(subAmounts, prices);
+
+                return {
+                  ...n,
+                  totalUsd
+                };
+              })
+              .sort((a, b) => Number(b.totalUsd || 0) - Number(a.totalUsd || 0))
               .map((item) => {
                 const networkIcon = chainIcons.find((chainIcon) => chainIcon.chainId === item.chainId);
                 const key = item.chainId.toString();
                 const title = item.chainName;
-                const subAmounts = Object.fromEntries(
-                  Object.entries(amounts).filter(
-                    ([denom]) => tokenMap[denom] && tokenMap[denom].chainId === item.chainId
-                  )
-                );
-                const totalUsd = getTotalUsd(subAmounts, prices);
-                const balance = '$' + (totalUsd > 0 ? totalUsd.toFixed(2) : '0');
+                const balance = '$' + (item.totalUsd > 0 ? item.totalUsd.toFixed(2) : '0');
                 return (
                   <div
                     key={key}

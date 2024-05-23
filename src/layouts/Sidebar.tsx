@@ -176,10 +176,10 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
           </div>
 
           <div className={styles.social}>
-            <a href="https://t.me/oraidex" target="_blank" rel="noopener noreferrer">
+            <a href="https://t.me/oraichain" target="_blank" rel="noopener noreferrer">
               <TeleIcon />
             </a>
-            <a href="https://twitter.com/oraidex" target="_blank" rel="noopener noreferrer">
+            <a href="https://twitter.com/oraichain" target="_blank" rel="noopener noreferrer">
               <TwisterIcon />
             </a>
             <a href="https://discord.gg/3CnQAGtX" target="_blank" rel="noopener noreferrer">

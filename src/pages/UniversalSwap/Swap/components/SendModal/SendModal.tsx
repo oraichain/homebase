@@ -8,6 +8,7 @@ import Loader from 'components/Loader';
 import Modal from 'components/Modal';
 import { TToastType, displayToast } from 'components/Toasts/Toast';
 import { getTransactionUrl, handleErrorTransaction } from 'helper';
+import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { useCopyClipboard } from 'hooks/useCopyClipboard';
 import { calcMaxAmount, getTokenIcon } from 'pages/UniversalSwap/helpers';
@@ -31,6 +32,9 @@ export const SendModal: FC<{
   const [coe, setCoe] = useState(0);
   const FromIcon = getTokenIcon(tokenInfo, theme);
   const { handleReadClipboard } = useCopyClipboard();
+  const { data: prices } = useCoinGeckoPrices();
+
+  const usdPrice = (prices?.[tokenInfo?.coinGeckoId] * amount).toFixed(6);
 
   return (
     <Modal isOpen={isOpen} close={close} open={open} isCloseBtn={false} className={`${styles.sendModal}`}>
@@ -86,7 +90,7 @@ export const SendModal: FC<{
                 // throw new Error('Function not implemented.');
               }}
               tokenFee={0}
-              usdPrice={''}
+              usdPrice={usdPrice}
             />
           </div>
           <div className={styles.sendModalContainerHeaderInputRecipient}>

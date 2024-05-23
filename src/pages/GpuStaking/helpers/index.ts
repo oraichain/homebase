@@ -52,3 +52,8 @@ export const calcYearlyReward = (amount: number, apr: number, prices: CoinGeckoP
   if (!prices[SCORAI_TOKEN_INFO.coinGeckoId]) return 0;
   return ((amount * apr) / 100) * prices[SCORAI_TOKEN_INFO.coinGeckoId];
 };
+
+export const calcMonthlyReward = (rewardPerSec: string, prices: CoinGeckoPrices<string>) => {
+  const rewardPerSecUsd = getUsd(rewardPerSec, USDC_TOKEN_INFO, prices);
+  return rewardPerSecUsd * TIMER.SECOND_PER_MONTH;
+};
