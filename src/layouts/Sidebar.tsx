@@ -26,6 +26,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './Sidebar.module.scss';
 import BuyOraiModal from './BuyOraiModal';
+import { isMobile } from '@walletconnect/browser-utils';
 
 const Sidebar: React.FC<{}> = React.memo((props) => {
   const location = useLocation();
@@ -33,6 +34,7 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [isOpenQrCodeOwallet, setIsOpenQrCodeOwallet] = useState(false);
+  const mobileMode = isMobile();
 
   const [isLoadedIframe, setIsLoadedIframe] = useState(false); // check iframe data loaded
   const [openBuy, setOpenBuy] = useState(false);
@@ -93,6 +95,7 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
       </Link>
     );
   };
+
   return (
     <>
       <div className={classNames(styles.sidebar, { [styles.open]: open })}>
@@ -170,10 +173,12 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
               </div>
             )} */}
           </div>
-          <div className={styles.download} onClick={() => setIsOpenQrCodeOwallet(true)}>
-            <OwalletIcon />
-            Install OWallet
-          </div>
+          {!mobileMode && (
+            <div className={styles.download} onClick={() => setIsOpenQrCodeOwallet(true)}>
+              <OwalletIcon />
+              Install OWallet
+            </div>
+          )}
 
           <div className={styles.social}>
             <a href="https://t.me/oraichain" target="_blank" rel="noopener noreferrer">

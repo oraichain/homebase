@@ -56,10 +56,11 @@
 }
 
 .sideMenu {
-  margin-left: -55%;
-  width: 55%;
+  margin-left: -255px;
+  // width: 55%;
+  width: 255px;
   height: 100vh;
-  padding: 40px 15px;
+  // padding: 40px 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -73,6 +74,12 @@
 
   &.open {
     margin-left: 0;
+
+    & > div {
+      margin-left: 0;
+      padding-top: 20px;
+      top: 0;
+    }
   }
 
   @include theme() {

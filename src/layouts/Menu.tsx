@@ -1,31 +1,16 @@
 import { isMobile } from '@walletconnect/browser-utils';
 import { ReactComponent as CloseIcon } from 'assets/icons/close.svg';
-import { ReactComponent as DownArrowIcon } from 'assets/icons/down-arrow.svg';
-import { ReactComponent as OraidexBetaIcon } from 'assets/icons/ic_beta.svg';
-import { ReactComponent as BridgeIcon } from 'assets/icons/ic_bridge.svg';
-import { ReactComponent as BtcDashboardIcon } from 'assets/icons/ic_btc_dashboard.svg';
-import { ReactComponent as CohavestIcon } from 'assets/icons/ic_cohavest.svg';
 import { ReactComponent as ExternalLinkIcon } from 'assets/icons/ic_external_link.svg';
-import { ReactComponent as HelpIcon } from 'assets/icons/ic_help.svg';
-import { ReactComponent as KadoIcon } from 'assets/icons/ic_kado.svg';
-import { ReactComponent as PoolIcon } from 'assets/icons/ic_pools.svg';
-import { ReactComponent as StakingIcon } from 'assets/icons/ic_staking.svg';
-import { ReactComponent as SupportIcon } from 'assets/icons/ic_support.svg';
-import { ReactComponent as TelegramIcon } from 'assets/icons/ic_telegram.svg';
-import { ReactComponent as TwitterIcon } from 'assets/icons/ic_twitter.svg';
-import { ReactComponent as UniversalSwapIcon } from 'assets/icons/ic_universalswap.svg';
 import { ReactComponent as MenuIcon } from 'assets/icons/menu.svg';
-import LogoFullImgDark from 'assets/images/homeBase_full.svg';
-import LogoFullImgLight from 'assets/images/homeBase_full.svg';
+import { default as LogoFullImgDark, default as LogoFullImgLight } from 'assets/images/homeBase_full.svg';
 import classNames from 'classnames';
-import TooltipContainer from 'components/ConnectWallet/TooltipContainer';
 import { WalletManagement } from 'components/WalletManagement/WalletManagement';
 import { ThemeContext } from 'context/theme-context';
 import useOnClickOutside from 'hooks/useOnClickOutside';
 import React, { ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import BuyOraiModal from './BuyOraiModal';
 import styles from './Menu.module.scss';
+import Sidebar from './Sidebar';
 
 const Menu: React.FC = () => {
   const location = useLocation();
@@ -103,46 +88,7 @@ const Menu: React.FC = () => {
   const ToggleIcon = open ? CloseIcon : MenuIcon;
   const darkTheme = theme === 'dark';
 
-  const menuListMobile = (
-    <div className={classNames(styles.menu_list)}>
-      {renderLink('/homebase', 'Swap', setLink, false, <UniversalSwapIcon />)}
-      {renderLink('/bridge', 'Bridge', setLink, false, <BridgeIcon />)}
-      {renderLink('/pools', 'Pools', setLink, false, <PoolIcon />)}
-      {renderLink('/staking', 'Staking', setLink, false, <StakingIcon />)}
-      {renderLink('/co-harvest', 'Co-Harvest', setLink, false, <CohavestIcon />)}
-      {renderLink('/bitcoin-dashboard', 'BTC Dashboard', setLink, false, <BtcDashboardIcon />)}
-      {renderLink('https://beta.oraidex.io', 'OraiDEX Beta', setLink, true, <OraidexBetaIcon />)}
-      <div className={styles.divider}></div>
-      <div
-        onClick={() => {
-          setIsOpenSubMenuMobile(!isOpenSubMenuMobile);
-        }}
-        className={classNames(styles.menu_item, styles.menu_item_help, styles[theme])}
-      >
-        <div className={styles.menu_item_help_left}>
-          <HelpIcon />
-          <span className={classNames(styles.menu_item_text, styles[theme])}>{'Help'}</span>
-        </div>
-        <DownArrowIcon />
-      </div>
-      <div
-        className={classNames(styles.mobile_sub_menu, isOpenSubMenuMobile ? styles.openSubMenu : null, styles[theme])}
-      >
-        {renderLink('https://t.me/oraidex', 'Join our Community', () => {}, true, <TelegramIcon />, false)}
-        {renderLink('https://twitter.com/oraidex', 'Twitter', () => {}, true, <TwitterIcon />, false)}
-        {renderLink('https://t.me/SamORAI_bot', 'Contact us', () => {}, true, <SupportIcon />, false)}
-      </div>
-      {renderLink(
-        '#',
-        'Buy ORAI',
-        () => {
-          setOpenBuy(true);
-        },
-        false,
-        <KadoIcon />
-      )}
-    </div>
-  );
+  const menuListMobile = <div className={classNames(styles.menu_list)}></div>;
 
   return (
     <>
@@ -159,7 +105,8 @@ const Menu: React.FC = () => {
           </div>
 
           <div ref={ref} className={classNames(styles.sideMenu, { [styles.open]: open })}>
-            {menuListMobile}
+            {/* {menuListMobile} */}
+            <Sidebar />
           </div>
         </>
       ) : (
