@@ -11,7 +11,7 @@ import Feature from './Component/Feature';
 import StakeSummary from './Component/StakeSummary';
 import SwapComponent from './Swap';
 import { initPairSwap } from './Swap/hooks/useFillToken';
-import { NetworkFilter, initNetworkFilter } from './helpers';
+import { NetworkFilter, calculateInflationFromApr, initNetworkFilter } from './helpers';
 import styles from './index.module.scss';
 const cx = cn.bind(styles);
 
@@ -25,7 +25,9 @@ const getInfoOraichain = async () => {
     return {
       market: market?.data,
       status: status?.data,
-      controlCenter: controlCenter?.data
+      controlCenter: {
+        ...controlCenter?.data
+      }
     };
   } catch (e) {
     console.error('getInfoOraichain', e);
@@ -40,14 +42,36 @@ const getInfoOraichain = async () => {
       },
       controlCenter: {
         total_delegated: 0,
-        ratio_bonded: 0
+        ratio_bonded: 0,
+        inflation: 0
       }
+    };
+  }
+};
+
+const getInfoStakeOraichain = async () => {
+  try {
+    const inflation = await calculateInflationFromApr();
+    return inflation;
+  } catch (e) {
+    console.error('getInfoStakeOraichain', e);
+    return {
+      inflationRate: 0,
+      bonded_tokens: 0
     };
   }
 };
 
 export const useGetInfoOraichain = () => {
   const { data } = useQuery(['info_oraichain'], () => getInfoOraichain(), {
+    refetchOnWindowFocus: true,
+    staleTime: 30 * 1000
+  });
+  return data;
+};
+
+export const useGetInfoStakeOraichain = () => {
+  const { data } = useQuery(['info_oraichain_stake'], () => getInfoStakeOraichain(), {
     refetchOnWindowFocus: true,
     staleTime: 30 * 1000
   });
@@ -61,6 +85,7 @@ const Swap: React.FC = () => {
   const [isLoadedIframe, setIsLoadedIframe] = useState(false); // check iframe data loaded
   const [openBuy, setOpenBuy] = useState(false);
   const data = useGetInfoOraichain();
+  const dataStake = useGetInfoStakeOraichain();
 
   return (
     <Content nonBackground>
@@ -85,7 +110,7 @@ const Swap: React.FC = () => {
           </div>
         </div>
         <div className={styles.looking}>You are looking for...</div>
-        <StakeSummary data={data?.controlCenter} />
+        <StakeSummary data={data?.controlCenter} aprOrai={dataStake?.inflationRate || 0} />
         <Feature />
       </div>
 

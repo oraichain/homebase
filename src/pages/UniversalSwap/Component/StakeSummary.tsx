@@ -19,7 +19,7 @@ import { SCORAI_TOKEN_INFO, USDC_TOKEN_INFO } from 'pages/GpuStaking/constants';
 import { USDC_CONTRACT, toDisplay } from '@oraichain/oraidex-common';
 import { calcAPY } from 'pages/GpuStaking/helpers';
 
-export const StakeSummary: FC<{ data: any }> = ({ data: dataSummary }) => {
+export const StakeSummary: FC<{ data: any; aprOrai: number }> = ({ data: dataSummary, aprOrai }) => {
   const { data: prices } = useCoinGeckoPrices();
   const amounts = useSelector((state: RootState) => state.token.amounts);
   const [address] = useConfigReducer('address');
@@ -109,7 +109,11 @@ export const StakeSummary: FC<{ data: any }> = ({ data: dataSummary }) => {
     apy: {
       name: 'CURRENT APR',
       width: '30%',
-      accessor: (data) => <div className={styles.apy}>{Number(data.apr.toFixed(2))}%</div>,
+      accessor: (data) => (
+        <div title="Inflation rate needed to guarantee ~29% APR with 3% commission" className={styles.apy}>
+          {!data.apr ? '-- ' : Number(data.apr.toFixed(2))}%
+        </div>
+      ),
       align: 'left'
     },
     total: {
@@ -139,7 +143,7 @@ export const StakeSummary: FC<{ data: any }> = ({ data: dataSummary }) => {
     {
       iconLight: OraiLightIcon,
       icon: OraiIcon,
-      apr: Number(dataSummary?.ratio_bonded) || 0,
+      apr: Number(aprOrai) || 0,
       total: dataSummary?.total_delegated || 0,
       asset: 'ORAI'
     }
