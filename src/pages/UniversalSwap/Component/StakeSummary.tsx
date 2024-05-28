@@ -111,7 +111,7 @@ export const StakeSummary: FC<{ data: any; aprOrai: number }> = ({ data: dataSum
       width: '30%',
       accessor: (data) => (
         <div title="Inflation rate needed to guarantee ~29% APR with 3% commission" className={styles.apy}>
-          {!data.apr ? '-- ' : Number(data.apr.toFixed(2))}%
+          {Number(data.apr.toFixed(2))}%
         </div>
       ),
       align: 'left'
