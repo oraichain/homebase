@@ -25,9 +25,7 @@ const getInfoOraichain = async () => {
     return {
       market: market?.data,
       status: status?.data,
-      controlCenter: {
-        ...controlCenter?.data
-      }
+      controlCenter: controlCenter?.data
     };
   } catch (e) {
     console.error('getInfoOraichain', e);
@@ -42,8 +40,7 @@ const getInfoOraichain = async () => {
       },
       controlCenter: {
         total_delegated: 0,
-        ratio_bonded: 0,
-        inflation: 0
+        ratio_bonded: 0
       }
     };
   }
