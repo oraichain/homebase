@@ -187,7 +187,11 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
             <a href="https://twitter.com/oraichain" target="_blank" rel="noopener noreferrer">
               <TwisterIcon />
             </a>
+<<<<<<< Updated upstream
             <a href="https://discord.gg/3CnQAGtX" target="_blank" rel="noopener noreferrer">
+=======
+            <a href="https://discord.gg/oraichain" target="_blank" rel="noopener noreferrer">
+>>>>>>> Stashed changes
               <DiscordIcon />
             </a>
             <a href="https://github.com/oraichain" target="_blank" rel="noopener noreferrer">
