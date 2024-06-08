@@ -30,9 +30,9 @@ import FutureCompetition from 'components/FutureCompetitionModal';
 
 const App = () => {
   const [address, setOraiAddress] = useConfigReducer('address');
-  const [, setTronAddress] = useConfigReducer('tronAddress');
-  const [, setMetamaskAddress] = useConfigReducer('metamaskAddress');
-  const [, setBtcAddress] = useConfigReducer('btcAddress');
+  const [tronAddr, setTronAddress] = useConfigReducer('tronAddress');
+  const [metamaskAddr, setMetamaskAddress] = useConfigReducer('metamaskAddress');
+  const [btcAddr, setBtcAddress] = useConfigReducer('btcAddress');
   const [, setStatusChangeAccount] = useConfigReducer('statusChangeAccount');
   const loadTokenAmounts = useLoadTokens();
   const [persistVersion, setPersistVersion] = useConfigReducer('persistVersion');
@@ -133,8 +133,10 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    const checkHasAddressOnStorage = address || tronAddr || metamaskAddr || btcAddr;
+
     // just auto connect keplr in mobile mode
-    mobileMode && keplrHandler();
+    (mobileMode || checkHasAddressOnStorage) && keplrHandler();
   }, [mobileMode]);
 
   useEffect(() => {
@@ -158,6 +160,7 @@ const App = () => {
 
       if (walletByNetworks.cosmos || mobileMode) {
         oraiAddress = await window.Keplr.getKeplrAddr();
+
         if (oraiAddress) {
           const { listAddressCosmos } = await getListAddressCosmos(oraiAddress, walletByNetworks.cosmos);
           setCosmosAddress(listAddressCosmos);
