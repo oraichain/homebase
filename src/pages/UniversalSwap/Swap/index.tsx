@@ -798,6 +798,7 @@ const SwapComponent: React.FC<{
           }}
           prices={prices}
           isSelectToken={isSelectChainTo}
+          filterChainId={['Oraichain']}
         />
         <SelectChain
           setIsSelectToken={setIsSelectChainFrom}
@@ -810,6 +811,7 @@ const SwapComponent: React.FC<{
             setTokenDenomFromChain(chain, 'from');
           }}
           isSelectToken={isSelectChainFrom}
+          filterChainId={['Oraichain']}
         />
       </div>
 
