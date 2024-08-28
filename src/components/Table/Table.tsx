@@ -1,8 +1,11 @@
+import cn from 'classnames/bind';
 import { ReactComponent as SortDownIcon } from 'assets/icons/down_icon.svg';
 import { ReactComponent as SortUpIcon } from 'assets/icons/up_icon.svg';
-import { compareNumber } from 'helper';
+import { compareNumber, divNumber } from 'helper';
 import { ReactNode, useState } from 'react';
 import styles from './Table.module.scss';
+
+const cx = cn.bind(styles);
 
 export type HeaderDataType<T extends object> = {
   name: string;
@@ -20,6 +23,7 @@ export type TableProps<T extends object> = {
   data: T[];
   stylesColumn?: React.CSSProperties;
   handleClickRow?: (event: React.MouseEvent<HTMLTableRowElement, MouseEvent>, record: T) => void;
+  noData?: ReactNode;
 };
 
 export enum SortType {
@@ -112,7 +116,8 @@ export const Table = <T extends object>({
   headers,
   data,
   handleClickRow,
-  stylesColumn
+  stylesColumn,
+  noData
 }: TableProps<T>) => {
   const [sort, setSort] = useState<Record<keyof T, SortType>>({
     [defaultSorted]: SortType.DESC
@@ -137,6 +142,7 @@ export const Table = <T extends object>({
     setSort(newSort);
     sortDataSource(data, newSort);
   };
+  const isNoData = !data.length && noData;
 
   return (
     <table className={styles.table}>
@@ -164,21 +170,27 @@ export const Table = <T extends object>({
           })}
         </tr>
       </thead>
-      <tbody>
-        {sortDataSource(data, sort).map((datum, index) => {
-          return (
-            <tr style={stylesColumn} key={index} onClick={(event) => handleClickRow && handleClickRow(event, datum)}>
-              {Object.keys(headers).map((key, index) => {
-                const customStyle = getCustomStyleByColumnKey(headers, key);
-                return (
-                  <td key={index} style={customStyle}>
-                    {headers[key].accessor(datum)}
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
+      <tbody className={cx({ 'no-data': isNoData })}>
+        {isNoData
+          ? noData
+          : sortDataSource(data, sort).map((datum, index) => {
+              return (
+                <tr
+                  style={stylesColumn}
+                  key={index}
+                  onClick={(event) => handleClickRow && handleClickRow(event, datum)}
+                >
+                  {Object.keys(headers).map((key, index) => {
+                    const customStyle = getCustomStyleByColumnKey(headers, key);
+                    return (
+                      <td key={index} style={customStyle}>
+                        {headers[key].accessor(datum)}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
       </tbody>
     </table>
   );

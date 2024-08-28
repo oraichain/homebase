@@ -17,7 +17,7 @@ type ButtonType =
   | 'error-sm';
 interface Props {
   type: ButtonType;
-  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   children: React.ReactElement | React.ReactNode;
   disabled?: boolean;
   icon?: React.ReactElement | React.ReactNode;

@@ -2,6 +2,7 @@ import { ReactComponent as BuyCryptoIcon } from 'assets/icons/buy_crypto.svg';
 import { ReactComponent as CoHavestIcon } from 'assets/icons/co_harvest.svg';
 import { ReactComponent as GovernanceIcon } from 'assets/icons/governance.svg';
 import { ReactComponent as GpuStakingIcon } from 'assets/icons/gpu_staking.svg';
+import { ReactComponent as GpuCreditIcon } from 'assets/icons/gpu_credit.svg';
 import { ReactComponent as HomeBaseIcon } from 'assets/icons/homebase.svg';
 import { ReactComponent as GitIcon } from 'assets/icons/ic_github.svg';
 import { ReactComponent as DiscordIcon } from 'assets/icons/ic_discord.svg';
@@ -103,6 +104,7 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
           <div className={classNames(styles.menu_items)}>
             {renderLink('/homebase', 'Homebase', setLink, <HomeBaseIcon />)}
             {renderLink('/gpu-staking', 'GPU Staking', setLink, <GpuStakingIcon />)}
+            {renderLink('/gpu-credit', 'GPU Credit', setLink, <GpuCreditIcon />)}
             {renderLink(
               'https://scan.orai.io/validators',
               'ORAI Staking',

@@ -1,0 +1,282 @@
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.container {
+  display: inline-flex;
+  // padding: 32px 0px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 56px;
+
+  .title {
+    color: var(--Colors-Neutral-Text-heading, #f7f7f7);
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 28px;
+  }
+
+  a.external {
+    color: var(--Colors-Primary-Text-action, #b999f3);
+    font-family: 'IBM Plex Sans';
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px; /* 125% */
+
+    @include mobile {
+      display: none;
+    }
+
+    svg {
+      path {
+        fill: #b999f3;
+      }
+
+      vertical-align: sub;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .statistics {
+    display: flex;
+    gap: var(--Dimensions-40, 40px);
+
+    align-self: stretch;
+    align-items: stretch;
+
+    & > * {
+      flex: 1;
+
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .daily-credit-usage {
+      .chart {
+        padding-top: 20px;
+
+        canvas {
+          max-height: 250px;
+        }
+      }
+    }
+
+    .gpu-statistics {
+      .content {
+        flex-grow: 1;
+
+        .basic-info {
+          // width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 16px;
+
+          & > * {
+            flex: 1;
+          }
+
+          .header {
+            color: var(--Colors-Neutral-Text-placeholder, #83838a);
+          }
+          .value {
+            font-size: 1.5em;
+          }
+        }
+
+        .gpu-detail {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+
+          & > * {
+            flex: 1;
+          }
+
+          .gpu {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            .usage {
+              display: flex;
+              justify-content: space-between;
+
+              .text {
+                color: var(--Colors-Neutral-Text-placeholder, #83838a);
+              }
+            }
+            .progress {
+              height: var(--Dimensions-16, 16px);
+              border: var(--Colors-Neutral-Border-default, #383b40) 1px solid;
+
+              .percent-value {
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: var(--Colors-Neutral-Border-progress-bar, #83838a) 1px solid;
+                background-color: var(--Colors-Neutral-Surface-progess-bar, rgba(131, 131, 138, 0.5));
+              }
+            }
+          }
+          .link {
+            line-height: 32px;
+          }
+        }
+      }
+    }
+  }
+
+  .personal-info {
+    padding: 32px 24px 32px 24px;
+    border-radius: var(--Dimension-Corner-Radius-row, 8px);
+    background: linear-gradient(180deg, #1f1f20 0%, #141416 321px);
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .intro {
+      display: flex;
+      gap: 32px;
+
+      & > .text {
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+
+        .content {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+
+          p {
+            color: var(--Colors-Neutral-Text-placeholder, #83838a);
+          }
+
+          .link {
+            line-height: 32px;
+          }
+        }
+      }
+      .interaction {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        .credit-balance {
+          background-image: url('../../assets/images/bg-gpu-credit-balance.png');
+          background-repeat: no-repeat;
+          background-size: cover;
+          border-radius: 8px;
+          border: 1px solid var(--Colors-Neutral-Border-default, #383b40);
+          flex-grow: 1;
+
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 24px;
+
+          .info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .text {
+              font-size: 16px;
+              line-height: 24px;
+            }
+            .value {
+              font-size: 32px;
+              line-height: 130%;
+              color: var(--Colors-Neutral-Text-heading, #f7f7f7);
+            }
+          }
+          .list-buttons {
+            display: flex;
+            gap: 16px;
+
+            button {
+              padding: 14px 24px;
+
+              &:disabled {
+                opacity: 1;
+                color: var(--Colors-Neutral-Text-disable, #47474b);
+
+                display: flex;
+                justify-content: center;
+
+                svg {
+                  path {
+                    fill: var(--Colors-Neutral-Text-disable, #47474b);
+                  }
+
+                  width: 20px;
+                  height: 20px;
+                }
+              }
+            }
+          }
+        }
+
+        .go-to-panel {
+          display: flex;
+          justify-content: space-between;
+          gap: 16px;
+
+          a {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: var(--Dimension-Corner-Radius-check-box, 4px);
+            border: 1px solid var(--Colors-Neutral-Border-light, #242627);
+            // width: 45%;
+          }
+        }
+      }
+    }
+    .credit-usage-history {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .title {
+        line-height: 24px;
+      }
+      .table {
+        border-radius: var(--Dimension-Corner-Radius-row, 8px);
+        border: 1px solid var(--Colors-Neutral-Border-default, #383b40);
+        padding-bottom: 24px;
+
+        th {
+          color: var(--Colors-Neutral-Text-placeholder, #83838a);
+          font-family: 'IBM Plex Sans';
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 150%; /* 18px */
+          letter-spacing: 0.012px;
+        }
+
+        .no-data {
+          height: 222px;
+          border-bottom: none;
+
+          td {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+}
