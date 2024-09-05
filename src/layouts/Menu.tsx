@@ -12,7 +12,7 @@ import { Link, useLocation } from 'react-router-dom';
 import styles from './Menu.module.scss';
 import Sidebar from './Sidebar';
 import TopBarIcon from 'assets/images/flicker-dot.svg';
-import GithubConnect from 'components/GithubConnect/GithubConnect';
+import { GithubConnect } from 'components/GithubConnect';
 
 const Menu: React.FC = () => {
   const location = useLocation();
