@@ -147,3 +147,21 @@
   padding: 4px 16px;
   border-radius: 8px;
 }
+
+.fourth {
+  padding: var(--dimension-padding-btn-y-padding-l, 16px) var(--dimension-padding-btn-x-padding-m, 12px);
+  color: var(--Colors-Primary-Text-action, #b999f3);
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 142.857% */
+  border: 1px solid transparent;
+  border-radius: var(--Dimension-Corner-Radius-button, 8px);
+
+  &:hover {
+    opacity: 1;
+    border: 1px solid var(--Colors-Neutral-Border-default, #383b40);
+    background: var(--Colors-Neutral-Surface-hover, #47474b);
+  }
+}
