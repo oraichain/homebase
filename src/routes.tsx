@@ -6,7 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import GpuCredit from 'pages/GpuCredit';
 import GpuStaking from 'pages/GpuStaking';
 import UniversalSwap from 'pages/UniversalSwap/index';
-import GithubLogin from 'pages/GithubLogin/GithubLogin';
+import GithubLogin from 'pages/GithubLogin';
 
 export default () => (
   <Suspense

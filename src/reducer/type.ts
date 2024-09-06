@@ -196,6 +196,15 @@ export interface OrderResponseContract {
   orders: OrderDetailFromContract[];
 }
 
+export interface AuthState {
+  token: {
+    access: string;
+    refresh: string;
+  };
+  accountName: string;
+  credit: number;
+}
+
 export enum OrderStatus {
   OPEN = 'OPEN',
   FUL_FILLED = 'FUL_FILLED',

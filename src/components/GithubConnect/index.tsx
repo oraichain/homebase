@@ -1,57 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import HeadlessTippy from '@tippyjs/react/headless';
-import { useLocation } from 'react-router-dom';
-import crypto from 'crypto';
-
-import styles from './index.module.scss';
-import 'tippy.js/dist/tippy.css'; // optional for styling
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from 'components/Button';
+import { RootState } from 'store/configure';
 import { ReactComponent as GitHubIcon } from 'assets/icons/github.svg';
 import ConnectedImg from 'assets/images/connected-img.png';
 import DropdownIcon from 'assets/icons/nav-arrow-down.svg';
 import LogoutIcon from 'assets/icons/logout-git.svg';
-import {
-  getGithubCode,
-  getLatestCsrf,
-  removeGithubCode,
-  removeLatestCsrf,
-  setGithubCode,
-  setLatestCsrf
-} from 'utils/githubCode';
+import { handleConnectGithub } from './helper';
+import { reset } from 'reducer/auth';
+import styles from './index.module.scss';
+import 'tippy.js/dist/tippy.css'; // optional for styling
 
 const cx = classNames.bind(styles);
+const creditCheckInterval = 1e4;
 
 export const GithubConnect: React.FC = () => {
-  const { pathname, search } = useLocation();
-  const [accountName, setAccountName] = useState('');
-
-  const [isConnected, setIsConnected] = useState(() => !!getGithubCode());
-  const [credit, setCredit] = useState(152);
-
-  const handleConnectGithub = () => {
-    const csrf = crypto.randomBytes(16).toString('hex');
-    setLatestCsrf(csrf);
-
-    window.location.assign(
-      `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&state=${csrf}&redirect_uri=${process.env.REACT_APP_URI}/github-login`
-    );
-  };
-
-  useEffect(() => {
-    if (pathname === '/github-login') {
-      const urlParams = new URLSearchParams(search);
-      const code = urlParams.get('code');
-      const latestCsrf = urlParams.get('state');
-
-      if (code && !getGithubCode() && latestCsrf && getLatestCsrf() && latestCsrf === getLatestCsrf()) {
-        removeLatestCsrf();
-        setGithubCode(code);
-        setIsConnected(true);
-      }
-    }
-  }, [pathname, search]);
+  const dispatch = useDispatch();
+  const accountName = useSelector((state: RootState) => state.auth.accountName);
+  const credit = useSelector((state: RootState) => state.auth.credit);
+  const { access: accessToken } = useSelector((state: RootState) => state.auth.token);
 
   return (
     <div className={cx('wrapper')}>
@@ -61,7 +31,7 @@ export const GithubConnect: React.FC = () => {
         </Button>
       </div>
 
-      {isConnected ? (
+      {accountName ? (
         <HeadlessTippy
           interactive
           trigger="click"
@@ -74,8 +44,8 @@ export const GithubConnect: React.FC = () => {
                 name: 'Log out',
                 icon: LogoutIcon,
                 onCLick: () => {
-                  removeGithubCode();
-                  setIsConnected(false);
+                  // remove token
+                  dispatch(reset());
                 }
               }
             ];
@@ -98,7 +68,7 @@ export const GithubConnect: React.FC = () => {
 
             <div className={cx('connected-content')}>
               <div className={cx('connected-info')}>
-                <h1 className={cx('connected-info--name')}>hoangla16</h1>
+                <h1 className={cx('connected-info--name')}>{accountName}</h1>
                 <h1 className={cx('connected-info--credit')}>{credit} credits</h1>
               </div>
 
