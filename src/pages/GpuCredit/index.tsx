@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import cn from 'classnames/bind';
 import { Bar } from 'react-chartjs-2';
 import { CategoryScale, BarElement } from 'chart.js';
@@ -14,27 +16,38 @@ import { ReactComponent as KeyIcon } from 'assets/icons/key.svg';
 import JupyterHubImg from 'assets/images/jupyterhub.png';
 import { Table, TableHeaderProps } from 'components/Table';
 import { Button } from 'components/Button';
+import { handleConnectGithub } from 'components/GithubConnect/helper';
+import { RootState } from 'store/configure';
+// import axios from 'rest/request';
+import axios from 'axios';
 import styles from './index.module.scss';
+import { reset, setTokens } from 'reducer/auth';
 
 const cx = cn.bind(styles);
 Chart.register(CategoryScale, BarElement);
+const baseApiUrl = process.env.REACT_APP_BASE_GPU_API_URL;
 
 const GpuCredit: React.FC<{}> = () => {
+  const dispatch = useDispatch();
   const [gpuStatistics, setGpuStatistics] = useState({
-    totalCards: 22,
-    totalVRAM: 592,
-    totalUsage: 68.31
+    totalCards: 12,
+    totalVRAM: 295,
+    totalUsage: 0
   });
   const [gpuStatus, setGpuStatus] = useState([]);
   const [creditUsageHistoryData, setCreditUsageHistoryData] = useState([]);
   const [dailyCreditUsage, setDailyCreditUsage] = useState([]);
 
+  const tokens = useSelector((state: RootState) => state.auth.token);
+  const credit = useSelector((state: RootState) => state.auth.credit);
+  const loggedIn = !!tokens.access;
+
   const [chartData, setChartData] = useState({
-    labels: dailyCreditUsage.map((data) => data.year),
+    labels: dailyCreditUsage.map((data) => new Date(data.date).getDate()),
     datasets: [
       {
         // label: undefined,
-        data: dailyCreditUsage.map((data) => data.userGain),
+        data: dailyCreditUsage.map((data) => data.credit),
         backgroundColor: ['#7332E7'],
         borderColor: '#B999F3',
         borderWidth: 2,
@@ -44,103 +57,99 @@ const GpuCredit: React.FC<{}> = () => {
       }
     ]
   });
-  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    loggedIn &&
-      setCreditUsageHistoryData([
-        {
-          timestamp: '26/08/2024',
-          action: '10 hours usage',
-          creditUsage: -101
-        },
-        {
-          timestamp: '26/08/2024',
-          action: '10 hours usage',
-          creditUsage: -101
-        },
-        {
-          timestamp: '26/08/2024',
-          action: '10 hours usage',
-          creditUsage: -101
-        },
-        {
-          timestamp: '26/08/2024',
-          action: '10 hours usage',
-          creditUsage: -101
+    if (loggedIn) {
+      const getData = async () => {
+        let promises;
+
+        try {
+          promises = await Promise.all([
+            axios.get(`${baseApiUrl}/credit-usage-history?filter=negative`, {
+              headers: { Authorization: `Bearer ${tokens.access}` }
+            }),
+            axios.get(`${baseApiUrl}/credit-usage-per-day`, { headers: { Authorization: `Bearer ${tokens.access}` } })
+          ]);
+        } catch (e) {
+          if (e.isAxiosError && e.response.status === 401) {
+            console.log('refreshing token...');
+            let refreshResp;
+            try {
+              refreshResp = await axios.post(`${baseApiUrl}/refresh-token`, { refreshToken: tokens.refresh });
+            } catch (e) {
+              return dispatch(reset());
+            }
+
+            const newTokens = {
+              access: refreshResp.data.accessToken,
+              refresh: refreshResp.data.refreshToken
+            };
+
+            return dispatch(setTokens(newTokens));
+          } else {
+            console.log('No retry?');
+          }
         }
-      ]);
-    setGpuStatus([
-      { name: 'VT1 4x RTX3090', capacity: 96, currentUsage: 58.5 },
-      { name: 'VT2 4x RTX3090', capacity: 96, currentUsage: 77.3 }
-    ]);
-    setDailyCreditUsage([
-      {
-        date: new Date(Date.now() - 13 * 864e5),
-        value: 5
-      },
-      {
-        date: new Date(Date.now() - 12 * 864e5),
-        value: 3
-      },
-      {
-        date: new Date(Date.now() - 11 * 864e5),
-        value: 40
-      },
-      {
-        date: new Date(Date.now() - 10 * 864e5),
-        value: 198
-      },
-      {
-        date: new Date(Date.now() - 9 * 864e5),
-        value: 225
-      },
-      {
-        date: new Date(Date.now() - 8 * 864e5),
-        value: 20
-      },
-      {
-        date: new Date(Date.now() - 7 * 864e5),
-        value: 6
-      },
-      {
-        date: new Date(Date.now() - 6 * 864e5),
-        value: 125
-      },
-      {
-        date: new Date(Date.now() - 5 * 864e5),
-        value: 74
-      },
-      {
-        date: new Date(Date.now() - 4 * 864e5),
-        value: 35
-      },
-      {
-        date: new Date(Date.now() - 3 * 864e5),
-        value: 250
-      },
-      {
-        date: new Date(Date.now() - 2 * 864e5),
-        value: 20
-      },
-      {
-        date: new Date(Date.now() - 1 * 864e5),
-        value: 6
-      },
-      {
-        date: new Date(Date.now() - 0 * 864e5),
-        value: 74
-      }
-    ]);
-  }, []);
+
+        const creditUsageHistory = promises[0].data.creditUsageHistory;
+        const totalCreditUsageEachDay = promises[1].data.totalCreditUsageEachDay;
+        // TODO: formatting data before print out
+
+        setCreditUsageHistoryData(creditUsageHistory);
+        setDailyCreditUsage(totalCreditUsageEachDay);
+      };
+      getData();
+    } else {
+      axios
+        .get(`${baseApiUrl}/credit-usage-per-day-of-server`)
+        .then(({ data }) => {
+          setDailyCreditUsage(data.totalCreditUsageEachDayByServer);
+        })
+        .catch((e) => {
+          console.error('Credit usage per day:', e);
+
+          // TODO: handle error
+          toast.error('failed to fetch daily credit usage');
+        });
+    }
+
+    axios
+      .get(`${baseApiUrl}/gpu-statistics`)
+      .then(({ data }) => {
+        const gpuStatisticsData = {
+          totalCards: data.numberOfCards,
+          totalVRAM: Math.round(data.totalVRAM),
+          totalUsage: data.totalUsage.toFixed(2).replace(/\.0+$/, '')
+        };
+        setGpuStatistics(gpuStatisticsData);
+
+        // TODO: set interval
+        // TODO: set real data
+        const gpuStatusData = data.hosts
+          .sort((host1, host2) => host2.vramUsage - host1.vramUsage)
+          .slice(0, 2)
+          .map((host) => ({
+            name: `${host.name} ${host.gpuNumber}x ${host.gpuName}`,
+            capacity: Math.floor(host.totalVRAM),
+            currentUsage: Math.floor(host.vramUsage)
+          }));
+        setGpuStatus(gpuStatusData);
+      })
+      .catch((e) => {
+        console.error('gpu-statistics:', e);
+
+        // TODO: handle error
+        toast.error('failed to fetch gpu statistics');
+      });
+  }, [tokens]);
 
   useEffect(() => {
     setChartData({
-      labels: dailyCreditUsage.map((data) => data.date.getDate()),
+      labels: dailyCreditUsage.map((data) => new Date(data.date).getDate()),
       datasets: [
         {
           // label: undefined,
-          data: dailyCreditUsage.map((data) => data.value),
+          data: dailyCreditUsage.map((data) => data.credit),
           backgroundColor: ['#7332E7'],
           borderColor: '#B999F3',
           borderWidth: 2,
@@ -174,7 +183,7 @@ const GpuCredit: React.FC<{}> = () => {
   const creditUsageHistoryHeaders: TableHeaderProps<any> = {
     timestamp: {
       name: 'TIMESTAMP',
-      accessor: (data) => data.timestamp,
+      accessor: (data) => new Date(data.timestamp).toISOString().replace(/T.+$/, ''),
       width: '30%',
       align: 'left',
       padding: `0px 0px 0px 24px`
@@ -187,7 +196,7 @@ const GpuCredit: React.FC<{}> = () => {
     },
     creditUsage: {
       name: 'CREDIT USAGE',
-      accessor: (data) => data.creditUsage,
+      accessor: (data) => data.credit,
       width: '30%',
       align: 'left'
     }
@@ -241,9 +250,8 @@ const GpuCredit: React.FC<{}> = () => {
               <hr style={{ width: '100%' }} />
               <div className={cx('gpu-detail')}>
                 {gpuStatusElements}
-                {/* TODO: add link href */}
                 <a
-                  href="https://google.com"
+                  href="https://oraichain.notion.site/Decentralized-GPU-Infra-edafbc5aded04262ad6003ee392cfdc3"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cx('link', 'external')}
@@ -271,9 +279,8 @@ const GpuCredit: React.FC<{}> = () => {
                   - Optimize cost
                   <br />- Reduce common infrastructure risks of relying on a single provider.
                 </p>
-                {/* TODO: add Link */}
                 <a
-                  href="https://google.com"
+                  href="https://oraichain.notion.site/Decentralized-GPU-Infra-edafbc5aded04262ad6003ee392cfdc3?pvs=74"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cx('link', 'external')}
@@ -286,7 +293,7 @@ const GpuCredit: React.FC<{}> = () => {
               <div className={cx('credit-balance')}>
                 <div className={cx('info')}>
                   <div className={cx('text')}>Your Credits</div>
-                  <div className={cx('value')}>0</div>
+                  <div className={cx('value')}>{tokens.access ? credit : 0}</div>
                 </div>
                 <div className={cx('list-buttons')}>
                   {loggedIn ? (
@@ -294,14 +301,18 @@ const GpuCredit: React.FC<{}> = () => {
                       <Button type="third" disabled={true} icon={<AddIcon />}>
                         Buy Credit <TimeIcon />
                       </Button>
-                      {/* TODO: add action */}
-                      <Button type="primary" onClick={() => {}} icon={<KeyIcon />}>
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          window.open('https://forms.gle/MkAj3Cu8ZeG7pT6eA');
+                        }}
+                        icon={<KeyIcon />}
+                      >
                         Apply for Credit
                       </Button>
                     </>
                   ) : (
-                    /* TODO: add action */
-                    <Button type="primary" onClick={() => {}}>
+                    <Button type="primary" onClick={handleConnectGithub}>
                       <GitHubIcon /> Login to apply
                     </Button>
                   )}
@@ -310,8 +321,17 @@ const GpuCredit: React.FC<{}> = () => {
               <div className={cx('go-to-panel')}>
                 {loggedIn ? (
                   <>
-                    {/* TODO: Go to Jupyter */}
-                    <a target="_blank" href="https://google.com" rel="noreferrer">
+                    <a
+                      target="_blank"
+                      href="https://jupyterhub.orai.network"
+                      rel="noreferrer"
+                      onClick={(e) => {
+                        if (!credit) {
+                          e.preventDefault();
+                          alert('You have no credit. Please apply for credit first.');
+                        }
+                      }}
+                    >
                       <img src={JupyterHubImg} alt="jupyterhub" />
                       <JumpIcon />
                     </a>

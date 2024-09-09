@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import HeadlessTippy from '@tippyjs/react/headless';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 import { Button } from 'components/Button';
 import { RootState } from 'store/configure';
@@ -10,18 +11,17 @@ import ConnectedImg from 'assets/images/connected-img.png';
 import DropdownIcon from 'assets/icons/nav-arrow-down.svg';
 import LogoutIcon from 'assets/icons/logout-git.svg';
 import { handleConnectGithub } from './helper';
-import { reset } from 'reducer/auth';
+import { setCredit, setTokens, reset } from 'reducer/auth';
 import styles from './index.module.scss';
 import 'tippy.js/dist/tippy.css'; // optional for styling
 
 const cx = classNames.bind(styles);
-const creditCheckInterval = 1e4;
 
 export const GithubConnect: React.FC = () => {
   const dispatch = useDispatch();
   const accountName = useSelector((state: RootState) => state.auth.accountName);
   const credit = useSelector((state: RootState) => state.auth.credit);
-  const { access: accessToken } = useSelector((state: RootState) => state.auth.token);
+  const { access: accessToken, refresh: refreshToken } = useSelector((state: RootState) => state.auth.token);
 
   return (
     <div className={cx('wrapper')}>

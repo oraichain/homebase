@@ -22,7 +22,6 @@ const GithubLogin: React.FC = () => {
     let resp;
     try {
       resp = await axios.post(`${process.env.REACT_APP_BASE_GPU_API_URL}/github-auth`, { code });
-      console.log('login ok');
     } catch (error) {
       // TODO: handle error case
       console.log('login failed');
