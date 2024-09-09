@@ -18,17 +18,14 @@ import { Table, TableHeaderProps } from 'components/Table';
 import { Button } from 'components/Button';
 import { handleConnectGithub } from 'components/GithubConnect/helper';
 import { RootState } from 'store/configure';
-// import axios from 'rest/request';
-import axios from 'axios';
+import axios, { axiosAuth } from 'rest/request';
 import styles from './index.module.scss';
-import { reset, setTokens } from 'reducer/auth';
 
 const cx = cn.bind(styles);
 Chart.register(CategoryScale, BarElement);
 const baseApiUrl = process.env.REACT_APP_BASE_GPU_API_URL;
 
 const GpuCredit: React.FC<{}> = () => {
-  const dispatch = useDispatch();
   const [gpuStatistics, setGpuStatistics] = useState({
     totalCards: 12,
     totalVRAM: 295,
@@ -65,38 +62,24 @@ const GpuCredit: React.FC<{}> = () => {
 
         try {
           promises = await Promise.all([
-            axios.get(`${baseApiUrl}/credit-usage-history?filter=negative`, {
+            axiosAuth.get(`${baseApiUrl}/credit-usage-history?filter=negative`, {
               headers: { Authorization: `Bearer ${tokens.access}` }
             }),
-            axios.get(`${baseApiUrl}/credit-usage-per-day`, { headers: { Authorization: `Bearer ${tokens.access}` } })
+            axiosAuth.get(`${baseApiUrl}/credit-usage-per-day`, {
+              headers: { Authorization: `Bearer ${tokens.access}` }
+            })
           ]);
         } catch (e) {
-          if (e.isAxiosError && e.response.status === 401) {
-            console.log('refreshing token...');
-            let refreshResp;
-            try {
-              refreshResp = await axios.post(`${baseApiUrl}/refresh-token`, { refreshToken: tokens.refresh });
-            } catch (e) {
-              return dispatch(reset());
-            }
-
-            const newTokens = {
-              access: refreshResp.data.accessToken,
-              refresh: refreshResp.data.refreshToken
-            };
-
-            return dispatch(setTokens(newTokens));
-          } else {
-            console.log('No retry?');
-          }
         }
 
-        const creditUsageHistory = promises[0].data.creditUsageHistory;
-        const totalCreditUsageEachDay = promises[1].data.totalCreditUsageEachDay;
-        // TODO: formatting data before print out
+        // TODO: refactor this, promises may get [undefined, undefined] due to interceptors
+        if (promises && promises[0] && promises[1]) {
+          const creditUsageHistory = promises[0].data.creditUsageHistory;
+          const totalCreditUsageEachDay = promises[1].data.totalCreditUsageEachDay;
 
-        setCreditUsageHistoryData(creditUsageHistory);
-        setDailyCreditUsage(totalCreditUsageEachDay);
+          setCreditUsageHistoryData(creditUsageHistory);
+          setDailyCreditUsage(totalCreditUsageEachDay);
+        }
       };
       getData();
     } else {
