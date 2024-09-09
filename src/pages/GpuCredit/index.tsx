@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import cn from 'classnames/bind';
 import { Bar } from 'react-chartjs-2';
@@ -69,7 +69,11 @@ const GpuCredit: React.FC<{}> = () => {
               headers: { Authorization: `Bearer ${tokens.access}` }
             })
           ]);
-        } catch (e) {}
+        } catch (e) {
+          console.error('Credit usage history:', e);
+
+          toast.error('Failed to qery credit usage');
+        }
 
         // TODO: refactor this, promises may get [undefined, undefined] due to interceptors
         if (promises && promises[0] && promises[1]) {
@@ -91,7 +95,7 @@ const GpuCredit: React.FC<{}> = () => {
           console.error('Credit usage per day:', e);
 
           // TODO: handle error
-          toast.error('failed to fetch daily credit usage');
+          toast.error('Failed to fetch daily credit usage');
         });
     }
 
@@ -121,7 +125,7 @@ const GpuCredit: React.FC<{}> = () => {
         console.error('gpu-statistics:', e);
 
         // TODO: handle error
-        toast.error('failed to fetch gpu statistics');
+        toast.error('Failed to fetch gpu statistics');
       });
   }, [tokens]);
 

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import HeadlessTippy from '@tippyjs/react/headless';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { Button } from 'components/Button';
 import { RootState } from 'store/configure';
@@ -33,7 +34,11 @@ export const GithubConnect: React.FC = () => {
             Authorization: `Bearer ${accessToken}`
           }
         });
-      } catch (e) {}
+      } catch (e) {
+        console.error('Credit remain:', e);
+
+        toast.error('Failed to query credit balance');
+      }
       resp && dispatch(setCredit(resp.data.creditRemain));
     };
     accessToken && getCreditData();
