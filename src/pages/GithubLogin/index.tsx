@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
 
 import axios from 'rest/request';
@@ -18,31 +19,35 @@ const GithubLogin: React.FC = () => {
   const code = urlParams.get('code');
   const latestCsrf = urlParams.get('state');
 
-  const login = async () => {
-    let resp;
-    try {
-      resp = await axios.post(`${process.env.REACT_APP_BASE_GPU_API_URL}/github-auth`, { code });
-    } catch (error) {
-      // TODO: handle error case
-      console.log('login failed');
+  useEffect(() => {
+    const login = async () => {
+      const resp = await axios.post(`${process.env.REACT_APP_BASE_GPU_API_URL}/github-auth`, { code });
+
+      const { accessToken, refreshToken, creditRemain, username } = resp.data;
+
+      dispatch(setTokens({ access: accessToken, refresh: refreshToken }));
+      dispatch(setCredit(creditRemain));
+      dispatch(setAccountName(username));
+    };
+
+    if (code && latestCsrf && latestCsrf === getLatestCsrf()) {
+      // TODO: refactor this for better UX
+      login().then(() => {
+        toast.success('Login success');
+        setTimeout(() => {
+          window.history.back();
+        }, 3);
+      }).catch(() => {
+        toast.error('Login failed');
+        setTimeout(() => {
+          window.location.assign('/');
+        }, 5);
+      });
+    } else {
+      // TODO: print error message
+      console.log('not login');
     }
-
-    const { accessToken, refreshToken, creditRemain, username } = resp.data;
-
-    dispatch(setTokens({ access: accessToken, refresh: refreshToken }));
-    dispatch(setCredit(creditRemain));
-    dispatch(setAccountName(username));
-  };
-
-  if (code && latestCsrf && getLatestCsrf() && latestCsrf === getLatestCsrf()) {
-    login().then(() => {
-      // TODO: show message login success
-      window.history.back();
-    });
-  } else {
-    // TODO: print error message
-    console.log('not login');
-  }
+  }, [code, latestCsrf]);
 
   return (
     <div className={cx('wrapper')}>

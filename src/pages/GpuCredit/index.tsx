@@ -69,8 +69,7 @@ const GpuCredit: React.FC<{}> = () => {
               headers: { Authorization: `Bearer ${tokens.access}` }
             })
           ]);
-        } catch (e) {
-        }
+        } catch (e) {}
 
         // TODO: refactor this, promises may get [undefined, undefined] due to interceptors
         if (promises && promises[0] && promises[1]) {
@@ -295,8 +294,8 @@ const GpuCredit: React.FC<{}> = () => {
                       </Button>
                     </>
                   ) : (
-                    <Button type="primary" onClick={handleConnectGithub}>
-                      <GitHubIcon /> Login to apply
+                    <Button type="primary" onClick={handleConnectGithub} icon={<GitHubIcon />}>
+                      Login to apply
                     </Button>
                   )}
                 </div>
