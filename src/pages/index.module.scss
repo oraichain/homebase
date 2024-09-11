@@ -48,11 +48,14 @@
     border-radius: 16px;
 
     border: 1px solid;
-    border-image: linear-gradient(99.99deg,
+    border-image: linear-gradient(
+        99.99deg,
         rgba(255, 255, 255, 0) 0%,
         rgba(255, 255, 255, 0.15) 26.06%,
         rgba(225, 240, 255, 0.202656) 64.17%,
-        rgba(232, 241, 255, 0) 98.89%) 1;
+        rgba(232, 241, 255, 0) 98.89%
+      )
+      1;
 
     @include mobile {
       padding-left: 0;
@@ -310,5 +313,4 @@
       transform: translate(-50%, -50%);
     }
   }
-
 }

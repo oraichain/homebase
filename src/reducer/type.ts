@@ -1,4 +1,4 @@
-import { TokenItemType, CustomChainInfo } from '@oraichain/oraidex-common';
+import { NetworkName, TokenItemType, CustomChainInfo } from '@oraichain/oraidex-common';
 import { OrderDirection } from '@oraichain/oraidex-contracts-sdk/build/OraiswapLimitOrder.types';
 import { Themes } from 'context/theme-context';
 import { CoinGeckoPrices } from 'hooks/useCoingecko';
@@ -65,6 +65,13 @@ export type PairToken = {
   info: string;
 };
 
+export enum FILTER_TIME_CHART {
+  'DAY' = '1D',
+  '7DAY' = '7D',
+  'MONTH' = '1M',
+  '3MONTH' = '3M'
+}
+
 export type InfoAToken = {
   key: string;
   pair: string;
@@ -79,6 +86,9 @@ export type InfoAToken = {
 export interface TradingState {
   currentToken: PairToken | null;
   chartTimeFrame: number;
+  currentToChain: NetworkName | '';
+  currentToToken: TokenItemType | null;
+  currentFromToken: TokenItemType | null;
 }
 
 export interface PoolChartState {

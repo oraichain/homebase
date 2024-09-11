@@ -1,12 +1,22 @@
 import { Cw20Coin } from '@oraichain/common-contracts-sdk';
 import { InstantiateMarketingInfo } from '@oraichain/common-contracts-sdk/build/Cw20Base.types';
-import { validateNumber, INJECTIVE_CONTRACT, ORAI, USDC_CONTRACT, ORAIX_CONTRACT } from '@oraichain/oraidex-common';
+import {
+  validateNumber,
+  INJECTIVE_CONTRACT,
+  ORAI,
+  USDC_CONTRACT,
+  ORAIX_CONTRACT,
+  BigDecimal,
+  GAS_ESTIMATION_BRIDGE_DEFAULT,
+  TokenItemType
+} from '@oraichain/oraidex-common';
 import { Asset, AssetInfo } from '@oraichain/oraidex-contracts-sdk';
 import { MinterResponse } from '@oraichain/oraidex-contracts-sdk/build/OraiswapToken.types';
 import { formatDate } from './timer';
 import { TIMER } from './timer';
 import { FILTER_DAY } from 'reducer/type';
 import axios from 'rest/request';
+import { feeEstimate } from 'helper';
 
 // TODO: hardcode reverse symbol for ORAI/INJ,USDC/ORAIX, need to update later
 export const reverseSymbolArr = [
@@ -244,4 +254,37 @@ export const getUtxos = async (address: string, baseUrl: string) => {
     url: `/address/${address}/utxo`
   });
   return data;
+};
+
+export const calcMaxAmount = ({
+  maxAmount,
+  token,
+  coeff,
+  gas = GAS_ESTIMATION_BRIDGE_DEFAULT
+}: {
+  maxAmount: number;
+  token: TokenItemType;
+  coeff: number;
+  gas?: number;
+}) => {
+  if (!token) return maxAmount;
+
+  let finalAmount = maxAmount;
+
+  const feeCurrencyOfToken = token.feeCurrencies?.find((e) => e.coinMinimalDenom === token.denom);
+
+  if (feeCurrencyOfToken) {
+    const useFeeEstimate = feeEstimate(token, gas);
+
+    if (coeff === 1) {
+      finalAmount = useFeeEstimate > finalAmount ? 0 : new BigDecimal(finalAmount).sub(useFeeEstimate).toNumber();
+    } else {
+      finalAmount =
+        useFeeEstimate > new BigDecimal(maxAmount).sub(new BigDecimal(finalAmount).mul(coeff)).toNumber()
+          ? 0
+          : finalAmount;
+    }
+  }
+
+  return finalAmount;
 };

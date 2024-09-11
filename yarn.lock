@@ -1222,6 +1222,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@chain-registry/types@^0.45.69":
+  version "0.45.69"
+  resolved "https://registry.yarnpkg.com/@chain-registry/types/-/types-0.45.69.tgz#30d8f68bf7500f3273e74a31882c96cab8ba6db3"
+  integrity sha512-Jd2K7SW7vn07Fzap2UNv0r3kEoZOkiCcRAIiWUMDDQupWkKi5Qd3yb/1GToU7hefkQpjdoKoyB4WJTT5u5fHIA==
+
 "@colors/colors@1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
@@ -3023,9 +3028,9 @@
     react-use-websocket "^4.5.0"
 
 "@oraichain/oraidex-common@^1.0.91":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-common/-/oraidex-common-1.1.3.tgz#10e458f7eb7713910dc250e1587dff5cfa949e06"
-  integrity sha512-pVXKNDofnUp3iYl9153lrCVYPxz9H3gLPCWXZN5OEMFCmjIZU+4WMJgvgoe6OV9Fmw4z+DUus2cfhknP7hQw5A==
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-common/-/oraidex-common-1.1.6.tgz#e5fbc8edd911f8c6924b87ce0fe75cc5a3b484f4"
+  integrity sha512-XUTpvukbtff6UkK25kfE+wHxraFeum6QDZOnHy0k/VVv44FUUlWzWyo/h/D85LyDuKD4u01ryHMmU8XR7M0X7w==
   dependencies:
     "@cosmjs/amino" "0.31.3"
     "@cosmjs/cosmwasm-stargate" "0.31.3"
@@ -3054,24 +3059,24 @@
   resolved "https://registry.yarnpkg.com/@oraichain/oraidex-contracts-sdk/-/oraidex-contracts-sdk-1.0.42.tgz#600910cd841ed14436e5ab49d7ba85e3712d81fd"
   integrity sha512-fxfzYJWYFl4eLFwnENTm1CeL838cTU4MriLA8AwzFGodQyoxaxs4f/uqFbS/mDjWct4yVJm9rqi0T3UOIkTW4g==
 
-"@oraichain/oraidex-contracts-sdk@^1.0.43":
-  version "1.0.43"
-  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-contracts-sdk/-/oraidex-contracts-sdk-1.0.43.tgz#d8c8e425d8104356dc0afaa78530d2e9df3c4fe9"
-  integrity sha512-FpCnSjgMPsyTnkwiq/myYtOE4fN6B0gStJfskDen3TxYZc0SKxYzCt7jLP02gkEHnMl4QAiaa4QFBlnC2Lcm8g==
+"@oraichain/oraidex-contracts-sdk@^1.0.49":
+  version "1.0.50"
+  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-contracts-sdk/-/oraidex-contracts-sdk-1.0.50.tgz#e4a47b70e4966ef38a8728794d922058d329d434"
+  integrity sha512-t1wbiN7qvQysYhUDUKqnt8w7QMiNZhyjWWqDZby7Ufm9bXr63MFqFUzKye3cByyweq5nOCiGHvPJPD9vgZXSjw==
 
 "@oraichain/oraidex-contracts-sdk@latest":
   version "1.0.44"
   resolved "https://registry.yarnpkg.com/@oraichain/oraidex-contracts-sdk/-/oraidex-contracts-sdk-1.0.44.tgz#9ff41ec388dd92ba112c2eef545d11fd6e18c684"
   integrity sha512-fMY/QOzO/afPlAVkLGH1bcpJTs6V/URrJju2r4UoE9f5HUWC/6OC6+H5dWuIgq26frp8wjH23mNCQAlmHzji8g==
 
-"@oraichain/oraidex-universal-swap@1.0.97":
-  version "1.0.97"
-  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-universal-swap/-/oraidex-universal-swap-1.0.97.tgz#b43148f7416482a7d0011b114d38daaa46533a8d"
-  integrity sha512-riNd4V6/8Ov5xATXlDaDUwTbKKvmnbQxuhP12uJBEjrBUHkNQjgPNal2sr4B1Zu12Vvmdr2WSIWDsHIG40cxJg==
+"@oraichain/oraidex-universal-swap@1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-universal-swap/-/oraidex-universal-swap-1.1.4.tgz#134019ac5c69d6be5aca58380f982375a94f3d54"
+  integrity sha512-XkJRQWG6n1YYKRFcVGpjRTKS0sU60jgxwJB4lj0SgP5M2Kd1WsBCBj0dw44QxwZMm3Lzw9rufDzNgGWJZMGvAQ==
   dependencies:
     "@oraichain/common" "^1.0.3"
     "@oraichain/oraidex-common" "^1.0.91"
-    "@oraichain/oraidex-contracts-sdk" "^1.0.43"
+    "@oraichain/oraidex-contracts-sdk" "^1.0.49"
     bech32 "1.1.4"
     ethers "^5.0.15"
     tronweb "5.3.2"
@@ -6083,6 +6088,13 @@ catharsis@^0.9.0:
   integrity sha512-prMTQVpcns/tzFgFVkVp6ak6RykZyWb3gu8ckUpd6YkTlacOd3DXGJjIpD4Q6zJirizvaiAjSSHlOsA+6sNh2A==
   dependencies:
     lodash "^4.17.15"
+
+chain-registry@^1.63.86:
+  version "1.63.86"
+  resolved "https://registry.yarnpkg.com/chain-registry/-/chain-registry-1.63.86.tgz#b68b26756f724db1ecdeead8321a69e4924c3173"
+  integrity sha512-0B9SpxapVW49NJ8k1u+d38XIdcHySDE33zWcE91cPwpytOhHuifbXi/+S2UEQW2wuhLY31L/uAYgvPnGOiUm3w==
+  dependencies:
+    "@chain-registry/types" "^0.45.69"
 
 chalk-template@^0.4.0:
   version "0.4.0"
