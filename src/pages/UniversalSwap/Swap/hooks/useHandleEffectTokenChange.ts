@@ -4,17 +4,10 @@ import { tokenMap } from 'config/bridgeTokens';
 import { getAddressTransfer, networks } from 'helper';
 import useConfigReducer from 'hooks/useConfigReducer';
 import useWalletReducer from 'hooks/useWalletReducer';
-import { genCurrentChain, generateNewSymbolV2, getFromToToken } from 'pages/UniversalSwap/helpers';
+import { getFromToToken } from 'pages/UniversalSwap/helpers';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectCurrentToChain,
-  selectCurrentToken,
-  setCurrentFromToken,
-  setCurrentToChain,
-  setCurrentToken,
-  setCurrentToToken
-} from 'reducer/tradingSlice';
+import { selectCurrentToChain, selectCurrentToken } from 'reducer/tradingSlice';
 import useFilteredTokens from './useFilteredTokens';
 
 const useHandleEffectTokenChange = ({ fromTokenDenomSwap, toTokenDenomSwap }) => {
@@ -89,28 +82,6 @@ const useHandleEffectTokenChange = ({ fromTokenDenomSwap, toTokenDenomSwap }) =>
     window?.ethereumDapp,
     window?.tronWebDapp
   ]);
-
-  useEffect(() => {
-    const newTVPair = generateNewSymbolV2(fromToken, toToken, currentPair);
-
-    if (newTVPair) dispatch(setCurrentToken(newTVPair));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fromToken, toToken]);
-
-  useEffect(() => {
-    const newCurrentToChain = genCurrentChain({ toToken: originalToToken, currentToChain });
-
-    if (toToken && originalToToken) {
-      dispatch(setCurrentToChain(newCurrentToChain));
-      dispatch(setCurrentToToken(originalToToken));
-    }
-  }, [originalToToken, toToken]);
-
-  useEffect(() => {
-    if (fromToken && originalFromToken) {
-      dispatch(setCurrentFromToken(originalFromToken));
-    }
-  }, [originalFromToken, fromToken]);
 
   const isConnectedWallet =
     walletByNetworks.cosmos || walletByNetworks.bitcoin || walletByNetworks.evm || walletByNetworks.tron;

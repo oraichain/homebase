@@ -6,10 +6,10 @@ import {
   NetworkChainId,
   flattenTokens
 } from '@oraichain/oraidex-common';
+import { calcMaxAmount } from 'helper/helpers';
 import {
   SwapDirection,
   SwapType,
-  calcMaxAmount,
   checkEvmAddress,
   filterNonPoolEvmTokens,
   getSwapType
@@ -111,7 +111,6 @@ describe('universal-swap', () => {
       coeff,
       gas: gasEstimate
     });
-    console.log({ result });
 
     expect(result).toEqual(expectedResult);
   });
