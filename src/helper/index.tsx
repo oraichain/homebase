@@ -84,6 +84,12 @@ export const getDenomEvm = (): EvmDenom => {
   }
 };
 
+export const assert = (condition: any, msg?: string) => {
+  if (!condition) {
+    throw new Error(msg || 'Condition is not truthy');
+  }
+};
+
 export const getSpecialCoingecko = (fromCoingecko: string, toCoingecko: string) => {
   const isSpecialCoingecko = (coinGeckoId) =>
     ['kawaii-islands', 'milky-token', 'injective-protocol'].includes(coinGeckoId);

@@ -11,11 +11,12 @@ import { getTransactionUrl, handleErrorTransaction } from 'helper';
 import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { useCopyClipboard } from 'hooks/useCopyClipboard';
-import { calcMaxAmount, getTokenIcon } from 'pages/UniversalSwap/helpers';
+import { getTokenIcon } from 'pages/UniversalSwap/helpers';
 import { FC, useState } from 'react';
 import InputCommon from '../InputCommon';
 import InputSwap from './InputSwap/InputSwap';
 import styles from './SendModal.module.scss';
+import { calcMaxAmount } from 'helper/helpers';
 
 export const SendModal: FC<{
   isOpen: boolean;

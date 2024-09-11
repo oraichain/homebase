@@ -4,158 +4,195 @@ import {
   DEFAULT_SLIPPAGE,
   GAS_ESTIMATION_SWAP_DEFAULT,
   NetworkChainId,
+  TON_ORAICHAIN_DENOM,
   TRON_DENOM,
   TokenItemType,
-  calculateMinReceive,
-  checkValidateAddressWithNetwork,
   getTokenOnOraichain,
-  network,
   toAmount,
   toDisplay
 } from '@oraichain/oraidex-common';
-import { OraiswapRouterQueryClient } from '@oraichain/oraidex-contracts-sdk';
 import { UniversalSwapHandler, UniversalSwapHelper } from '@oraichain/oraidex-universal-swap';
-import { useQuery } from '@tanstack/react-query';
-import { isMobile } from '@walletconnect/browser-utils';
-import ArrowImg from 'assets/icons/arrow_new.svg';
 import { ReactComponent as BookIcon } from 'assets/icons/book_icon.svg';
+import DownArrowIcon from 'assets/icons/down-arrow-v2.svg';
 import { ReactComponent as FeeIcon } from 'assets/icons/fee.svg';
+import { ReactComponent as FeeDarkIcon } from 'assets/icons/fee_dark.svg';
 import { ReactComponent as IconOirSettings } from 'assets/icons/iconoir_settings.svg';
 import { ReactComponent as SendIcon } from 'assets/icons/send.svg';
+import { ReactComponent as SendDarkIcon } from 'assets/icons/send_dark.svg';
 import SwitchLightImg from 'assets/icons/switch-new-light.svg';
 import SwitchDarkImg from 'assets/icons/switch-new.svg';
+import UpArrowIcon from 'assets/icons/up-arrow.svg';
+import { ReactComponent as WarningIcon } from 'assets/icons/warning_icon.svg';
 import { ReactComponent as RefreshImg } from 'assets/images/refresh.svg';
+import { assets } from 'chain-registry';
 import cn from 'classnames/bind';
 import Loader from 'components/Loader';
 import LoadingBox from 'components/LoadingBox';
 import { TToastType, displayToast } from 'components/Toasts/Toast';
-import { flattenTokens, tokenMap } from 'config/bridgeTokens';
-import { chainInfosWithIcon } from 'config/chainInfos';
+import { flattenTokens } from 'config/bridgeTokens';
+import { chainIcons } from 'config/chainInfos';
 import { ethers } from 'ethers';
 import {
-  getAddressTransfer,
+  assert,
   getSpecialCoingecko,
   getTransactionUrl,
   handleCheckAddress,
   handleErrorTransaction,
   networks
 } from 'helper';
-import { numberWithCommas } from 'helper/helpers';
+import { RELAYER_DECIMAL } from 'helper/constants';
 import { useCoinGeckoPrices } from 'hooks/useCoingecko';
 import useConfigReducer from 'hooks/useConfigReducer';
 import { useCopyClipboard } from 'hooks/useCopyClipboard';
 import useLoadTokens from 'hooks/useLoadTokens';
 import useOnClickOutside from 'hooks/useOnClickOutside';
-import useTokenFee, { useGetFeeConfig, useRelayerFeeToken } from 'hooks/useTokenFee';
+import { useGetFeeConfig } from 'hooks/useTokenFee';
 import useWalletReducer from 'hooks/useWalletReducer';
 import Metamask from 'libs/metamask';
-import { reduceString, toSubAmount } from 'libs/utils';
+import { getUsd, reduceString, toSubAmount } from 'libs/utils';
 import mixpanel from 'mixpanel-browser';
 import {
-  calcMaxAmount,
-  generateNewSymbol,
   getDisableSwap,
-  getFromToToken,
-  getRemoteDenom,
+  getPathInfo,
   getTokenBalance,
+  getTokenInfo,
+  isAllowAlphaSmartRouter,
+  isAllowIBCWasm,
   refreshBalances
 } from 'pages/UniversalSwap/helpers';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentAddressBookStep, setCurrentAddressBookStep } from 'reducer/addressBook';
-import { selectCurrentToken, setCurrentToken } from 'reducer/tradingSlice';
 import { AddressManagementStep } from 'reducer/type';
-import { fetchTokenInfos } from 'rest/api';
 import { RootState } from 'store/configure';
 import { SlippageModal } from '../Modals';
-import { checkEvmAddress } from '../helpers';
+import { checkEvmAddress, getSwapType } from '../helpers';
 import AddressBook from './components/AddressBook';
 import InputCommon from './components/InputCommon';
 import InputSwap from './components/InputSwap/InputSwap';
-import SelectChain from './components/SelectChain/SelectChain';
-import SelectToken from './components/SelectToken/SelectToken';
 import SwapDetail from './components/SwapDetail';
-import { useGetTransHistory, useSimulate } from './hooks';
+import { useGetTransHistory } from './hooks';
+import useCalculateDataSwap, { SIMULATE_INIT_AMOUNT } from './hooks/useCalculateDataSwap';
 import { useFillToken } from './hooks/useFillToken';
-import useFilteredTokens from './hooks/useFilteredTokens';
-import { useGetPriceByUSD } from './hooks/useGetPriceByUSD';
-import { useSwapFee } from './hooks/useSwapFee';
+import useHandleEffectTokenChange from './hooks/useHandleEffectTokenChange';
 import styles from './index.module.scss';
+import { calcMaxAmount, isNegative, numberWithCommas } from 'helper/helpers';
+import { TooltipSwapBridge } from './components/TooltipSwapBridge';
+import TokenAndChainSelectors from './components/TokenAndChainSelectors';
+import { SmartRouteModal } from '../Modals/SmartRouteModal';
+// import SwapWarningModal from '../Component/SwapWarningModal';
 
 const cx = cn.bind(styles);
-
-// TODO: hardcode decimal relayerFee
-const RELAYER_DECIMAL = 6;
 
 const SwapComponent: React.FC<{
   fromTokenDenom: string;
   toTokenDenom: string;
   setSwapTokens: (denoms: [string, string]) => void;
 }> = ({ fromTokenDenom, toTokenDenom, setSwapTokens }) => {
-  const [openDetail, setOpenDetail] = useState(false);
-
-  const [fromTokenDenomSwap, setFromTokenDenom] = useState(fromTokenDenom);
-  const [toTokenDenomSwap, setToTokenDenom] = useState(toTokenDenom);
-
-  // get token on oraichain to simulate swap amount.
-  const originalFromToken = tokenMap[fromTokenDenomSwap];
-  const originalToToken = tokenMap[toTokenDenomSwap];
-
-  const [selectChainFrom, setSelectChainFrom] = useState(originalFromToken?.chainId || 'Oraichain');
-  const [selectChainTo, setSelectChainTo] = useState(originalToToken?.chainId || 'Oraichain');
-
-  const [isSelectChainFrom, setIsSelectChainFrom] = useState(false);
-  const [isSelectChainTo, setIsSelectChainTo] = useState(false);
-
-  const [isSelectFrom, setIsSelectFrom] = useState(false);
-  const [isSelectTo, setIsSelectTo] = useState(false);
-
-  const { data: prices } = useCoinGeckoPrices();
-
-  const [openSetting, setOpenSetting] = useState(false);
-  const [userSlippage, setUserSlippage] = useState(DEFAULT_SLIPPAGE);
-  const [coe, setCoe] = useState(0);
-  const [swapLoading, setSwapLoading] = useState(false);
-  const [loadingRefresh, setLoadingRefresh] = useState(false);
-  const amounts = useSelector((state: RootState) => state.token.amounts);
+  // store value
   const [metamaskAddress] = useConfigReducer('metamaskAddress');
   const [tronAddress] = useConfigReducer('tronAddress');
   const [oraiAddress] = useConfigReducer('address');
-  const [theme] = useConfigReducer('theme');
-  const loadTokenAmounts = useLoadTokens();
-  const dispatch = useDispatch();
-  const [searchTokenName, setSearchTokenName] = useState('');
-  const currentPair = useSelector(selectCurrentToken);
-  const { refetchTransHistory } = useGetTransHistory();
   const [walletByNetworks] = useWalletReducer('walletsByNetwork');
-  const [addressTransfer, setAddressTransfer] = useState('');
-  const [initAddressTransfer, setInitAddressTransfer] = useState('');
+  const [theme] = useConfigReducer('theme');
+  const isLightMode = theme === 'light';
   const currentAddressManagementStep = useSelector(selectCurrentAddressBookStep);
+  const amounts = useSelector((state: RootState) => state.token.amounts);
+  const dispatch = useDispatch();
+
+  const loadTokenAmounts = useLoadTokens();
+  const { refetchTransHistory } = useGetTransHistory();
+  const { handleUpdateQueryURL } = useFillToken(setSwapTokens);
   const { handleReadClipboard } = useCopyClipboard();
 
-  const { handleUpdateQueryURL } = useFillToken(setSwapTokens);
+  // info token state
+  const [openDetail, setOpenDetail] = useState(false);
+  const [openRoutes, setOpenRoutes] = useState(false);
+  const [fromTokenDenomSwap, setFromTokenDenom] = useState(fromTokenDenom);
+  const [toTokenDenomSwap, setToTokenDenom] = useState(toTokenDenom);
 
-  const { fromToken, toToken } = getFromToToken(
+  // modal state
+  const [isSelectChainFrom, setIsSelectChainFrom] = useState(false);
+  const [isSelectChainTo, setIsSelectChainTo] = useState(false);
+  const [isSelectTokenFrom, setIsSelectTokenFrom] = useState(false);
+  const [isSelectTokenTo, setIsSelectTokenTo] = useState(false);
+  const [openSetting, setOpenSetting] = useState(false);
+  const [openSmartRoute, setOpenSmartRoute] = useState(false);
+  const [indSmartRoute, setIndSmartRoute] = useState([0, 0]);
+  const [userSlippage, setUserSlippage] = useState(DEFAULT_SLIPPAGE);
+  // const [openSwapWarning, setOpenSwapWarning] = useState(false);
+
+  // value state
+  const [coe, setCoe] = useState(0);
+
+  // loading state
+  const [swapLoading, setSwapLoading] = useState(false);
+  const [loadingRefresh, setLoadingRefresh] = useState(false);
+
+  const {
     originalFromToken,
     originalToToken,
-    fromTokenDenomSwap,
-    toTokenDenomSwap
-  );
+    filteredToTokens,
+    filteredFromTokens,
+    fromToken,
+    toToken,
+    addressInfo,
+    validAddress
+  } = useHandleEffectTokenChange({ fromTokenDenomSwap, toTokenDenomSwap });
+  const { addressTransfer, initAddressTransfer, setAddressTransfer } = addressInfo;
 
-  const remoteTokenDenomFrom = getRemoteDenom(originalFromToken);
-  const remoteTokenDenomTo = getRemoteDenom(originalToToken);
-  const fromTokenFee = useTokenFee(remoteTokenDenomFrom, fromToken.chainId, toToken.chainId);
-  const toTokenFee = useTokenFee(remoteTokenDenomTo, fromToken.chainId, toToken.chainId);
+  const getDefaultChainFrom = () => originalFromToken?.chainId || ('OraiChain' as NetworkChainId);
+  const getDefaultChainTo = () => originalToToken?.chainId || ('OraiChain' as NetworkChainId);
+  const [selectChainFrom, setSelectChainFrom] = useState<NetworkChainId>(getDefaultChainFrom());
+  const [selectChainTo, setSelectChainTo] = useState<NetworkChainId>(getDefaultChainTo());
+
+  // hooks
+  useGetFeeConfig();
+  const { data: prices } = useCoinGeckoPrices();
+  const { fees, outputs, tokenInfos, simulateDatas, averageSimulateDatas } = useCalculateDataSwap({
+    originalFromToken,
+    originalToToken,
+    fromToken,
+    toToken,
+    userSlippage
+  });
+
+  const {
+    estSwapFee,
+    isDependOnNetwork,
+    totalFeeEst,
+    bridgeTokenFee,
+    relayerFeeToken,
+    relayerFee,
+    fromTokenFee,
+    toTokenFee
+  } = fees;
+  const { expectOutputDisplay, minimumReceiveDisplay, isWarningSlippage } = outputs;
+  const { fromAmountTokenBalance, usdPriceShowFrom, usdPriceShowTo } = tokenInfos;
+  const { averageRatio, averageSimulateData } = averageSimulateDatas;
+  const { simulateData, setSwapAmount, fromAmountToken, toAmountToken, debouncedFromAmount, isPreviousSimulate } =
+    simulateDatas;
 
   const subAmountFrom = toSubAmount(amounts, originalFromToken);
   const subAmountTo = toSubAmount(amounts, originalToToken);
 
-  const isFromBTC = originalFromToken.coinGeckoId === 'bitcoin';
-  const INIT_SIMULATE_NOUGHT_POINT_OH_ONE_AMOUNT = 0.00001;
-  let INIT_AMOUNT = 1;
-  if (isFromBTC) INIT_AMOUNT = INIT_SIMULATE_NOUGHT_POINT_OH_ONE_AMOUNT;
+  const fromTokenBalance = getTokenBalance(originalFromToken, amounts, subAmountFrom);
+  const toTokenBalance = getTokenBalance(originalToToken, amounts, subAmountTo);
 
-  useGetFeeConfig();
+  const useIbcWasm = isAllowIBCWasm(originalFromToken, originalToToken);
+  const useAlphaSmartRouter = isAllowAlphaSmartRouter();
+
+  const settingRef = useRef();
+  const smartRouteRef = useRef();
+
+  useOnClickOutside(settingRef, () => {
+    setOpenSetting(false);
+  });
+
+  useOnClickOutside(smartRouteRef, () => {
+    setOpenSmartRoute(false);
+    setIndSmartRoute([0, 0]);
+  });
 
   const onChangeFromAmount = (amount: number | undefined) => {
     if (!amount) {
@@ -170,67 +207,39 @@ const SwapComponent: React.FC<{
     setSwapAmount([displayAmount, toAmountToken]);
   };
 
-  const {
-    data: [fromTokenInfoData, toTokenInfoData]
-  } = useQuery(['token-infos', fromToken, toToken], () => fetchTokenInfos([fromToken!, toToken!]), { initialData: [] });
-
-  const fromTokenBalance = getTokenBalance(originalFromToken, amounts, subAmountFrom);
-  const toTokenBalance = getTokenBalance(originalToToken, amounts, subAmountTo);
-
-  const { price } = useGetPriceByUSD({
-    denom: originalFromToken.denom,
-    contractAddress: originalFromToken.contractAddress,
-    cachePrices: prices
-  });
-
-  const routerClient = new OraiswapRouterQueryClient(window.client, network.router);
-  const { simulateData, setSwapAmount, fromAmountToken, toAmountToken } = useSimulate(
-    'simulate-data',
-    fromTokenInfoData,
-    toTokenInfoData,
-    originalFromToken,
-    originalToToken,
-    routerClient
-  );
-
-  const { simulateData: averageRatio } = useSimulate(
-    'simulate-average-data',
-    fromTokenInfoData,
-    toTokenInfoData,
-    originalFromToken,
-    originalToToken,
-    routerClient,
-    INIT_AMOUNT
-  );
-
-  let usdPriceShow = ((price || prices?.[originalFromToken?.coinGeckoId]) * fromAmountToken).toFixed(6);
-  if (!Number(usdPriceShow)) {
-    usdPriceShow = (prices?.[originalToToken?.coinGeckoId] * simulateData?.displayAmount).toFixed(6);
-  }
-
-  const { filteredToTokens, filteredFromTokens } = useFilteredTokens(
-    originalFromToken,
-    originalToToken,
-    searchTokenName,
-    fromTokenDenomSwap,
-    toTokenDenomSwap
-  );
-
   const setTokenDenomFromChain = (chainId: string, type: 'from' | 'to') => {
     if (chainId) {
       const isFrom = type === 'from';
 
       // check current token existed on another swap token chain
-      const checkExistedToken = isFrom
-        ? flattenTokens.find(
-            (flat) => flat?.coinGeckoId === originalFromToken?.coinGeckoId && flat?.chainId === selectChainTo
-          )
-        : flattenTokens.find(
-            (flat) => flat?.coinGeckoId === originalToToken?.coinGeckoId && flat?.chainId === selectChainFrom
-          );
+      const currentToken = isFrom ? originalToToken : originalFromToken;
+      const targetToken = isFrom ? originalFromToken : originalToToken;
+      const targetChain = isFrom ? selectChainTo : selectChainFrom;
 
+      const checkExistedToken = flattenTokens.find((flat) => {
+        const condition =
+          flat?.coinGeckoId === targetToken?.coinGeckoId && flat?.chainId === targetChain && flat?.chainId;
+        return flat?.chainId === 'Oraichain' ? condition && flat.decimals !== 18 : condition;
+      });
       // get default token of new chain
-      const tokenInfo = flattenTokens.find((flat) => flat?.chainId === chainId);
+      const tokenInfo = flattenTokens.find((flat) => {
+        const condition = flat?.chainId === chainId;
+        return flat?.chainId === 'Oraichain' ? condition && flat.decimals !== 18 : condition;
+      });
+
+      // check if update chain is the same with target chain and current token same as target token
+      // => get second token of token list of chainId to update token
+      if (chainId === targetChain) {
+        const tokenListOfTargetChain = flattenTokens.filter((flat) => {
+          const condition = flat?.chainId === chainId;
+          return flat?.chainId === 'Oraichain' ? condition && flat.decimals !== 18 : condition;
+        });
+
+        if (targetToken?.coinGeckoId === currentToken?.coinGeckoId) {
+          const secondaryToken = tokenListOfTargetChain[1] ?? tokenListOfTargetChain[0];
+          return handleChangeToken(secondaryToken, type);
+        }
+      }
 
       // case new chain === another swap token chain
       // if new tokenInfo(default token of new chain) === from/to Token => check is currentToken existed on new chain
@@ -245,70 +254,12 @@ const SwapComponent: React.FC<{
     }
   };
 
-  const { fee, isDependOnNetwork } = useSwapFee({
-    fromToken: originalFromToken,
-    toToken: originalToToken
-  });
-
-  const { relayerFee, relayerFeeInOraiToAmount: relayerFeeToken } = useRelayerFeeToken(
-    originalFromToken,
-    originalToToken
-  );
-
-  useEffect(() => {
-    const newTVPair = generateNewSymbol(fromToken, toToken, currentPair);
-    if (newTVPair) dispatch(setCurrentToken(newTVPair));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fromToken, toToken]);
-
-  const fromAmountTokenBalance = fromTokenInfoData && toAmount(fromAmountToken, fromTokenInfoData!.decimals);
-  const isAverageRatio = averageRatio && averageRatio.amount;
-  const isSimulateDataDisplay = simulateData && simulateData.displayAmount;
-  const minimumReceive = isAverageRatio
-    ? calculateMinReceive(
-        // @ts-ignore
-        new BigDecimal(averageRatio.amount).div(INIT_AMOUNT).toString(),
-        fromAmountTokenBalance.toString(),
-        userSlippage,
-        originalFromToken.decimals
-      )
-    : '0';
-  const isWarningSlippage = +minimumReceive > +simulateData?.amount;
-  const simulateDisplayAmount = simulateData && simulateData.displayAmount ? simulateData.displayAmount : 0;
-  const bridgeTokenFee =
-    simulateDisplayAmount && (fromTokenFee || toTokenFee)
-      ? (simulateDisplayAmount * fromTokenFee + simulateDisplayAmount * toTokenFee) / 100
-      : 0;
-
-  const minimumReceiveDisplay = isSimulateDataDisplay
-    ? new BigDecimal(
-        simulateDisplayAmount - (simulateDisplayAmount * userSlippage) / 100 - relayerFee - bridgeTokenFee
-      ).toNumber()
-    : 0;
-
-  const expectOutputDisplay = isSimulateDataDisplay
-    ? numberWithCommas(simulateData.displayAmount, undefined, { minimumFractionDigits: 6 })
-    : 0;
-
-  const estSwapFee = new BigDecimal(simulateDisplayAmount || 0).mul(fee || 0).toNumber();
-
-  const totalFeeEst =
-    new BigDecimal(bridgeTokenFee || 0)
-      .add(relayerFee || 0)
-      .add(estSwapFee)
-      .toNumber() || 0;
-
   const handleSubmit = async () => {
-    if (fromAmountToken <= 0)
-      return displayToast(TToastType.TX_FAILED, {
-        message: 'From amount should be higher than 0!'
-      });
-
-    setSwapLoading(true);
-    displayToast(TToastType.TX_BROADCASTING);
     try {
-      // await handleCheckChainEvmWallet(originalFromToken.chainId);
+      assert(fromAmountToken > 0, 'From amount should be higher than 0!');
 
+      setSwapLoading(true);
+      displayToast(TToastType.TX_BROADCASTING);
       const cosmosAddress = await handleCheckAddress(
         originalFromToken.cosmosBased ? (originalFromToken.chainId as CosmosChainId) : 'Oraichain'
       );
@@ -348,39 +299,44 @@ const SwapComponent: React.FC<{
         };
       }
 
-      if (
-        (originalToToken.chainId === 'injective-1' && originalToToken.coinGeckoId === 'injective-protocol') ||
-        originalToToken.chainId === 'kawaii_6886-1'
-      ) {
+      const isInjectiveProtocol =
+        originalToToken.chainId === 'injective-1' && originalToToken.coinGeckoId === 'injective-protocol';
+      const isKawaiiChain = originalToToken.chainId === 'kawaii_6886-1';
+      const isDifferentChainAndNotCosmosBased =
+        originalFromToken.chainId !== originalToToken.chainId &&
+        !originalFromToken.cosmosBased &&
+        !originalToToken.cosmosBased;
+
+      if (isInjectiveProtocol || isKawaiiChain || isDifferentChainAndNotCosmosBased) {
         simulateAmount = toAmount(simulateData.displayAmount, originalToToken.decimals).toString();
       }
 
       const isCustomRecipient = validAddress.isValid && addressTransfer !== initAddressTransfer;
+      const alphaSmartRoutes = useAlphaSmartRouter ? simulateData?.routes : undefined;
 
-      const initSwapData = {
+      const swapData = {
         sender: { cosmos: cosmosAddress, evm: checksumMetamaskAddress, tron: tronAddress },
         originalFromToken,
         originalToToken,
         fromAmount: fromAmountToken,
         simulateAmount,
         userSlippage,
+        bridgeFee: 1,
         amounts: amountsBalance,
-        simulatePrice:
-          // @ts-ignore
-          averageRatio?.amount && new BigDecimal(averageRatio.amount).div(INIT_AMOUNT).toString(),
-        relayerFee: relayerFeeUniversal
+        recipientAddress: isCustomRecipient ? addressTransfer : undefined,
+        simulatePrice: averageRatio?.amount && new BigDecimal(averageRatio.amount).div(SIMULATE_INIT_AMOUNT).toString(),
+        relayerFee: relayerFeeUniversal,
+        alphaSmartRoutes
       };
 
-      const compileSwapData = isCustomRecipient
-        ? {
-            ...initSwapData,
-            recipientAddress: addressTransfer
-          }
-        : initSwapData;
-
-      const univeralSwapHandler = new UniversalSwapHandler(compileSwapData, {
+      // @ts-ignore
+      const univeralSwapHandler = new UniversalSwapHandler(swapData, {
         cosmosWallet: window.Keplr,
-        evmWallet: new Metamask(window.tronWebDapp)
+        evmWallet: new Metamask(window.tronWebDapp),
+        swapOptions: {
+          isAlphaSmartRouter: useAlphaSmartRouter,
+          isIbcWasm: useIbcWasm
+        }
       });
 
       const { transactionHash } = await univeralSwapHandler.processUniversalSwap();
@@ -391,29 +347,13 @@ const SwapComponent: React.FC<{
         loadTokenAmounts({ oraiAddress, metamaskAddress, tronAddress });
         setSwapLoading(false);
 
-        // // save to duckdb
-        // const swapType = getSwapType({
-        //   fromChainId: originalFromToken.chainId,
-        //   toChainId: originalToToken.chainId,
-        //   fromCoingeckoId: originalFromToken.coinGeckoId,
-        //   toCoingeckoId: originalToToken.coinGeckoId
-        // });
-        // await window.duckDb.addTransHistory({
-        //   initialTxHash: transactionHash,
-        //   fromCoingeckoId: originalFromToken.coinGeckoId,
-        //   toCoingeckoId: originalToToken.coinGeckoId,
-        //   fromChainId: originalFromToken.chainId,
-        //   toChainId: originalToToken.chainId,
-        //   fromAmount: fromAmountToken.toString(),
-        //   toAmount: toAmountToken.toString(),
-        //   fromAmountInUsdt: getUsd(fromAmountTokenBalance, originalFromToken, prices).toString(),
-        //   toAmountInUsdt: getUsd(toAmount(toAmountToken, originalToToken.decimals), originalToToken, prices).toString(),
-        //   status: 'success',
-        //   type: swapType,
-        //   timestamp: Date.now(),
-        //   userAddress: oraiAddress
-        // });
-        // refetchTransHistory();
+        // save to duckdb
+        const swapType = getSwapType({
+          fromChainId: originalFromToken.chainId,
+          toChainId: originalToToken.chainId,
+          fromCoingeckoId: originalFromToken.coinGeckoId,
+          toCoingeckoId: originalToToken.coinGeckoId
+        });
       }
     } catch (error) {
       console.trace({ error });
@@ -432,67 +372,15 @@ const SwapComponent: React.FC<{
           toToken: `${originalToToken.name} - ${originalToToken.chainId}`,
           toAmount: `${toAmountToken}`,
           fromNetwork: originalFromToken.chainId,
-          toNetwork: originalToToken.chainId
+          toNetwork: originalToToken.chainId,
+          useAlphaSmartRouter,
+          priceOfFromTokenInUsd: usdPriceShowFrom,
+          priceOfToTokenInUsd: usdPriceShowTo
         };
         mixpanel.track('Universal Swap Oraidex', logEvent);
       }
     }
   };
-
-  const FromIcon = theme === 'light' ? originalFromToken.IconLight || originalFromToken.Icon : originalFromToken.Icon;
-  const ToIcon = theme === 'light' ? originalToToken.IconLight || originalToToken.Icon : originalToToken.Icon;
-  const fromNetwork = chainInfosWithIcon.find((chain) => chain.chainId === originalFromToken.chainId);
-  const toNetwork = chainInfosWithIcon.find((chain) => chain.chainId === originalToToken.chainId);
-  const FromIconNetwork = theme === 'light' ? fromNetwork.IconLight || fromNetwork.Icon : fromNetwork.Icon;
-  const ToIconNetwork = theme === 'light' ? toNetwork.IconLight || toNetwork.Icon : toNetwork.Icon;
-
-  useEffect(() => {
-    (async () => {
-      if (!isMobile()) {
-        if (!walletByNetworks.evm && !walletByNetworks.cosmos && !walletByNetworks.tron) {
-          return setAddressTransfer('');
-        }
-
-        if (originalToToken.cosmosBased && !walletByNetworks.cosmos) {
-          return setAddressTransfer('');
-        }
-
-        if (!originalToToken.cosmosBased && originalToToken.chainId === '0x2b6653dc' && !walletByNetworks.tron) {
-          return setAddressTransfer('');
-        }
-
-        if (!originalToToken.cosmosBased && !walletByNetworks.evm) {
-          return setAddressTransfer('');
-        }
-      }
-
-      if (originalToToken.chainId) {
-        const findNetwork = networks.find((net) => net.chainId === originalToToken.chainId);
-        const address = await getAddressTransfer(findNetwork, walletByNetworks);
-
-        setAddressTransfer(address);
-        setInitAddressTransfer(address);
-      }
-    })();
-  }, [
-    originalToToken,
-    oraiAddress,
-    metamaskAddress,
-    tronAddress,
-    walletByNetworks.evm,
-    walletByNetworks.cosmos,
-    walletByNetworks.tron,
-    window?.ethereumDapp,
-    window?.tronWebDapp
-  ]);
-
-  const ref = useRef(null);
-  useOnClickOutside(ref, () => {
-    setIsSelectFrom(false);
-    setIsSelectTo(false);
-    setIsSelectChainFrom(false);
-    setIsSelectChainTo(false);
-  });
 
   const onChangePercentAmount = (coeff) => {
     if (coeff === coe) {
@@ -510,24 +398,59 @@ const SwapComponent: React.FC<{
     setCoe(coeff);
   };
 
+  const unSupportSimulateToken = ['bnb', 'bep20_wbnb', 'eth', TON_ORAICHAIN_DENOM];
+  const supportedChainFunc = () => {
+    if (unSupportSimulateToken.includes(originalFromToken?.denom)) {
+      return ['Oraichain'];
+    }
+
+    const isOraichainDenom = [originalFromToken.denom, originalToToken.denom].includes(TON_ORAICHAIN_DENOM);
+    if (isOraichainDenom) {
+      return networks.filter((chainInfo) => chainInfo.networkType === 'cosmos').map((chain) => chain.chainId);
+    }
+
+    if (originalFromToken.chainId === 'injective-1') {
+      return networks.filter((chainInfo) => chainInfo.chainId === 'Oraichain').map((chain) => chain.chainId);
+    }
+
+    if (!originalFromToken.cosmosBased) {
+      return networks.filter((chainInfo) => chainInfo.chainId !== 'injective-1').map((chain) => chain.chainId);
+    }
+    return [];
+  };
+
+  const supportedChain = supportedChainFunc();
+
   const handleChangeToken = (token: TokenItemType, type) => {
     const isFrom = type === 'from';
-    const setSelectChain = isFrom ? setSelectChainFrom : setSelectChainTo;
-    const setIsSelect = isFrom ? setIsSelectFrom : setIsSelectTo;
+    let setSelectChain = setSelectChainTo;
+    let setIsSelect = setIsSelectTokenTo;
+    let tokenDenomSwap = fromTokenDenomSwap;
+    if (isFrom) {
+      setSelectChain = setSelectChainFrom;
+      setIsSelect = setIsSelectTokenFrom;
+      tokenDenomSwap = toTokenDenomSwap;
+    }
 
-    if (token.denom === (isFrom ? toTokenDenomSwap : fromTokenDenomSwap)) {
+    if (token.denom === tokenDenomSwap) {
       setFromTokenDenom(toTokenDenomSwap);
       setToTokenDenom(fromTokenDenomSwap);
-
       setSelectChainFrom(selectChainTo);
       setSelectChainTo(selectChainFrom);
 
       handleUpdateQueryURL([toTokenDenomSwap, fromTokenDenomSwap]);
     } else {
-      setFromTokenDenom(isFrom ? token.denom : fromTokenDenomSwap);
-      setToTokenDenom(isFrom ? toTokenDenomSwap : token.denom);
+      let fromTokenDenom = fromTokenDenomSwap;
+      let toTokenDenom = token.denom;
+      if (isFrom) {
+        fromTokenDenom = token.denom;
+        toTokenDenom = toTokenDenomSwap;
+      }
+
+      setFromTokenDenom(fromTokenDenom);
+      setToTokenDenom(toTokenDenom);
       setSelectChain(token.chainId);
-      handleUpdateQueryURL(isFrom ? [token.denom, toTokenDenomSwap] : [fromTokenDenomSwap, token.denom]);
+      handleUpdateQueryURL(isFrom ? [fromTokenDenom, toTokenDenomSwap] : [fromTokenDenomSwap, toTokenDenom]);
     }
 
     if (coe && isFrom) {
@@ -565,13 +488,88 @@ const SwapComponent: React.FC<{
     handleUpdateQueryURL([toTokenDenomSwap, fromTokenDenomSwap]);
   };
 
-  const validAddress =
-    !(walletByNetworks.cosmos || walletByNetworks.bitcoin || walletByNetworks.evm || walletByNetworks.tron) &&
-    !isMobile()
-      ? {
-          isValid: true
-        }
-      : checkValidateAddressWithNetwork(addressTransfer, originalToToken?.chainId);
+  const defaultRouterSwap = {
+    amount: '0',
+    displayAmount: 0,
+    routes: []
+  };
+  let routersSwapData = defaultRouterSwap;
+
+  if (fromAmountToken && simulateData) {
+    routersSwapData = {
+      ...simulateData,
+      //@ts-ignore
+      routes: simulateData?.routes?.routes ?? []
+    };
+  }
+  const isRoutersSwapData = +routersSwapData.amount;
+
+  function caculateImpactWarning() {
+    let impactWarning = 0;
+    if (Number(usdPriceShowFrom) && Number(usdPriceShowTo)) {
+      const calculateImpactPrice = new BigDecimal(usdPriceShowFrom).sub(usdPriceShowTo).toNumber();
+      if (isNegative(calculateImpactPrice)) return impactWarning;
+      return new BigDecimal(calculateImpactPrice).div(usdPriceShowFrom).mul(100).toNumber();
+    }
+
+    const isValidValue = (value) => value && value !== '';
+    const isImpactPrice =
+      isValidValue(debouncedFromAmount) &&
+      isValidValue(simulateData?.displayAmount) &&
+      isValidValue(averageRatio?.amount) &&
+      isValidValue(averageSimulateData?.displayAmount) &&
+      isValidValue(averageRatio?.displayAmount);
+
+    if (isImpactPrice) {
+      const calculateImpactPrice = new BigDecimal(simulateData.displayAmount)
+        .div(debouncedFromAmount)
+        .div(averageSimulateData.displayAmount)
+        .mul(100)
+        .toNumber();
+
+      if (calculateImpactPrice) impactWarning = 100 - calculateImpactPrice;
+    }
+    return impactWarning;
+  }
+
+  const impactWarning = caculateImpactWarning();
+
+  const waringImpactBiggerTen = impactWarning > 10;
+  const waringImpactBiggerFive = impactWarning > 5;
+
+  const generateRatioComp = () => {
+    const getClassRatio = () => {
+      let classRatio = '';
+      if (waringImpactBiggerFive) classRatio = 'ratio-five';
+      if (waringImpactBiggerTen) classRatio = 'ratio-ten';
+      return classRatio;
+    };
+
+    return (
+      <div className={cx('ratio', getClassRatio())} onClick={() => isRoutersSwapData && setOpenRoutes(!openRoutes)}>
+        <span className={cx('text')}>
+          {waringImpactBiggerFive && <WarningIcon />}
+          {`1 ${originalFromToken.name} ≈ ${
+            averageRatio
+              ? numberWithCommas(averageRatio.displayAmount / SIMULATE_INIT_AMOUNT, undefined, {
+                  maximumFractionDigits: 6
+                })
+              : averageSimulateData
+              ? numberWithCommas(averageSimulateData?.displayAmount / SIMULATE_INIT_AMOUNT, undefined, {
+                  maximumFractionDigits: 6
+                })
+              : '0'
+          }
+      ${originalToToken.name}`}
+        </span>
+        {!!isRoutersSwapData && useAlphaSmartRouter && !isPreviousSimulate && (
+          <img src={!openRoutes ? DownArrowIcon : UpArrowIcon} alt="arrow" />
+        )}
+      </div>
+    );
+  };
+
+  const getSwitchIcon = () => (isLightMode ? SwitchLightImg : SwitchDarkImg);
 
   return (
     <div className={cx('swap-box-wrapper')}>
@@ -589,6 +587,7 @@ const SwapComponent: React.FC<{
                   await refreshBalances(
                     loadingRefresh,
                     setLoadingRefresh,
+                    // TODO: need add bitcoinAddress when universal swap support bitcoin
                     { metamaskAddress, tronAddress, oraiAddress },
                     loadTokenAmounts
                   )
@@ -604,48 +603,101 @@ const SwapComponent: React.FC<{
                 type={'from'}
                 balance={fromTokenBalance}
                 originalToken={originalFromToken}
-                Icon={FromIcon}
                 theme={theme}
                 onChangePercentAmount={onChangePercentAmount}
                 setIsSelectChain={setIsSelectChainFrom}
-                setIsSelectToken={setIsSelectFrom}
+                setIsSelectToken={setIsSelectTokenFrom}
                 selectChain={selectChainFrom}
                 token={originalFromToken}
-                IconNetwork={FromIconNetwork}
                 amount={fromAmountToken}
                 onChangeAmount={onChangeFromAmount}
                 tokenFee={fromTokenFee}
                 setCoe={setCoe}
                 coe={coe}
-                usdPrice={usdPriceShow}
+                usdPrice={usdPriceShowFrom}
               />
               {/* !fromToken && !toTokenFee mean that this is internal swap operation */}
               {!fromTokenFee && !toTokenFee && isWarningSlippage && (
                 <div className={cx('impact-warning')}>
+                  <WarningIcon />
                   <div className={cx('title')}>
-                    <span>Current slippage exceed configuration!</span>
+                    <span>&nbsp;Current slippage exceed configuration!</span>
                   </div>
                 </div>
               )}
             </div>
           </div>
           <div className={cx('swap-center')}>
-            <div className={cx('title')}>To</div>
             <div className={cx('wrap-img')} onClick={handleRotateSwapDirection}>
-              <img
-                src={theme === 'light' ? SwitchLightImg : SwitchDarkImg}
-                onClick={handleRotateSwapDirection}
-                alt="ant"
-              />
+              <img src={getSwitchIcon()} onClick={handleRotateSwapDirection} alt="ant" />
             </div>
-            <div className={cx('ratio')} onClick={() => setOpenDetail(true)}>
-              {`1 ${originalFromToken.name} ≈ ${
-                averageRatio ? Number((averageRatio.displayAmount / INIT_AMOUNT).toFixed(6)) : '0'
-              } ${originalToToken.name}`}
-
-              {/* <img src={ArrowImg} alt="arrow" /> */}
+            <div className={cx('swap-ai-dot')}>
+              {/* {originalFromToken.cosmosBased && originalToToken.cosmosBased && (
+                <AIRouteSwitch isLoading={isPreviousSimulate} />
+              )} */}
+              {generateRatioComp()}
             </div>
           </div>
+          {!!isRoutersSwapData && useAlphaSmartRouter && !isPreviousSimulate && !!routersSwapData?.routes.length && (
+            <div className={cx('smart', !openRoutes ? 'hidden' : '')}>
+              <div className={cx('smart-router')}>
+                {routersSwapData?.routes.map((route, ind) => {
+                  const volumn = Math.round(
+                    new BigDecimal(route.returnAmount).div(routersSwapData.amount).mul(100).toNumber()
+                  );
+                  return (
+                    <div key={ind} className={cx('smart-router-item')}>
+                      <div className={cx('smart-router-item-volumn')}>{volumn.toFixed(0)}%</div>
+                      {route.paths.map((path, i, acc) => {
+                        const { NetworkFromIcon, NetworkToIcon } = getPathInfo(path, chainIcons, assets);
+                        return (
+                          <React.Fragment key={i}>
+                            <div className={cx('smart-router-item-line')}>
+                              <div className={cx('smart-router-item-line-detail')} />
+                            </div>
+                            <div
+                              className={cx('smart-router-item-pool')}
+                              onClick={() => setOpenSmartRoute(!openSmartRoute)}
+                            >
+                              <div
+                                className={cx('smart-router-item-pool-wrap')}
+                                onClick={() => setIndSmartRoute([ind, i])}
+                              >
+                                <div className={cx('smart-router-item-pool-wrap-img')}>{<NetworkFromIcon />}</div>
+                                <div className={cx('smart-router-item-pool-wrap-img')}>{<NetworkToIcon />}</div>
+                              </div>
+                            </div>
+                            {i === acc.length - 1 && (
+                              <div className={cx('smart-router-item-line')}>
+                                <div className={cx('smart-router-item-line-detail')} />
+                              </div>
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
+                      <div className={cx('smart-router-item-volumn')}>{volumn.toFixed(0)}%</div>
+                    </div>
+                  );
+                })}
+                {/* <div className={cx('smart-router-price-impact')}>
+                  <div className={cx('smart-router-price-impact-title')}>Price Impact:</div>
+                  <div
+                    className={cx(
+                      'smart-router-price-impact-warning',
+                      waringImpactBiggerTen
+                        ? 'smart-router-price-impact-warning-ten'
+                        : waringImpactBiggerFive && 'smart-router-price-impact-warning-five'
+                    )}
+                  >
+                    <span>
+                      {waringImpactBiggerFive && <WarningIcon />} ≈{' '}
+                      {numberWithCommas(impactWarning, undefined, { minimumFractionDigits: 2 })}%
+                    </span>
+                  </div>
+                </div> */}
+              </div>
+            </div>
+          )}
           <div className={cx('to')}>
             <div className={cx('input-wrapper')}>
               <InputSwap
@@ -654,19 +706,23 @@ const SwapComponent: React.FC<{
                 theme={theme}
                 originalToken={originalToToken}
                 disable={true}
-                Icon={ToIcon}
                 selectChain={selectChainTo}
                 setIsSelectChain={setIsSelectChainTo}
-                setIsSelectToken={setIsSelectTo}
+                setIsSelectToken={setIsSelectTokenTo}
                 token={originalToToken}
                 amount={toAmountToken}
                 tokenFee={toTokenFee}
-                IconNetwork={ToIconNetwork}
-                usdPrice={usdPriceShow}
+                usdPrice={usdPriceShowTo}
+                loadingSimulate={isPreviousSimulate}
+                impactWarning={impactWarning}
               />
             </div>
           </div>
-
+          {/* {!isPreviousSimulate && impactWarning > 10 && (
+            <div className={cx('priceImpact')}>
+              <div>High price impact! More than {impactWarning}%</div>
+            </div>
+          )} */}
           <div className={cx('recipient')}>
             <InputCommon
               isOnViewPort={currentAddressManagementStep === AddressManagementStep.INIT}
@@ -675,7 +731,7 @@ const SwapComponent: React.FC<{
               onChange={(val) => setAddressTransfer(val)}
               showPreviewOnBlur
               defaultValue={initAddressTransfer}
-              prefix={<SendIcon />}
+              prefix={isLightMode ? <SendIcon /> : <SendDarkIcon />}
               suffix={
                 <div
                   className={cx('paste')}
@@ -717,7 +773,7 @@ const SwapComponent: React.FC<{
           </div>
           <div className={cx('estFee')} onClick={() => setOpenDetail(true)}>
             <div className={cx('label')}>
-              <FeeIcon />
+              {isLightMode ? <FeeIcon /> : <FeeDarkIcon />}
               Estimated Fee:
             </div>
             <div className={cx('info')}>
@@ -725,11 +781,10 @@ const SwapComponent: React.FC<{
                 ≈ {numberWithCommas(totalFeeEst, undefined, { maximumFractionDigits: 6 })} {originalToToken.name}
               </span>
               <span className={cx('icon')}>
-                <img src={ArrowImg} alt="arrow" />
+                <img src={DownArrowIcon} alt="arrow" />
               </span>
             </div>
           </div>
-
           {(() => {
             const { disabledSwapBtn, disableMsg } = getDisableSwap({
               originalToToken,
@@ -741,12 +796,16 @@ const SwapComponent: React.FC<{
               fromTokenBalance,
               addressTransfer,
               validAddress,
-              simulateData
+              simulateData,
+              isLoadingSimulate: isPreviousSimulate
             });
             return (
               <button
                 className={cx('swap-btn', `${disabledSwapBtn ? 'disable' : ''}`)}
-                onClick={handleSubmit}
+                onClick={() => {
+                  // if (impactWarning > 10) return setOpenSwapWarning(true);
+                  handleSubmit();
+                }}
                 disabled={disabledSwapBtn}
               >
                 {swapLoading && <Loader width={20} height={20} />}
@@ -762,58 +821,30 @@ const SwapComponent: React.FC<{
         </div>
       </LoadingBox>
 
-      <div ref={ref}>
-        <SelectToken
-          setIsSelectToken={setIsSelectTo}
-          amounts={amounts}
-          prices={prices}
-          handleChangeToken={(token) => {
-            handleChangeToken(token, 'to');
-          }}
-          items={filteredToTokens}
-          theme={theme}
-          selectChain={selectChainTo}
-          isSelectToken={isSelectTo}
-        />
-        <SelectToken
-          setIsSelectToken={setIsSelectFrom}
-          amounts={amounts}
-          prices={prices}
-          theme={theme}
-          selectChain={selectChainFrom}
-          items={filteredFromTokens}
-          handleChangeToken={(token) => {
-            handleChangeToken(token, 'from');
-          }}
-          isSelectToken={isSelectFrom}
-        />
-        <SelectChain
-          setIsSelectToken={setIsSelectChainTo}
-          amounts={amounts}
-          theme={theme}
-          selectChain={selectChainTo}
-          setSelectChain={(chain: NetworkChainId) => {
-            setSelectChainTo(chain);
-            setTokenDenomFromChain(chain, 'to');
-          }}
-          prices={prices}
-          isSelectToken={isSelectChainTo}
-          filterChainId={['Oraichain']}
-        />
-        <SelectChain
-          setIsSelectToken={setIsSelectChainFrom}
-          amounts={amounts}
-          theme={theme}
-          prices={prices}
-          selectChain={selectChainFrom}
-          setSelectChain={(chain: NetworkChainId) => {
-            setSelectChainFrom(chain);
-            setTokenDenomFromChain(chain, 'from');
-          }}
-          isSelectToken={isSelectChainFrom}
-          filterChainId={['Oraichain']}
-        />
-      </div>
+      <TokenAndChainSelectors
+        setIsSelectTokenTo={setIsSelectTokenTo}
+        setIsSelectTokenFrom={setIsSelectTokenFrom}
+        setIsSelectChainTo={setIsSelectChainTo}
+        setIsSelectChainFrom={setIsSelectChainFrom}
+        amounts={amounts}
+        prices={prices}
+        handleChangeToken={handleChangeToken}
+        filteredToTokens={filteredToTokens}
+        filteredFromTokens={filteredFromTokens}
+        theme={theme}
+        selectChainTo={selectChainTo}
+        selectChainFrom={selectChainFrom}
+        isSelectTokenTo={isSelectTokenTo}
+        isSelectTokenFrom={isSelectTokenFrom}
+        isSelectChainTo={isSelectChainTo}
+        isSelectChainFrom={isSelectChainFrom}
+        setSelectChainTo={setSelectChainTo}
+        setSelectChainFrom={setSelectChainFrom}
+        setTokenDenomFromChain={setTokenDenomFromChain}
+        originalFromToken={originalFromToken}
+        unSupportSimulateToken={unSupportSimulateToken}
+        supportedChain={supportedChain}
+      />
 
       <AddressBook
         onSelected={(addr: string) => {
@@ -822,12 +853,12 @@ const SwapComponent: React.FC<{
         tokenTo={originalToToken}
       />
       <div
-        className={cx('overlay', openSetting ? 'activeOverlay' : '')}
+        className={cx('overlay', openSetting || openSmartRoute ? 'activeOverlay' : '')}
         onClick={() => {
           setOpenSetting(false);
         }}
       />
-      <div className={cx('setting', openSetting ? 'activeSetting' : '')}>
+      <div className={cx('setting', openSetting ? 'activeSetting' : '')} ref={settingRef}>
         <SlippageModal
           setVisible={setOpenSetting}
           setUserSlippage={setUserSlippage}
@@ -835,9 +866,53 @@ const SwapComponent: React.FC<{
           isBotomSheet
         />
       </div>
+      <div className={cx('setting', openSmartRoute ? 'activeSetting' : '')} ref={smartRouteRef}>
+        <SmartRouteModal setIndSmartRoute={setIndSmartRoute} setVisible={setOpenSmartRoute} isBotomSheet>
+          <div className={styles.smartRouter}>
+            {openSmartRoute &&
+              [routersSwapData?.routes[indSmartRoute[0]]?.paths[indSmartRoute[1]]].map((path) => {
+                if (!path) return null;
+                const { NetworkFromIcon, NetworkToIcon, assetList, pathChainId } = getPathInfo(
+                  path,
+                  chainIcons,
+                  assets
+                );
+                return path.actions?.map((action, index, actions) => {
+                  const { info, TokenInIcon, TokenOutIcon } = getTokenInfo(action, path, assetList);
+                  const tokenInChainId = path.chainId;
+                  const tokenOutChainId = path.tokenOutChainId;
+                  const hasTypeConvert = actions.find((act) => act.type === 'Convert');
+                  const width = hasTypeConvert ? actions.length - 1 : actions.length;
+                  if (action.type === 'Convert') return null;
+                  return (
+                    <div
+                      key={index}
+                      className={styles.smartRouterAction}
+                      style={{
+                        width: `${100 / width}%`
+                      }}
+                    >
+                      <TooltipSwapBridge
+                        type={action.type}
+                        pathChainId={pathChainId}
+                        tokenInChainId={tokenInChainId}
+                        tokenOutChainId={tokenOutChainId}
+                        TokenInIcon={TokenInIcon}
+                        TokenOutIcon={TokenOutIcon}
+                        NetworkFromIcon={NetworkFromIcon}
+                        NetworkToIcon={NetworkToIcon}
+                        info={info}
+                      />
+                    </div>
+                  );
+                });
+              })}
+          </div>
+        </SmartRouteModal>
+      </div>
 
       <SwapDetail
-        simulatePrice={averageRatio ? Number((averageRatio.displayAmount / INIT_AMOUNT).toFixed(6)) : '0'}
+        simulatePrice={averageRatio ? Number((averageRatio.displayAmount / SIMULATE_INIT_AMOUNT).toFixed(6)) : '0'}
         expected={expectOutputDisplay}
         minimumReceived={numberWithCommas(minimumReceiveDisplay, undefined, { minimumFractionDigits: 6 })}
         slippage={userSlippage}
@@ -849,8 +924,20 @@ const SwapComponent: React.FC<{
         onClose={() => setOpenDetail(false)}
         toTokenName={originalToToken?.name}
         fromTokenName={originalFromToken?.name}
+        isOpenSetting={openSetting}
         openSlippage={() => setOpenSetting(true)}
+        closeSlippage={() => setOpenSetting(false)}
       />
+      {/* 
+      <SwapWarningModal
+        onClose={() => setOpenSwapWarning(false)}
+        open={openSwapWarning}
+        onConfirm={() => {
+          setOpenSwapWarning(false);
+          handleSubmit();
+        }}
+        impact={impactWarning}
+      /> */}
     </div>
   );
 };
