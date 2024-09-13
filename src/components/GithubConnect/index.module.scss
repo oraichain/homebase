@@ -1,0 +1,101 @@
+@import 'src/styles/mixins';
+@import 'src/styles/themes';
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-right: 1px solid var(--Colors-Neutral-Border-light, #242627);
+}
+
+.connected-btn {
+  margin-right: 8px;
+}
+
+.connected-area {
+  padding: 6px var(--Dimension-Spacing-input-x-spacing, 16px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-left: 1px solid var(--Colors-Neutral-Border-light, #242627);
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.connected-img {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--Dimension-Corner-Radius-badge, 99px);
+  border: 1px solid var(--Colors-Neutral-Border-default, #383b40);
+}
+
+.connected-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.connected-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 150%; /* 21px */
+
+  .connected-info--name {
+    color: var(--Colors-Neutral-Text-title, #efefef);
+    font-weight: 400;
+  }
+
+  .connected-info--credit {
+    color: var(--Colors-Neutral-Text-text-token-name, #f7f7f7);
+    font-weight: 600;
+  }
+}
+
+.connected-modal {
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--Colors-Neutral-Border-default, #383b40);
+  background-color: var(--Colors-Neutral-Surface-card, #18181a);
+}
+
+.connected-modal-option {
+  display: flex;
+  height: var(--Dimensions-40, 40px);
+  padding: 12px 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  align-self: stretch;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.modal-option-name {
+  color: var(--Colors-Neutral-Text-title, #f7f7f7);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 19.2px */
+}

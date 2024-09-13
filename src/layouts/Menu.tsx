@@ -11,6 +11,8 @@ import React, { ReactNode, useContext, useEffect, useRef, useState } from 'react
 import { Link, useLocation } from 'react-router-dom';
 import styles from './Menu.module.scss';
 import Sidebar from './Sidebar';
+import TopBarIcon from 'assets/images/flicker-dot.svg';
+import { GithubConnect } from 'components/GithubConnect';
 
 const Menu: React.FC = () => {
   const location = useLocation();
@@ -118,11 +120,24 @@ const Menu: React.FC = () => {
               </Link>
             </div>
           </div>
-          <div className={classNames(styles.menuRight)}>
-            <div className={classNames(styles.connect_wallet_wrapper)}>
-              <span>
-                <WalletManagement />
-              </span>
+
+          <div className={classNames(styles.wrapMenuRight)}>
+            <div className={classNames(styles.menuMiddle)}>
+              <img src={TopBarIcon} alt="top_bar_icon" />
+
+              <div className={classNames(styles.menuMiddleText)}>
+                Millions of EVM wallet users will soon be able to join the Oraichain ecosystem with ease!
+              </div>
+            </div>
+
+            <div className={classNames(styles.menuRight)}>
+              <GithubConnect />
+
+              <div className={classNames(styles.connect_wallet_wrapper)}>
+                <span>
+                  <WalletManagement />
+                </span>
+              </div>
             </div>
           </div>
         </div>

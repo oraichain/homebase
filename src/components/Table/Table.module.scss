@@ -120,5 +120,9 @@
         padding-right: 10px;
       }
     }
+    &.no-data {
+      display: flex;
+      justify-content: center;
+    }
   }
 }
