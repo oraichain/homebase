@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import HeadlessTippy from '@tippyjs/react/headless';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -21,6 +22,7 @@ const cx = classNames.bind(styles);
 const baseApiUrl = process.env.REACT_APP_BASE_GPU_API_URL;
 export const GithubConnect: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const accountName = useSelector((state: RootState) => state.auth.accountName);
   const credit = useSelector((state: RootState) => state.auth.credit);
   const { access: accessToken } = useSelector((state: RootState) => state.auth.token);
@@ -57,14 +59,17 @@ export const GithubConnect: React.FC = () => {
           interactive
           trigger="click"
           render={(attrs) => {
-            const options: { name: string; icon?: string; onCLick?: React.MouseEventHandler<HTMLDivElement> }[] = [
+            const options: { name: string; icon?: string; onClick?: React.MouseEventHandler<HTMLDivElement> }[] = [
               {
-                name: 'Manage your credits'
+                name: 'Manage your credits',
+                onClick: () => {
+                  navigate('/gpu-credit');
+                }
               },
               {
                 name: 'Log out',
                 icon: LogoutIcon,
-                onCLick: () => {
+                onClick: () => {
                   // remove token
                   dispatch(reset());
                 }
@@ -73,7 +78,7 @@ export const GithubConnect: React.FC = () => {
             return (
               <div className={cx('connected-modal')}>
                 {options.map((option, index) => (
-                  <div key={index} className={cx('connected-modal-option')} onClick={option.onCLick}>
+                  <div key={index} className={cx('connected-modal-option')} onClick={option.onClick}>
                     <h1 className={cx('modal-option-name')}>{option.name}</h1>
                     {option.icon && <img src={option.icon} alt={`${option.name} icon`} />}
                   </div>
