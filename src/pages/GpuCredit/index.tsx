@@ -177,7 +177,7 @@ const GpuCredit: React.FC<{}> = () => {
     action: {
       name: 'ACTION',
       accessor: (data) => data.action,
-      width: '45%',
+      width: '35%',
       align: 'left'
     },
     creditUsage: {
