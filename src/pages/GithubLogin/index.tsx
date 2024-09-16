@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import axios from 'rest/request';
 import { setAccountName, setCredit, setTokens } from 'reducer/auth';
+import { getPageBeforeGithubLogin } from 'components/GithubConnect/helper';
 import { getLatestCsrf } from 'utils/githubCode';
 import styles from './index.module.scss';
 
@@ -14,6 +15,7 @@ const cx = classNames.bind(styles);
 const GithubLogin: React.FC = () => {
   const dispatch = useDispatch();
   const { search } = useLocation();
+  const navigate = useNavigate();
 
   const urlParams = new URLSearchParams(search);
   const code = urlParams.get('code');
@@ -32,20 +34,25 @@ const GithubLogin: React.FC = () => {
 
     if (code && latestCsrf && latestCsrf === getLatestCsrf()) {
       // TODO: refactor this for better UX
-      login().then(() => {
-        toast.success('Login success');
-        setTimeout(() => {
-          window.history.back();
-        }, 3);
-      }).catch(() => {
-        toast.error('Login failed');
-        setTimeout(() => {
-          window.location.assign('/');
-        }, 5);
-      });
+      login()
+        .then(() => {
+          toast.success('Login success');
+          setTimeout(() => {
+            navigate(getPageBeforeGithubLogin() || '/');
+          }, 3e3);
+        })
+        .catch(() => {
+          toast.error('Login failed');
+          setTimeout(() => {
+            navigate(getPageBeforeGithubLogin() || '/');
+          }, 3e3);
+        });
     } else {
-      // TODO: print error message
-      console.log('not login');
+      console.error('not login');
+      toast.error('Login failed. CSRF code is not match.');
+      setTimeout(() => {
+        navigate(getPageBeforeGithubLogin() || '/');
+      }, 3e3);
     }
   }, [code, latestCsrf]);
 
