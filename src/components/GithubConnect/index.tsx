@@ -18,9 +18,9 @@ import styles from './index.module.scss';
 import 'tippy.js/dist/tippy.css'; // optional for styling
 
 const cx = classNames.bind(styles);
-
 const baseApiUrl = process.env.REACT_APP_BASE_GPU_API_URL;
-export const GithubConnect: React.FC = () => {
+
+export const GithubConnect: React.FC<{ mobileMode?: boolean }> = ({ mobileMode }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const accountName = useSelector((state: RootState) => state.auth.accountName);
@@ -48,11 +48,15 @@ export const GithubConnect: React.FC = () => {
 
   return (
     <div className={cx('wrapper')}>
-      <div>
-        <Button type="fourth" onClick={() => {}}>
-          Get the latest alpha and more
-        </Button>
-      </div>
+      {mobileMode ? (
+        ''
+      ) : (
+        <div>
+          <Button type="fourth" onClick={() => {}}>
+            Get the latest alpha and more
+          </Button>
+        </div>
+      )}
 
       {accountName ? (
         <HeadlessTippy
@@ -88,14 +92,20 @@ export const GithubConnect: React.FC = () => {
           }}
         >
           <div className={cx('connected-area')}>
-            <div className={cx('connected-img')}>
-              <img src={ConnectedImg} alt="Connected Img" />
-            </div>
+            {mobileMode ? (
+              ''
+            ) : (
+              <div className={cx('connected-img')}>
+                <img src={ConnectedImg} alt="Connected Img" />
+              </div>
+            )}
 
             <div className={cx('connected-content')}>
               <div className={cx('connected-info')}>
                 <h1 className={cx('connected-info--name')}>{accountName}</h1>
-                <h1 className={cx('connected-info--credit')}>{credit} credits</h1>
+                <h1 className={cx('connected-info--credit')}>
+                  {mobileMode ? Math.floor(credit) : credit.toFixed(2).replace(/\.?0+$/, '')} credits
+                </h1>
               </div>
 
               <img src={DropdownIcon} alt="dropdown icon" />
@@ -110,7 +120,7 @@ export const GithubConnect: React.FC = () => {
             icon={<GitHubIcon />}
             style={{ paddingLeft: 14, paddingRight: 14 }}
           >
-            Connect Github
+            {mobileMode ? '' : 'Connect Github'}
           </Button>
         </div>
       )}
