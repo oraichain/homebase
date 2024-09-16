@@ -40,11 +40,11 @@ const GpuCredit: React.FC<{}> = () => {
   const loggedIn = !!tokens.access;
 
   const [chartData, setChartData] = useState({
-    labels: dailyCreditUsage.map((data) => new Date(data.date).getDate()),
+    labels: [],
     datasets: [
       {
         // label: undefined,
-        data: dailyCreditUsage.map((data) => data.credit),
+        data: [],
         backgroundColor: ['#7332E7'],
         borderColor: '#B999F3',
         borderWidth: 2,
