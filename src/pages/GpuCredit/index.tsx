@@ -170,14 +170,14 @@ const GpuCredit: React.FC<{}> = () => {
     timestamp: {
       name: 'TIMESTAMP',
       accessor: (data) => new Date(data.timestamp).toISOString().replace(/T.+$/, ''),
-      width: '30%',
+      width: '35%',
       align: 'left',
       padding: `0px 0px 0px 24px`
     },
     action: {
       name: 'ACTION',
       accessor: (data) => data.action,
-      width: '40%',
+      width: '45%',
       align: 'left'
     },
     creditUsage: {
@@ -193,7 +193,7 @@ const GpuCredit: React.FC<{}> = () => {
       <div className={cx('container')}>
         <div className={cx('statistics')}>
           <div className={cx('daily-credit-usage')}>
-            <h2 className={cx('title')}>Total Credit Usage Each Day</h2>
+            <h2 className={cx('title')}>{loggedIn ? 'Your' : 'Total'} Credit Usage Each Day</h2>
             <div className={cx('chart')}>
               <Bar
                 data={chartData}
