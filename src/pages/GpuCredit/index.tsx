@@ -40,11 +40,11 @@ const GpuCredit: React.FC<{}> = () => {
   const loggedIn = !!tokens.access;
 
   const [chartData, setChartData] = useState({
-    labels: dailyCreditUsage.map((data) => new Date(data.date).getDate()),
+    labels: [],
     datasets: [
       {
         // label: undefined,
-        data: dailyCreditUsage.map((data) => data.credit),
+        data: [],
         backgroundColor: ['#7332E7'],
         borderColor: '#B999F3',
         borderWidth: 2,
@@ -170,14 +170,14 @@ const GpuCredit: React.FC<{}> = () => {
     timestamp: {
       name: 'TIMESTAMP',
       accessor: (data) => new Date(data.timestamp).toISOString().replace(/T.+$/, ''),
-      width: '30%',
+      width: '35%',
       align: 'left',
       padding: `0px 0px 0px 24px`
     },
     action: {
       name: 'ACTION',
       accessor: (data) => data.action,
-      width: '40%',
+      width: '35%',
       align: 'left'
     },
     creditUsage: {
@@ -193,7 +193,7 @@ const GpuCredit: React.FC<{}> = () => {
       <div className={cx('container')}>
         <div className={cx('statistics')}>
           <div className={cx('daily-credit-usage')}>
-            <h2 className={cx('title')}>Total Credit Usage Each Day</h2>
+            <h2 className={cx('title')}>{loggedIn ? 'Your' : 'Total'} Credit Usage Each Day</h2>
             <div className={cx('chart')}>
               <Bar
                 data={chartData}

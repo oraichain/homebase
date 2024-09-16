@@ -8,6 +8,10 @@
   align-items: flex-start;
   gap: 56px;
 
+  @include mobile {
+    margin-top: 76px;
+  }
+
   .title {
     color: var(--Colors-Neutral-Text-heading, #f7f7f7);
     font-size: 24px;
@@ -21,10 +25,6 @@
     font-size: 16px;
     font-weight: 500;
     line-height: 20px; /* 125% */
-
-    @include mobile {
-      display: none;
-    }
 
     svg {
       path {
@@ -50,6 +50,10 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+    }
+
+    @include mobile {
+      flex-direction: column;
     }
 
     .daily-credit-usage {
@@ -138,15 +142,27 @@
     flex-direction: column;
     gap: 24px;
 
+    @include mobile {
+      padding: 16px 9px;
+    }
+
     .intro {
       display: flex;
       gap: 32px;
+
+      @include mobile {
+        flex-direction: column;
+      }
 
       & > .text {
         width: 60%;
         display: flex;
         flex-direction: column;
         gap: 32px;
+
+        @include mobile {
+          width: 100%;
+        }
 
         .content {
           display: flex;
@@ -182,6 +198,11 @@
           align-items: center;
           gap: 24px;
 
+          @include mobile {
+            padding-top: 12px;
+            padding-bottom: 12px;
+          }
+
           .info {
             display: flex;
             flex-direction: column;
@@ -200,6 +221,10 @@
           .list-buttons {
             display: flex;
             gap: 16px;
+
+            @include mobile {
+              flex-direction: column;
+            }
 
             button {
               padding: 14px 24px;

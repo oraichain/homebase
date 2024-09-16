@@ -22,7 +22,7 @@
 .menuMobile {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  // justify-content: space-between;
   width: 100%;
   padding: 16px;
   z-index: 999;
@@ -31,6 +31,10 @@
   left: 0;
 
   height: $menu-height;
+
+  & > :first-child {
+    margin-right: auto;
+  }
 
   &_text {
     font-weight: 600;

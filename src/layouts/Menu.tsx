@@ -103,6 +103,7 @@ const Menu: React.FC = () => {
                 <img src={darkTheme ? LogoFullImgLight : LogoFullImgDark} alt="logo" />
               </Link>
             </div>
+            <GithubConnect mobileMode={mobileMode} />
             <WalletManagement />
           </div>
 

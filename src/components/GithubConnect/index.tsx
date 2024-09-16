@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import HeadlessTippy from '@tippyjs/react/headless';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -17,10 +18,11 @@ import styles from './index.module.scss';
 import 'tippy.js/dist/tippy.css'; // optional for styling
 
 const cx = classNames.bind(styles);
-
 const baseApiUrl = process.env.REACT_APP_BASE_GPU_API_URL;
-export const GithubConnect: React.FC = () => {
+
+export const GithubConnect: React.FC<{ mobileMode?: boolean }> = ({ mobileMode }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const accountName = useSelector((state: RootState) => state.auth.accountName);
   const credit = useSelector((state: RootState) => state.auth.credit);
   const { access: accessToken } = useSelector((state: RootState) => state.auth.token);
@@ -46,25 +48,32 @@ export const GithubConnect: React.FC = () => {
 
   return (
     <div className={cx('wrapper')}>
-      <div>
-        <Button type="fourth" onClick={() => {}}>
-          Get the latest alpha and more
-        </Button>
-      </div>
+      {mobileMode ? (
+        ''
+      ) : (
+        <div>
+          <Button type="fourth" onClick={() => {}}>
+            Get the latest alpha and more
+          </Button>
+        </div>
+      )}
 
       {accountName ? (
         <HeadlessTippy
           interactive
           trigger="click"
           render={(attrs) => {
-            const options: { name: string; icon?: string; onCLick?: React.MouseEventHandler<HTMLDivElement> }[] = [
+            const options: { name: string; icon?: string; onClick?: React.MouseEventHandler<HTMLDivElement> }[] = [
               {
-                name: 'Manage your credits'
+                name: 'Manage your credits',
+                onClick: () => {
+                  navigate('/gpu-credit');
+                }
               },
               {
                 name: 'Log out',
                 icon: LogoutIcon,
-                onCLick: () => {
+                onClick: () => {
                   // remove token
                   dispatch(reset());
                 }
@@ -73,7 +82,7 @@ export const GithubConnect: React.FC = () => {
             return (
               <div className={cx('connected-modal')}>
                 {options.map((option, index) => (
-                  <div key={index} className={cx('connected-modal-option')} onClick={option.onCLick}>
+                  <div key={index} className={cx('connected-modal-option')} onClick={option.onClick}>
                     <h1 className={cx('modal-option-name')}>{option.name}</h1>
                     {option.icon && <img src={option.icon} alt={`${option.name} icon`} />}
                   </div>
@@ -83,14 +92,20 @@ export const GithubConnect: React.FC = () => {
           }}
         >
           <div className={cx('connected-area')}>
-            <div className={cx('connected-img')}>
-              <img src={ConnectedImg} alt="Connected Img" />
-            </div>
+            {mobileMode ? (
+              ''
+            ) : (
+              <div className={cx('connected-img')}>
+                <img src={ConnectedImg} alt="Connected Img" />
+              </div>
+            )}
 
             <div className={cx('connected-content')}>
               <div className={cx('connected-info')}>
                 <h1 className={cx('connected-info--name')}>{accountName}</h1>
-                <h1 className={cx('connected-info--credit')}>{credit} credits</h1>
+                <h1 className={cx('connected-info--credit')}>
+                  {mobileMode ? Math.floor(credit) : credit.toFixed(2).replace(/\.?0+$/, '')} credits
+                </h1>
               </div>
 
               <img src={DropdownIcon} alt="dropdown icon" />
@@ -105,7 +120,7 @@ export const GithubConnect: React.FC = () => {
             icon={<GitHubIcon />}
             style={{ paddingLeft: 14, paddingRight: 14 }}
           >
-            Connect Github
+            {mobileMode ? '' : 'Connect Github'}
           </Button>
         </div>
       )}
