@@ -27,8 +27,8 @@ const baseApiUrl = process.env.REACT_APP_BASE_GPU_API_URL;
 
 const GpuCredit: React.FC<{}> = () => {
   const [gpuStatistics, setGpuStatistics] = useState({
-    totalCards: 30,
-    totalVRAM: 1648,
+    totalCards: 38,
+    totalVRAM: 1896,
     totalUsage: 0
   });
   const [gpuStatus, setGpuStatus] = useState([]);
@@ -103,8 +103,8 @@ const GpuCredit: React.FC<{}> = () => {
       .get(`${baseApiUrl}/gpu-statistics`)
       .then(({ data }) => {
         const gpuStatisticsData = {
-          totalCards: 30, // data.numberOfCards, // hardcode util BE done
-          totalVRAM: 1648, // Math.round(data.totalVRAM), // hardcode util BE done
+          totalCards: 38, // data.numberOfCards, // hardcode util BE done
+          totalVRAM: 1896, // Math.round(data.totalVRAM), // hardcode util BE done
           totalUsage: data.totalUsage.toFixed(2).replace(/\.0+$/, '')
         };
         setGpuStatistics(gpuStatisticsData);
