@@ -7,6 +7,7 @@ import GpuCredit from 'pages/GpuCredit';
 import GpuStaking from 'pages/GpuStaking';
 import UniversalSwap from 'pages/UniversalSwap/index';
 import GithubLogin from 'pages/GithubLogin';
+import ControlCenter from 'pages/ControlCenter';
 
 export default () => (
   <Suspense
@@ -30,6 +31,7 @@ export default () => (
       <Route path="/gpu-staking" element={<GpuStaking />} />
       <Route path="/gpu-credit" element={<GpuCredit />} />
       <Route path="/github-login" element={<GithubLogin />} />
+      <Route path="/control-center" element={<ControlCenter />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   </Suspense>
