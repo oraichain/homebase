@@ -20,6 +20,7 @@ import { ReactComponent as OrchaiIcon } from 'assets/icons/logo_orchai.svg';
 import { ReactComponent as OraiStakingIcon } from 'assets/icons/orai_staking.svg';
 import { ReactComponent as OwalletIcon } from 'assets/icons/logo_owallet.svg';
 import { ReactComponent as TimeIcon } from 'assets/icons/time.svg';
+import { ReactComponent as ControlCenterIcon } from 'assets/icons/control-center.svg';
 import classNames from 'classnames';
 import ModalDownloadOwallet from 'components/Modals/ModalDownloadOwallet/ModalDownloadOwallet';
 import useTheme from 'hooks/useTheme';
@@ -129,6 +130,7 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
               },
               <BuyCryptoIcon />
             )}
+            {renderLink('/control-center', 'Control Center', setLink, <ControlCenterIcon />)}
             {renderLink('#', 'Co-Harvest', () => {}, <CoHavestIcon />, <TimeIcon />, false, true)}
           </div>
         </div>
