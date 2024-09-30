@@ -10,8 +10,8 @@ const ControlCenterArticles = () => {
   return (
     <>
       <div className={cx('article-section')}>
-        <div className={cx('article-section-wrapper-1', 'grid')}>
-          <div className={cx('article-section-wrapper-2', 'grid')}>
+        <div className={cx('apps-list-wrapper', 'grid')}>
+          <div className={cx('apps-list', 'grid')}>
             <div>
               <span className={cx('sec-title')}>Oraichain Academy</span>
               <Link to="https://academy.orai.io/" target="blank">
@@ -57,13 +57,10 @@ const ControlCenterArticles = () => {
                     alt="cover"
                     style={{
                       width: '100%',
-                      height: 160,
                       objectFit: 'cover',
                       borderTopLeftRadius: 8,
                       borderTopRightRadius: 8
                     }}
-                    height={160}
-                    width={160}
                   />
                   <div className={cx('noti-content')}>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -87,13 +84,10 @@ const ControlCenterArticles = () => {
                     alt="cover"
                     style={{
                       width: '100%',
-                      height: 160,
                       objectFit: 'cover',
                       borderTopLeftRadius: 8,
                       borderTopRightRadius: 8
                     }}
-                    height={160}
-                    width={160}
                   />
                   <div className={cx('noti-content')}>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -117,13 +111,10 @@ const ControlCenterArticles = () => {
                     alt="cover"
                     style={{
                       width: '100%',
-                      height: 160,
                       objectFit: 'cover',
                       borderTopLeftRadius: 8,
                       borderTopRightRadius: 8
                     }}
-                    height={160}
-                    width={160}
                   />
                   <div className={cx('noti-content')}>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>

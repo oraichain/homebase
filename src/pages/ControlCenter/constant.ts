@@ -19,7 +19,7 @@ export const tokenAction = [
   },
   {
     title: 'Swap tokens with OraiDEX',
-    link: 'https://oraidex.io/bridge'
+    link: 'https://app.oraidex.io/bridge'
   }
 ];
 

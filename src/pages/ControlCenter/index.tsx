@@ -84,7 +84,7 @@ const ControlCenter = () => {
             ))}
             <div className={cx('tokens-wrapper')}>
               <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-                <a href="https://oraidex.io/universalswap" target="blank" style={{ color: '#B798EA' }}>
+                <a href="https://app.oraidex.io/universalswap" target="blank" style={{ color: '#B798EA' }}>
                   Swap
                 </a>
               </div>
