@@ -509,14 +509,6 @@
   }
 }
 
-.large-banner {
-  margin-top: 32px;
-  width: 100%;
-  height: auto;
-  object-fit: 'cover';
-  border-radius: 8px;
-}
-
 @include mobile {
   .control-center {
     margin: 76px 0 60px;
