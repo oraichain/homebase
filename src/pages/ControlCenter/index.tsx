@@ -1,6 +1,7 @@
 import cn from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import { isMobile } from '@walletconnect/browser-utils';
+import { Link } from 'react-router-dom';
 
 import Background from 'assets/images/bg-control-center.jpg';
 import { ReactComponent as ArrowRight } from 'assets/icons/arrow-right-2.svg';
@@ -92,9 +93,7 @@ const ControlCenter = () => {
               ))}
               <div className={cx('tokens-wrapper')}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-                  <a href="https://app.oraidex.io/universalswap" target="blank" style={{ color: '#B798EA' }}>
-                    Swap
-                  </a>
+                  <Link to="/" style={{ color: '#B798EA' }}>Swap</Link>
                 </div>
               </div>
             </div>
