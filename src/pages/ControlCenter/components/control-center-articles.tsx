@@ -1,7 +1,6 @@
 import cn from 'classnames/bind';
 import { Link } from 'react-router-dom';
 
-import TiktokBanner from 'assets/images/banner-tiktok.jpg';
 import styles from '../index.module.scss';
 
 const cx = cn.bind(styles);
@@ -139,12 +138,6 @@ const ControlCenterArticles = () => {
           </div>
         </div>
       </div>
-      <Link
-        to="https://blog.orai.io/introducing-oraichains-official-tiktok-and-kickoff-campaign-9cb3e4f397d?source=collection_home---4------0-----------------------"
-        target="blank"
-      >
-        <img src={TiktokBanner} alt="cover" className={cx('large-banner')} width={826} height={280} />
-      </Link>
     </>
   );
 };
