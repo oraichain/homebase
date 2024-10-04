@@ -179,23 +179,6 @@
   justify-content: space-between;
 }
 
-.menuMiddle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--dimension-spacing-col-between-md, 8px);
-  padding: 16px;
-
-  .menuMiddleText {
-    color: var(--colors-neutral-text-body, #b4b7bb);
-    font-family: 'IBM Plex Sans';
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 20px; /* 142.857% */
-  }
-}
-
 .menuLeft {
   display: flex;
   align-items: center;
@@ -221,6 +204,7 @@
 }
 
 .menuRight {
+  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 8px;

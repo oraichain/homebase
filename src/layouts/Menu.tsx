@@ -123,13 +123,6 @@ const Menu: React.FC = () => {
           </div>
 
           <div className={classNames(styles.wrapMenuRight)}>
-            <div className={classNames(styles.menuMiddle)}>
-              <img src={TopBarIcon} alt="top_bar_icon" />
-
-              <div className={classNames(styles.menuMiddleText)}>
-                Millions of EVM wallet users will soon be able to join the Oraichain ecosystem with ease!
-              </div>
-            </div>
 
             <div className={classNames(styles.menuRight)}>
               <GithubConnect />
