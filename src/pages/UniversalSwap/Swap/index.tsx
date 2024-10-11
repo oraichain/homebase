@@ -30,7 +30,7 @@ import Loader from 'components/Loader';
 import LoadingBox from 'components/LoadingBox';
 import { TToastType, displayToast } from 'components/Toasts/Toast';
 import { flattenTokens } from 'config/bridgeTokens';
-import { chainIcons } from 'config/chainInfos';
+import { chainIcons, flattenTokensWithIcon } from 'config/chainInfos';
 import { ethers } from 'ethers';
 import {
   assert,
@@ -56,6 +56,7 @@ import {
   getPathInfo,
   getTokenBalance,
   getTokenInfo,
+  isAllowAlphaIbcWasm,
   isAllowAlphaSmartRouter,
   isAllowIBCWasm,
   refreshBalances
@@ -80,6 +81,7 @@ import { calcMaxAmount, isNegative, numberWithCommas } from 'helper/helpers';
 import { TooltipSwapBridge } from './components/TooltipSwapBridge';
 import TokenAndChainSelectors from './components/TokenAndChainSelectors';
 import { SmartRouteModal } from '../Modals/SmartRouteModal';
+import SwapWarningModal from './components/SwapWarningModal';
 // import SwapWarningModal from '../Component/SwapWarningModal';
 
 const cx = cn.bind(styles);
@@ -120,7 +122,7 @@ const SwapComponent: React.FC<{
   const [openSmartRoute, setOpenSmartRoute] = useState(false);
   const [indSmartRoute, setIndSmartRoute] = useState([0, 0]);
   const [userSlippage, setUserSlippage] = useState(DEFAULT_SLIPPAGE);
-  // const [openSwapWarning, setOpenSwapWarning] = useState(false);
+  const [openSwapWarning, setOpenSwapWarning] = useState(false);
 
   // value state
   const [coe, setCoe] = useState(0);
@@ -180,7 +182,7 @@ const SwapComponent: React.FC<{
   const toTokenBalance = getTokenBalance(originalToToken, amounts, subAmountTo);
 
   const useIbcWasm = isAllowIBCWasm(originalFromToken, originalToToken);
-  const useAlphaSmartRouter = isAllowAlphaSmartRouter();
+  const useAlphaIbcWasm = isAllowAlphaIbcWasm(originalFromToken, originalToToken);
 
   const settingRef = useRef();
   const smartRouteRef = useRef();
@@ -282,8 +284,7 @@ const SwapComponent: React.FC<{
 
       if (isSpecialFromCoingecko && originalFromToken.chainId === 'Oraichain') {
         const tokenInfo = getTokenOnOraichain(originalFromToken.coinGeckoId);
-        const IBC_DECIMALS = 18;
-        const fromTokenInOrai = getTokenOnOraichain(tokenInfo.coinGeckoId, IBC_DECIMALS);
+        const fromTokenInOrai = getTokenOnOraichain(tokenInfo.coinGeckoId, true);
         const [nativeAmount, cw20Amount] = await Promise.all([
           window.client.getBalance(oraiAddress, fromTokenInOrai.denom),
           window.client.queryContractSmart(tokenInfo.contractAddress, {
@@ -312,7 +313,7 @@ const SwapComponent: React.FC<{
       }
 
       const isCustomRecipient = validAddress.isValid && addressTransfer !== initAddressTransfer;
-      const alphaSmartRoutes = useAlphaSmartRouter ? simulateData?.routes : undefined;
+      const alphaSmartRoutes = simulateData?.routes;
 
       const swapData = {
         sender: { cosmos: cosmosAddress, evm: checksumMetamaskAddress, tron: tronAddress },
@@ -334,7 +335,7 @@ const SwapComponent: React.FC<{
         cosmosWallet: window.Keplr,
         evmWallet: new Metamask(window.tronWebDapp),
         swapOptions: {
-          isAlphaSmartRouter: useAlphaSmartRouter,
+          isAlphaIbcWasm: useAlphaIbcWasm,
           isIbcWasm: useIbcWasm
         }
       });
@@ -373,7 +374,7 @@ const SwapComponent: React.FC<{
           toAmount: `${toAmountToken}`,
           fromNetwork: originalFromToken.chainId,
           toNetwork: originalToToken.chainId,
-          useAlphaSmartRouter,
+          useAlphaSmartRouter: true,
           priceOfFromTokenInUsd: usdPriceShowFrom,
           priceOfToTokenInUsd: usdPriceShowTo
         };
@@ -413,9 +414,9 @@ const SwapComponent: React.FC<{
       return networks.filter((chainInfo) => chainInfo.chainId === 'Oraichain').map((chain) => chain.chainId);
     }
 
-    if (!originalFromToken.cosmosBased) {
-      return networks.filter((chainInfo) => chainInfo.chainId !== 'injective-1').map((chain) => chain.chainId);
-    }
+    // if (!originalFromToken.cosmosBased) {
+    //   return networks.filter((chainInfo) => chainInfo.chainId !== 'injective-1').map((chain) => chain.chainId);
+    // }
     return [];
   };
 
@@ -562,7 +563,7 @@ const SwapComponent: React.FC<{
           }
       ${originalToToken.name}`}
         </span>
-        {!!isRoutersSwapData && useAlphaSmartRouter && !isPreviousSimulate && (
+        {!!isRoutersSwapData && !isPreviousSimulate && (
           <img src={!openRoutes ? DownArrowIcon : UpArrowIcon} alt="arrow" />
         )}
       </div>
@@ -638,48 +639,51 @@ const SwapComponent: React.FC<{
               {generateRatioComp()}
             </div>
           </div>
-          {!!isRoutersSwapData && useAlphaSmartRouter && !isPreviousSimulate && !!routersSwapData?.routes.length && (
-            <div className={cx('smart', !openRoutes ? 'hidden' : '')}>
-              <div className={cx('smart-router')}>
-                {routersSwapData?.routes.map((route, ind) => {
-                  const volumn = Math.round(
-                    new BigDecimal(route.returnAmount).div(routersSwapData.amount).mul(100).toNumber()
-                  );
-                  return (
-                    <div key={ind} className={cx('smart-router-item')}>
-                      <div className={cx('smart-router-item-volumn')}>{volumn.toFixed(0)}%</div>
-                      {route.paths.map((path, i, acc) => {
-                        const { NetworkFromIcon, NetworkToIcon } = getPathInfo(path, chainIcons, assets);
-                        return (
-                          <React.Fragment key={i}>
-                            <div className={cx('smart-router-item-line')}>
-                              <div className={cx('smart-router-item-line-detail')} />
-                            </div>
-                            <div
-                              className={cx('smart-router-item-pool')}
-                              onClick={() => setOpenSmartRoute(!openSmartRoute)}
-                            >
-                              <div
-                                className={cx('smart-router-item-pool-wrap')}
-                                onClick={() => setIndSmartRoute([ind, i])}
-                              >
-                                <div className={cx('smart-router-item-pool-wrap-img')}>{<NetworkFromIcon />}</div>
-                                <div className={cx('smart-router-item-pool-wrap-img')}>{<NetworkToIcon />}</div>
-                              </div>
-                            </div>
-                            {i === acc.length - 1 && (
+          {!!isRoutersSwapData &&
+            !!averageSimulateData?.displayAmount &&
+            !isPreviousSimulate &&
+            !!routersSwapData?.routes.length && (
+              <div className={cx('smart', !openRoutes ? 'hidden' : '')}>
+                <div className={cx('smart-router')}>
+                  {routersSwapData?.routes.map((route, ind) => {
+                    const volumn = Math.round(
+                      new BigDecimal(route.returnAmount).div(routersSwapData.amount).mul(100).toNumber()
+                    );
+                    return (
+                      <div key={ind} className={cx('smart-router-item')}>
+                        <div className={cx('smart-router-item-volumn')}>{volumn.toFixed(0)}%</div>
+                        {route.paths.map((path, i, acc) => {
+                          const { NetworkFromIcon, NetworkToIcon } = getPathInfo(path, chainIcons, assets);
+                          return (
+                            <React.Fragment key={i}>
                               <div className={cx('smart-router-item-line')}>
                                 <div className={cx('smart-router-item-line-detail')} />
                               </div>
-                            )}
-                          </React.Fragment>
-                        );
-                      })}
-                      <div className={cx('smart-router-item-volumn')}>{volumn.toFixed(0)}%</div>
-                    </div>
-                  );
-                })}
-                {/* <div className={cx('smart-router-price-impact')}>
+                              <div
+                                className={cx('smart-router-item-pool')}
+                                onClick={() => setOpenSmartRoute(!openSmartRoute)}
+                              >
+                                <div
+                                  className={cx('smart-router-item-pool-wrap')}
+                                  onClick={() => setIndSmartRoute([ind, i])}
+                                >
+                                  <div className={cx('smart-router-item-pool-wrap-img')}>{<NetworkFromIcon />}</div>
+                                  <div className={cx('smart-router-item-pool-wrap-img')}>{<NetworkToIcon />}</div>
+                                </div>
+                              </div>
+                              {i === acc.length - 1 && (
+                                <div className={cx('smart-router-item-line')}>
+                                  <div className={cx('smart-router-item-line-detail')} />
+                                </div>
+                              )}
+                            </React.Fragment>
+                          );
+                        })}
+                        <div className={cx('smart-router-item-volumn')}>{volumn.toFixed(0)}%</div>
+                      </div>
+                    );
+                  })}
+                  {/* <div className={cx('smart-router-price-impact')}>
                   <div className={cx('smart-router-price-impact-title')}>Price Impact:</div>
                   <div
                     className={cx(
@@ -695,9 +699,9 @@ const SwapComponent: React.FC<{
                     </span>
                   </div>
                 </div> */}
+                </div>
               </div>
-            </div>
-          )}
+            )}
           <div className={cx('to')}>
             <div className={cx('input-wrapper')}>
               <InputSwap
@@ -803,7 +807,7 @@ const SwapComponent: React.FC<{
               <button
                 className={cx('swap-btn', `${disabledSwapBtn ? 'disable' : ''}`)}
                 onClick={() => {
-                  // if (impactWarning > 10) return setOpenSwapWarning(true);
+                  if (impactWarning > 5) return setOpenSwapWarning(true);
                   handleSubmit();
                 }}
                 disabled={disabledSwapBtn}
@@ -871,19 +875,30 @@ const SwapComponent: React.FC<{
           <div className={styles.smartRouter}>
             {openSmartRoute &&
               [routersSwapData?.routes[indSmartRoute[0]]?.paths[indSmartRoute[1]]].map((path) => {
-                if (!path) return null;
-                const { NetworkFromIcon, NetworkToIcon, assetList, pathChainId } = getPathInfo(
-                  path,
-                  chainIcons,
-                  assets
-                );
-                return path.actions?.map((action, index, actions) => {
-                  const { info, TokenInIcon, TokenOutIcon } = getTokenInfo(action, path, assetList);
-                  const tokenInChainId = path.chainId;
-                  const tokenOutChainId = path.tokenOutChainId;
+                const { NetworkFromIcon, NetworkToIcon, pathChainId } = getPathInfo(path, chainIcons, assets);
+                const flattenSmartRouters = UniversalSwapHelper.flattenSmartRouters([
+                  {
+                    swapAmount: '0',
+                    returnAmount: '0',
+                    paths: [path]
+                  }
+                ]);
+                return flattenSmartRouters?.map((action, index, actions) => {
+                  const tokenInData = flattenTokensWithIcon.find((flat) =>
+                    [flat.denom, flat.contractAddress].filter(Boolean).includes(action.tokenIn)
+                  );
+                  const TokenInIcon = tokenInData?.Icon;
+                  const symbolIn = tokenInData?.name;
+                  const tokenOutData = flattenTokensWithIcon.find((flat) =>
+                    [flat.denom, flat.contractAddress].filter(Boolean).includes(action.tokenOut)
+                  );
+                  const TokenOutIcon = tokenOutData?.Icon;
+                  const symbolOut = tokenOutData?.name;
+
                   const hasTypeConvert = actions.find((act) => act.type === 'Convert');
                   const width = hasTypeConvert ? actions.length - 1 : actions.length;
                   if (action.type === 'Convert') return null;
+
                   return (
                     <div
                       key={index}
@@ -895,13 +910,12 @@ const SwapComponent: React.FC<{
                       <TooltipSwapBridge
                         type={action.type}
                         pathChainId={pathChainId}
-                        tokenInChainId={tokenInChainId}
-                        tokenOutChainId={tokenOutChainId}
                         TokenInIcon={TokenInIcon}
                         TokenOutIcon={TokenOutIcon}
                         NetworkFromIcon={NetworkFromIcon}
                         NetworkToIcon={NetworkToIcon}
-                        info={info}
+                        symbolOut={symbolOut}
+                        symbolIn={symbolIn}
                       />
                     </div>
                   );
@@ -928,7 +942,6 @@ const SwapComponent: React.FC<{
         openSlippage={() => setOpenSetting(true)}
         closeSlippage={() => setOpenSetting(false)}
       />
-      {/* 
       <SwapWarningModal
         onClose={() => setOpenSwapWarning(false)}
         open={openSwapWarning}
@@ -937,7 +950,7 @@ const SwapComponent: React.FC<{
           handleSubmit();
         }}
         impact={impactWarning}
-      /> */}
+      />
     </div>
   );
 };

@@ -3032,10 +3032,10 @@
     react-use "^17.4.0"
     react-use-websocket "^4.5.0"
 
-"@oraichain/oraidex-common@^1.0.91":
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-common/-/oraidex-common-1.1.6.tgz#e5fbc8edd911f8c6924b87ce0fe75cc5a3b484f4"
-  integrity sha512-XUTpvukbtff6UkK25kfE+wHxraFeum6QDZOnHy0k/VVv44FUUlWzWyo/h/D85LyDuKD4u01ryHMmU8XR7M0X7w==
+"@oraichain/oraidex-common@^1.1.21":
+  version "1.1.23"
+  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-common/-/oraidex-common-1.1.23.tgz#7f9b57182972dc4f2f3a9a1fe103c0b12b24fec8"
+  integrity sha512-f7JYAWZH0Hb0UAH1df5oORWZXeiEIX3gN1a5e+udUDuTqexzC2kVJ5TZyj4KDgJo6JyEjVr10zrzWm+tcFR4fg==
   dependencies:
     "@cosmjs/amino" "0.31.3"
     "@cosmjs/cosmwasm-stargate" "0.31.3"
@@ -3074,18 +3074,29 @@
   resolved "https://registry.yarnpkg.com/@oraichain/oraidex-contracts-sdk/-/oraidex-contracts-sdk-1.0.44.tgz#9ff41ec388dd92ba112c2eef545d11fd6e18c684"
   integrity sha512-fMY/QOzO/afPlAVkLGH1bcpJTs6V/URrJju2r4UoE9f5HUWC/6OC6+H5dWuIgq26frp8wjH23mNCQAlmHzji8g==
 
-"@oraichain/oraidex-universal-swap@1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-universal-swap/-/oraidex-universal-swap-1.1.4.tgz#134019ac5c69d6be5aca58380f982375a94f3d54"
-  integrity sha512-XkJRQWG6n1YYKRFcVGpjRTKS0sU60jgxwJB4lj0SgP5M2Kd1WsBCBj0dw44QxwZMm3Lzw9rufDzNgGWJZMGvAQ==
+"@oraichain/oraidex-universal-swap@1.1.14":
+  version "1.1.14"
+  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-universal-swap/-/oraidex-universal-swap-1.1.14.tgz#6c1deb0a85dec6acae9bb8bb7c7b3da32b24b946"
+  integrity sha512-YrtrdYu8Nt8HjK49C5ZYNV7thqMxz5okvTLYFAIav75WcDTHWAWWw2RY70J9lzT3zAkXmSHYrb28zFpUUElGIw==
   dependencies:
     "@oraichain/common" "^1.0.3"
-    "@oraichain/oraidex-common" "^1.0.91"
+    "@oraichain/oraidex-common" "^1.1.21"
     "@oraichain/oraidex-contracts-sdk" "^1.0.49"
+    "@oraichain/osor-api-contracts-sdk" "^1.0.2"
     bech32 "1.1.4"
     ethers "^5.0.15"
     tronweb "5.3.2"
     ts-protoc-gen "^0.15.0"
+
+"@oraichain/osor-api-contracts-sdk@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@oraichain/osor-api-contracts-sdk/-/osor-api-contracts-sdk-1.0.2.tgz#8aec43cfdb2df93cfa50538779f8eee550b94738"
+  integrity sha512-s4ebEgAN34rfnpz3l6qW75F9uKu3gwQTvUNPy+aYtpbkpjanY2Kke1lSt8QS0805Vb47ZfbIumsWLWzsi/4afg==
+  dependencies:
+    "@cosmjs/amino" "0.31.3"
+    "@cosmjs/cosmwasm-stargate" "0.31.3"
+    "@cosmjs/crypto" "0.31.3"
+    "@cosmjs/proto-signing" "0.31.3"
 
 "@oraichain/wasm-json-toolkit@^1.0.24":
   version "1.0.24"
