@@ -48,6 +48,16 @@ export const GithubConnect: React.FC<{ mobileMode?: boolean }> = ({ mobileMode }
 
   return (
     <div className={cx('wrapper')}>
+      {mobileMode ? (
+        ''
+      ) : (
+        <div>
+          <Button type="fourth" onClick={() => {}}>
+            Get the latest alpha and more
+          </Button>
+        </div>
+      )}
+
       {accountName ? (
         <HeadlessTippy
           interactive

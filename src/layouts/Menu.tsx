@@ -123,6 +123,16 @@ const Menu: React.FC = () => {
           </div>
 
           <div className={classNames(styles.wrapMenuRight)}>
+            <Link
+              to="https://x.com/oraichain/status/1845160334417653796"
+              className={classNames(styles.menuMiddle)}
+              target="_blank"
+            >
+              <img src={TopBarIcon} alt="top_bar_icon" />
+              <div className={classNames(styles.menuMiddleText)}>
+                Oraichain’s Ecosystem Growth Fund offers up to $3M in funding for 2024-2025
+              </div>
+            </Link>
 
             <div className={classNames(styles.menuRight)}>
               <GithubConnect />
