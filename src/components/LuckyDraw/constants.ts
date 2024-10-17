@@ -13,6 +13,34 @@ export enum REWARD_ENUM {
   NOTHING = '0'
 }
 
+export const REWARD_LIST = {
+  [REWARD_ENUM.DIAMOND]: {
+    amount: '20000000',
+    title: '20 ORAI',
+    message: '✨ NO WAY! You just scored the BIGGEST prize - 20 ORAI!'
+  },
+  [REWARD_ENUM.GOLD]: {
+    amount: '5000000',
+    title: '5 ORAI',
+    message: "Winner, Winner! You've just won 5 ORAI"
+  },
+  [REWARD_ENUM.SILVER]: {
+    amount: '1000000',
+    title: '1 ORAI',
+    message: 'Holy Moly! You just snagged 1 ORAI!'
+  },
+  [REWARD_ENUM.BRONZE]: {
+    amount: '100000',
+    title: '0.1 ORAI',
+    message: 'Cha-ching! 0.1 ORAI just landed in your wallet - lucky you!'
+  },
+  [REWARD_ENUM.NOTHING]: {
+    amount: '0',
+    title: 'Try again',
+    message: "This spin wasn't a win, but who knows what's next?"
+  }
+};
+
 export const REWARD_MAP = {
   [REWARD_ENUM.DIAMOND]: [0],
   [REWARD_ENUM.GOLD]: [1],
@@ -21,81 +49,41 @@ export const REWARD_MAP = {
   [REWARD_ENUM.NOTHING]: [2, 5]
 };
 
-export enum REWARD_TITLE {
-  DIAMOND = '20 ORAI',
-  GOLD = '5 ORAI',
-  SILVER = '1 ORAI',
-  BRONZE = '0.1 ORAI',
-  NOTHING = 'Try again'
-}
-
-export const MSG_TITLE = {
-  [REWARD_TITLE.DIAMOND]: `✨ NO WAY! You just scored the BIGGEST prize - 20 ORAI!`,
-  [REWARD_TITLE.GOLD]: "Winner, Winner! You've just won 5 ORAI",
-  [REWARD_TITLE.SILVER]: 'Holy Moly! You just snagged 1 ORAI!',
-  [REWARD_TITLE.BRONZE]: 'Cha-ching! 0.1 ORAI just landed in your wallet - lucky you!',
-  [REWARD_TITLE.NOTHING]: "This spin wasn't a win, but who knows what's next?"
-};
+const prizes = Object.keys(REWARD_MAP)
+  .map((rewardEnum) => {
+    return REWARD_MAP[rewardEnum].map((id) => {
+      const prize = {
+        id,
+        rewardEnum,
+        title: REWARD_LIST[rewardEnum].title,
+        background: id % 2 ? '#612fca' : '#9b89e3',
+        fonts: []
+      };
+      if (rewardEnum === REWARD_ENUM.NOTHING) {
+        prize.fonts = [{ text: 'Try Again', top: '18%' }];
+      } else {
+        const fonts = prize.title.split(' ');
+        prize.fonts = [
+          { text: fonts[0], top: '18%', fontSize: '26px' },
+          { text: fonts[1], top: '38%' }
+        ];
+      }
+      return prize;
+    });
+  })
+  .flat()
+  .sort((a, b) => a.id - b.id);
 
 export const DATA_LUCKY_DRAW = {
-  blocks: [{ padding: '13px', background: '#341B55' }],
-  prizes: [
-    {
-      id: 0,
-      title: '20 ORAI',
-      background: '#9B89E3',
-      fonts: [
-        { text: '20', top: '18%', fontSize: '26px' },
-        { text: 'ORAI', top: '38%' }
-      ]
-    },
-    {
-      id: 1,
-      title: '5 ORAI',
-      background: '#612FCA',
-      fonts: [
-        { text: '5', top: '18%', fontSize: '26px' },
-        { text: 'ORAI', top: '38%' }
-      ]
-    },
-    {
-      id: 2,
-      title: 'Try again',
-      background: '#9B89E3',
-      fonts: [{ text: 'Try Again', top: '18%' }]
-    },
-    {
-      id: 3,
-      title: '1 ORAI',
-      background: '#612FCA',
-      fonts: [
-        { text: '1', top: '18%', fontSize: '26px' },
-        { text: 'ORAI', top: '38%' }
-      ]
-    },
-    {
-      id: 4,
-      title: '0.1 ORAI',
-      background: '#9B89E3',
-      fonts: [
-        { text: '0.1', top: '18%', fontSize: '26px' },
-        { text: 'ORAI', top: '38%' }
-      ]
-    },
-    {
-      id: 5,
-      title: 'Try again',
-      background: '#612FCA',
-      fonts: [{ text: 'Try Again', top: '18%' }]
-    }
-  ],
+  blocks: [{ padding: '13px', background: '#341b55' }],
+  prizes,
   buttons: [
-    { radius: '50px', background: '#341B55' },
+    { radius: '50px', background: '#341b55' },
     { radius: '45px', background: '#fff' },
     { radius: '41px', background: '#665a9a', pointer: true },
     {
       radius: '35px',
-      background: '#d7f5bf',
+      background: '#9b89e3',
       fonts: [{ text: 'Spin', fontSize: '18px', top: '-30%' }]
     }
   ],

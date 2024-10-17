@@ -24,17 +24,12 @@ import {
   DATA_LUCKY_DRAW,
   LUCKY_DRAW_FEE,
   MAX_SPIN_TIME_PER_SEND,
-  MSG_TITLE,
+  REWARD_LIST,
   REWARD_MAP,
-  REWARD_TITLE,
-  SPIN_ID_KEY
+  SPIN_ID_KEY,
+  REWARD_ENUM
 } from './constants';
-import {
-  getDataLogByKey,
-  sendMultiple,
-  useGetListSpinResult,
-  useLuckyDrawConfig
-} from './useLuckyDraw';
+import { getDataLogByKey, sendMultiple, useGetListSpinResult, useLuckyDrawConfig } from './useLuckyDraw';
 import styles from './index.module.scss';
 
 const cx = cn.bind(styles);
@@ -135,7 +130,7 @@ const LuckyDraw: FC<{}> = () => {
         senderAddress: address,
         timeToSpin: ticketNum,
         fee,
-        feeDenom,
+        feeDenom
       });
 
       myLuckyRef?.current?.play();
@@ -240,7 +235,7 @@ const LuckyDraw: FC<{}> = () => {
                   console.log(prize);
                   setIsSuccessSpin(true);
                   setIsSpinning(false);
-                  setItem(prize.title as string);
+                  setItem(prize.rewardEnum as string);
                   loadOraichainToken(address, [feeDenom]);
                 }}
               />
@@ -281,14 +276,14 @@ const LuckyDraw: FC<{}> = () => {
               </div>
             ) : (
               <span>
-                <strong>{item}: &nbsp;</strong>
-                {MSG_TITLE[item]}
+                <strong>{REWARD_LIST[item].title}: &nbsp;</strong>
+                {REWARD_LIST[item].message}
               </span>
             )}
           </span>
         </div>
 
-        {isSuccessSpin && item !== REWARD_TITLE.NOTHING && (
+        {isSuccessSpin && item !== REWARD_ENUM.NOTHING && (
           <div className={cx('lottie')}>
             <Lottie animationData={CongratulationLottie} autoPlay={isSuccessSpin} loop={false} />
           </div>
