@@ -13,6 +13,8 @@ import SwapComponent from './Swap';
 import { initPairSwap } from './Swap/hooks/useFillToken';
 import { NetworkFilter, calculateInflationFromApr, initNetworkFilter } from './helpers';
 import styles from './index.module.scss';
+import LuckyDraw from 'components/LuckyDraw';
+
 const cx = cn.bind(styles);
 
 const getInfoOraichain = async () => {
@@ -100,6 +102,8 @@ const Swap: React.FC = () => {
             <AssetsTab networkFilter={networkFilter.value} openBuyModal={() => setOpenBuy(true)} />
           </div>
           <div className={cx('swap-col', 'w40')}>
+            <LuckyDraw />
+
             <SwapComponent fromTokenDenom={fromTokenDenom} toTokenDenom={toTokenDenom} setSwapTokens={setSwapTokens} />
             <div className={styles.powerBy}>
               Powered by <OBrigde />
