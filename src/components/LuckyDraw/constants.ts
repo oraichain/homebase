@@ -6,6 +6,7 @@ export const MAX_SPIN_TIME_PER_SEND = 30;
 export const SPIN_ID_KEY = 'spin_id';
 
 export enum REWARD_ENUM {
+  EMERALD = '100000000',
   DIAMOND = '20000000',
   GOLD = '5000000',
   SILVER = '1000000',
@@ -14,10 +15,15 @@ export enum REWARD_ENUM {
 }
 
 export const REWARD_LIST = {
+  [REWARD_ENUM.EMERALD]: {
+    amount: '100000000',
+    title: '100 ORAI',
+    message: '✨ NO WAY! You just scored the BIGGEST prize - 100 ORAI!'
+  },
   [REWARD_ENUM.DIAMOND]: {
     amount: '20000000',
     title: '20 ORAI',
-    message: '✨ NO WAY! You just scored the BIGGEST prize - 20 ORAI!'
+    message: "Winner, Winner! You've just won 20 ORAI"
   },
   [REWARD_ENUM.GOLD]: {
     amount: '5000000',
@@ -42,11 +48,12 @@ export const REWARD_LIST = {
 };
 
 export const REWARD_MAP = {
-  [REWARD_ENUM.DIAMOND]: [0],
-  [REWARD_ENUM.GOLD]: [1],
+  [REWARD_ENUM.EMERALD]: [0],
+  [REWARD_ENUM.DIAMOND]: [1],
+  [REWARD_ENUM.GOLD]: [2],
   [REWARD_ENUM.SILVER]: [3],
   [REWARD_ENUM.BRONZE]: [4],
-  [REWARD_ENUM.NOTHING]: [2, 5]
+  [REWARD_ENUM.NOTHING]: [5]
 };
 
 const prizes = Object.keys(REWARD_MAP)
