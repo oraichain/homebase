@@ -29,7 +29,13 @@ import {
   SPIN_ID_KEY,
   REWARD_ENUM
 } from './constants';
-import { getDataLogByKey, sendMultiple, useGetListSpinResult, useLuckyDrawConfig } from './useLuckyDraw';
+import {
+  getDataLogByKey,
+  sendMultiple,
+  useGetListSpinResult,
+  useGetTotalWonReward,
+  useLuckyDrawConfig
+} from './useLuckyDraw';
 import styles from './index.module.scss';
 
 const cx = cn.bind(styles);
@@ -92,6 +98,12 @@ const LuckyDraw: FC<{}> = () => {
 
   // const { spinResult } = useGetSpinResult({ id: spinId });
   const { spinResult, isDone } = useGetListSpinResult({ spinIdList });
+  const { totalRewarded, isLoading, refetchTotalRewarded } = useGetTotalWonReward();
+
+  useEffect(() => {
+    const intervalGetReward = setInterval(refetchTotalRewarded, 5e3);
+    return () => clearInterval(intervalGetReward);
+  }, []);
 
   useEffect(() => {
     if (spinIdList.length && isDone && myLuckyRef?.current) {
@@ -188,6 +200,18 @@ const LuckyDraw: FC<{}> = () => {
       >
         <div className={cx('wheel')}>
           <div className={cx('info')}>
+            <span>
+              Total rewarded:&nbsp;
+              <span className={cx('balance')}>
+                {isLoading ? 'loading' : `${toDisplay(totalRewarded)} ${feeToken?.name || 'ORAI'}`}
+              </span>
+            </span>
+            <span>
+              Balance:&nbsp;
+              <span className={cx('balance')}>
+                {toDisplay(balance)} {feeToken?.name || 'ORAI'}
+              </span>
+            </span>
             <div className={cx('detail')}>
               <div className={cx('rangeWrapper')}>
                 <span className={cx('title')}>Select Spin: </span>
@@ -209,12 +233,6 @@ const LuckyDraw: FC<{}> = () => {
                 />
               </div>
             </div>
-            <span>
-              Balance:&nbsp;
-              <span className={cx('balance')}>
-                {toDisplay(balance)} {feeToken?.name || 'ORAI'}
-              </span>
-            </span>
           </div>
 
           {loaded && (
