@@ -1,4 +1,3 @@
-import { ORAIX_CONTRACT } from '@oraichain/oraidex-common';
 import { useQuery } from '@tanstack/react-query';
 import { MulticallQueryClient } from '@oraichain/common-contracts-sdk';
 import { network } from 'config/networks';
@@ -122,6 +121,17 @@ export const useGetSpinResult = ({ id }: { id: number }) => {
     isLoading,
     refetchResult
   };
+};
+
+export const useGetTotalWonReward = () => {
+  const getState = async () => {
+    const contractClient = new LuckyWheelContractQueryClient(window.client, LUCKY_DRAW_CONTRACT);
+    const res = await contractClient.state();
+    return res.total_prize_won;
+  };
+
+  const { data, isLoading, refetch } = useQuery(['getState'], () => getState(), {});
+  return { totalRewarded: data, isLoading, refetchTotalRewarded: refetch };
 };
 
 export const useGetListSpinResult = ({ spinIdList }: { spinIdList: number[] }) => {
