@@ -1,3 +1,4 @@
+/* This comoponent is not used. It is only used in event. */
 import { LuckyWheel } from '@lucky-canvas/react';
 import { toDisplay, BigDecimal } from '@oraichain/oraidex-common';
 import { isMobile } from '@walletconnect/browser-utils';
