@@ -10,7 +10,7 @@ import { getAddress, getAddressByEIP191 } from 'helper';
 import { EIP_EIP_STORAGE_KEY_ACC, MetamaskOfflineSigner } from './eip191';
 
 export default class Keplr extends CosmosWallet {
-  async createCosmosSigner(chainId: CosmosChainId): Promise<OfflineSigner> {
+  async createCosmosSigner(chainId: CosmosChainId): Promise<OfflineSigner | any> {
     const keplr = await this.getKeplr();
     if (keplr) return await keplr.getOfflineSignerAuto(chainId);
     if (window.ethereum) return await MetamaskOfflineSigner.connect(window.ethereum, network.denom);
