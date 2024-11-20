@@ -1417,7 +1417,7 @@
     ws "^7"
     xstream "^11.14.0"
 
-"@cosmjs/stargate@0.31.3", "@cosmjs/stargate@^0.30.1", "@cosmjs/stargate@^0.31.0", "@cosmjs/stargate@^0.32.4":
+"@cosmjs/stargate@^0.30.1", "@cosmjs/stargate@^0.31.0", "@cosmjs/stargate@^0.32.4":
   version "0.32.4"
   resolved "https://registry.yarnpkg.com/@cosmjs/stargate/-/stargate-0.32.4.tgz#bd0e4d3bf613b629addbf5f875d3d3b50f640af1"
   integrity sha512-usj08LxBSsPRq9sbpCeVdyLx2guEcOHfJS9mHGCLCXpdAPEIEQEtWLDpEUc0LEhWOx6+k/ChXTc5NpFkdrtGUQ==
@@ -1440,7 +1440,7 @@
   dependencies:
     xstream "^11.14.0"
 
-"@cosmjs/tendermint-rpc@0.31.3", "@cosmjs/tendermint-rpc@^0.31.3", "@cosmjs/tendermint-rpc@^0.32.4":
+"@cosmjs/tendermint-rpc@^0.31.3", "@cosmjs/tendermint-rpc@^0.32.4":
   version "0.32.4"
   resolved "https://registry.yarnpkg.com/@cosmjs/tendermint-rpc/-/tendermint-rpc-0.32.4.tgz#b36f9ec657498e42c97e21bb7368798ef6279752"
   integrity sha512-MWvUUno+4bCb/LmlMIErLypXxy7ckUuzEmpufYYYd9wgbdCXaTaO08SZzyFM5PI8UJ/0S2AmUrgWhldlbxO8mw==
@@ -3007,17 +3007,17 @@
     react-use "^17.4.0"
     react-use-websocket "^4.5.0"
 
-"@oraichain/oraidex-common@1.1.28", "@oraichain/oraidex-common@^1.1.27":
-  version "1.1.28"
-  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-common/-/oraidex-common-1.1.28.tgz#9bf25c825e3ee7a76bf8c00174579ca2b81d6fdb"
-  integrity sha512-+1CiI9E03MWtNQ3D7dDWtwbONikpdY1+USmvU6gOKd26uhDqDHKgi7MGnmz2t+Z8/4oqY36aySZhh3d9ybakxg==
+"@oraichain/oraidex-common@1.1.32", "@oraichain/oraidex-common@^1.1.27":
+  version "1.1.32"
+  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-common/-/oraidex-common-1.1.32.tgz#c787dc3451584ffccd63a20bb230a5dd0a2e383f"
+  integrity sha512-8DbfumZ26fKFN1yhiQbJOSoXdqHuoU3i2JvVLpSOtveYUd1Z5rBDs3XVS7odNcUAgF0osqzq5sg9+4yUzruZ8Q==
   dependencies:
-    "@cosmjs/amino" "0.31.3"
-    "@cosmjs/cosmwasm-stargate" "0.31.3"
-    "@cosmjs/crypto" "0.31.3"
-    "@cosmjs/proto-signing" "0.31.3"
-    "@cosmjs/stargate" "0.31.3"
-    "@cosmjs/tendermint-rpc" "0.31.3"
+    "@cosmjs/amino" "^0.32.4"
+    "@cosmjs/cosmwasm-stargate" "^0.32.4"
+    "@cosmjs/crypto" "^0.32.4"
+    "@cosmjs/proto-signing" "^0.32.4"
+    "@cosmjs/stargate" "^0.32.4"
+    "@cosmjs/tendermint-rpc" "^0.32.4"
     "@ethersproject/providers" "^5.0.10"
     "@injectivelabs/sdk-ts" "1.12.1"
     "@keplr-wallet/types" "^0.11.38"
@@ -3025,7 +3025,7 @@
     axios "1.7.2"
     axios-extensions "3.1.7"
     bignumber.js "^9.1.2"
-    cosmjs-types "0.8.0"
+    cosmjs-types "^0.9.0"
     ethers "^5.0.15"
     tronweb "6.0.0-beta.4"
 
@@ -3071,10 +3071,10 @@
   resolved "https://registry.yarnpkg.com/@oraichain/oraidex-contracts-sdk/-/oraidex-contracts-sdk-1.0.44.tgz#9ff41ec388dd92ba112c2eef545d11fd6e18c684"
   integrity sha512-fMY/QOzO/afPlAVkLGH1bcpJTs6V/URrJju2r4UoE9f5HUWC/6OC6+H5dWuIgq26frp8wjH23mNCQAlmHzji8g==
 
-"@oraichain/oraidex-universal-swap@1.1.19":
-  version "1.1.19"
-  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-universal-swap/-/oraidex-universal-swap-1.1.19.tgz#c960407c98501aeedd17dc058b3e4a428c81d4da"
-  integrity sha512-fv34AiSxGIPzI8zEIaWaI82FtP2CENdCqV4wYC5ucAXCGEuUArmxs6rD0M/Z1vVw0+GmZ8/J9YDZS485ZNE4Pw==
+"@oraichain/oraidex-universal-swap@1.1.23":
+  version "1.1.22"
+  resolved "https://registry.yarnpkg.com/@oraichain/oraidex-universal-swap/-/oraidex-universal-swap-1.1.22.tgz#ee838ea72fbc912d381298db8f663c9106075969"
+  integrity sha512-pufQGemqxq6nMMDfuxuiA78pYYv2EQrkgT8wcrrf4GemBQdpgNLa9pwfr8OEBVOFKspbKnaK56sYOWv83bF4xQ==
   dependencies:
     "@oraichain/common" "^1.0.3"
     "@oraichain/oraidex-common" "^1.1.27"
@@ -6702,18 +6702,18 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-cosmjs-types@0.8.0, cosmjs-types@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/cosmjs-types/-/cosmjs-types-0.8.0.tgz#2ed78f3e990f770229726f95f3ef5bf9e2b6859b"
-  integrity sha512-Q2Mj95Fl0PYMWEhA2LuGEIhipF7mQwd9gTQ85DdP9jjjopeoGaDxvmPa5nakNzsq7FnO1DMTatXTAx6bxMH7Lg==
-  dependencies:
-    long "^4.0.0"
-    protobufjs "~6.11.2"
-
 cosmjs-types@^0.7.1:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/cosmjs-types/-/cosmjs-types-0.7.2.tgz#a757371abd340949c5bd5d49c6f8379ae1ffd7e2"
   integrity sha512-vf2uLyktjr/XVAgEq0DjMxeAWh1yYREe7AMHDKd7EiHVqxBPCaBS+qEEQUkXbR9ndnckqr1sUG8BQhazh4X5lA==
+  dependencies:
+    long "^4.0.0"
+    protobufjs "~6.11.2"
+
+cosmjs-types@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/cosmjs-types/-/cosmjs-types-0.8.0.tgz#2ed78f3e990f770229726f95f3ef5bf9e2b6859b"
+  integrity sha512-Q2Mj95Fl0PYMWEhA2LuGEIhipF7mQwd9gTQ85DdP9jjjopeoGaDxvmPa5nakNzsq7FnO1DMTatXTAx6bxMH7Lg==
   dependencies:
     long "^4.0.0"
     protobufjs "~6.11.2"
