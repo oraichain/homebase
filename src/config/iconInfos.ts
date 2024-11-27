@@ -26,6 +26,7 @@ import { ReactComponent as BitcoinIcon } from 'assets/icons/bitcoin.svg';
 import { ReactComponent as CelestiaIcon } from 'assets/icons/celestia.svg';
 import { ReactComponent as TonIcon } from 'assets/icons/ton.svg';
 import { ReactComponent as PepeIcon } from 'assets/icons/pepe.svg';
+import { ReactComponent as DogecoinIcon } from 'assets/icons/dogecoin.svg';
 // import { ReactComponent as CatIcon } from 'assets/icons/icon-simoncat.svg';
 import { ReactComponent as HmstrIcon } from 'assets/icons/hmstr.svg';
 
@@ -160,6 +161,11 @@ export const tokensIconInfos: TokenIcon[] = [
     coinGeckoId: 'hamster-kombat',
     Icon: HmstrIcon,
     IconLight: HmstrIcon
+  },
+  {
+    coinGeckoId: 'dogecoin',
+    Icon: DogecoinIcon,
+    IconLight: DogecoinIcon
   }
 ];
 
