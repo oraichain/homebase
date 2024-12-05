@@ -4,7 +4,7 @@ import axios from 'axios';
 import cn from 'classnames/bind';
 import BuyOraiModal from 'layouts/BuyOraiModal';
 import Content from 'layouts/Content';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AssetsTab, HeaderTab } from './Component';
 import ConnectBanner from './Component/ConnectBanner';
 import Feature from './Component/Feature';
@@ -84,7 +84,23 @@ const Swap: React.FC = () => {
   const [isLoadedIframe, setIsLoadedIframe] = useState(false); // check iframe data loaded
   const [openBuy, setOpenBuy] = useState(false);
   const data = useGetInfoOraichain();
-  const dataStake = useGetInfoStakeOraichain();
+  // const dataStake = useGetInfoStakeOraichain();
+  const [aprOrai, setAprOrai] = useState<number>();
+
+  useEffect(() => {
+    async function fetchValidator() {
+      try {
+        const res = await fetch(`https://api.scan.orai.io/v1/validators?page_id=1&moniker=megaorai2`).then((data) =>
+          data.json()
+        );
+        const appOrai = res?.data[0]?.apr * 1.05;
+        setAprOrai(appOrai);
+      } catch (error) {
+        console.log({ error });
+      }
+    }
+    fetchValidator();
+  }, []);
 
   return (
     <Content nonBackground>
@@ -111,7 +127,7 @@ const Swap: React.FC = () => {
           </div>
         </div>
         <div className={styles.looking}>You are looking for...</div>
-        <StakeSummary data={data?.controlCenter} aprOrai={dataStake?.inflationRate || 0} />
+        <StakeSummary data={data?.controlCenter} aprOrai={aprOrai || 0} />
         <Feature />
       </div>
 
