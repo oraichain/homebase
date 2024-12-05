@@ -89,11 +89,15 @@ const Swap: React.FC = () => {
 
   useEffect(() => {
     async function fetchValidator() {
-      const res = await fetch(`https://api.scan.orai.io/v1/validators?page_id=1&moniker=megaorai2`).then((data) =>
-        data.json()
-      );
-      const appOrai = res.data[0].apr * 1.05;
-      setAprOrai(appOrai);
+      try {
+        const res = await fetch(`https://api.scan.orai.io/v1/validators?page_id=1&moniker=megaorai2`).then((data) =>
+          data.json()
+        );
+        const appOrai = res?.data[0]?.apr * 1.05;
+        setAprOrai(appOrai);
+      } catch (error) {
+        console.log({ error });
+      }
     }
     fetchValidator();
   }, []);
