@@ -118,7 +118,7 @@ const ControlCenterArticles = () => {
                   <div className={cx('noti-content')}>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <p className={cx('noti-title')}>
-                        EUENO by Oraichain Labs - Decentralized Encrypting oracles for Web3
+                        EUENO by Oraichain Labs - Decentralized Encrypting blockchain oracles for Web3
                       </p>
                       <p className={cx('noti-text')}>
                         Web3 needs to scale to big data of many real-world applications that reach beyond the data
