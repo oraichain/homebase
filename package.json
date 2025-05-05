@@ -129,7 +129,7 @@
     "@cosmjs/tendermint-rpc": "^0.32.4"
   },
   "engines": {
-    "node": "^18 || ^20"
+    "node": "^18 || ^20 || ^22"
   },
   "packageManager": "yarn@1.22.19"
 }
