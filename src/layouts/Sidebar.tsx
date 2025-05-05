@@ -13,6 +13,8 @@ import { ReactComponent as AirightIcon } from 'assets/icons/logo_airight.svg';
 import { ReactComponent as DefiLensIcon } from 'assets/icons/logo_defi_lens.svg';
 import { ReactComponent as ExplorerIcon } from 'assets/icons/logo_explorer.svg';
 import { ReactComponent as LLMLayerIcon } from 'assets/icons/logo_llm_layer.svg';
+import { ReactComponent as ThesisIcon } from 'assets/icons/logo_thesis.svg';
+import { ReactComponent as LfgIcon } from 'assets/icons/logo_lfg.svg';
 import { ReactComponent as OraidexIcon } from 'assets/icons/logo_oraidex.svg';
 import { ReactComponent as OrderbookIcon } from 'assets/icons/orderbook_ic.svg';
 import { ReactComponent as OFutureIcon } from 'assets/icons/future_ic.svg';
@@ -141,6 +143,8 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
             {/* <div>-</div> */}
           </div>
           <div className={classNames(styles.menu_items)}>
+            {renderLink('https://thesis.io', 'Thesis', setLink, <ThesisIcon />, <JumpIcon />, true)}
+            {renderLink('https://lfg.land', 'LFG', setLink, <LfgIcon />, <JumpIcon />, true)}
             {renderLink('https://oraidex.io', 'OraiDEX', setLink, <OraidexIcon />, <JumpIcon />, true)}
             {renderLink(
               'https://orderbook.oraidex.io/',
