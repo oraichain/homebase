@@ -143,8 +143,8 @@ const Sidebar: React.FC<{}> = React.memo((props) => {
             {/* <div>-</div> */}
           </div>
           <div className={classNames(styles.menu_items)}>
-            {renderLink('https://thesis.io', 'Thesis', setLink, <ThesisIcon />, <JumpIcon />, true)}
-            {renderLink('https://lfg.land', 'LFG', setLink, <LfgIcon />, <JumpIcon />, true)}
+            {renderLink('https://thesis.io', 'Thesis.io', setLink, <ThesisIcon />, <JumpIcon />, true)}
+            {renderLink('https://lfg.land', 'LFG!!!', setLink, <LfgIcon />, <JumpIcon />, true)}
             {renderLink('https://oraidex.io', 'OraiDEX', setLink, <OraidexIcon />, <JumpIcon />, true)}
             {renderLink(
               'https://orderbook.oraidex.io/',
